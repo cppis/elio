@@ -42,43 +42,7 @@ func (c *Config) Load(path string) (err error) {
 	c.viper.AddConfigPath("./")
 	c.viper.AutomaticEnv()
 
-	/*//
-	//AppTrace().Str(elf.LogObject, c.String()).Msg("begin to load env var")
-	//c.viper.SetConfigType("env")
-	//c.viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))		// .env notOK, env Ok
-	//if nil == c.viper.MergeInConfig() {
-	//}
-
-	c.viper.SetConfigType("env")
-	//c.viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))		// .env notOK, env Ok
-	//c.viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))		// .env notOK, env Ok
-	if nil == c.viper.MergeInConfig() {
-	}
-
-	//AppTrace().Str(elf.LogObject, c.String()).Msg("begin to load env var")
-	c.viper.SetConfigFile(".env")
-	c.viper.SetEnvKeyReplacer(strings.NewReplacer("_", "."))		// .env OK, env notOk
-	//c.viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
-	if nil == c.viper.MergeInConfig() {
-		// dir, err := os.Getwd()
-		// fmt.Printf("working.dir:%s\n", dir)
-
-		// var j []byte
-		// if j, err = ioutil.ReadFile(".env"); err == nil {
-		// 		fmt.Printf("dump .env:\n%s\n", hex.Dump(j))
-		// }
-	}
-
-	//AppTrace().Str(elf.LogObject, c.String()).Msg("begin to load env var")
-	// fmt.Printf(".env config\n")
-	// fmt.Printf("config.all: %v\n", c.viper.AllSettings())
-	// fmt.Printf("env[heatgo.log.level]: %v\n", c.viper.Get("heatgo.log.level"))
-	// fmt.Printf("env[heatgo.log.json]: %v\n", c.viper.Get("heatgo.log.json"))
-	// fmt.Printf("env[heatgo.log.out]: %v\n", c.viper.Get("heatgo.log.out"))
-	// fmt.Println()
-	//*/
-
-	//AppTrace().Str(elf.LogObject, c.String()).Msgf("begin to load config:%s", path)
+	//AppTrace().Str(LogObject, c.String()).Msgf("begin to load config:%s", path)
 	if "" != path {
 		c.viper.SetConfigFile(path)
 		c.viper.SetConfigType("json")
@@ -86,14 +50,6 @@ func (c *Config) Load(path string) (err error) {
 		if nil != err {
 			return err
 		}
-
-		// fmt.Printf("json config\n")
-		// fmt.Printf("config.all: %v\n", c.viper.AllSettings())
-		// fmt.Printf("env[heatgo.log.level]: %v\n", c.viper.Get("heatgo.log.level"))
-		// fmt.Printf("env[heatgo.log.json]: %v\n", c.viper.Get("heatgo.log.json"))
-		// fmt.Printf("env[heatgo.log.out]: %v\n", c.viper.Get("heatgo.log.out"))
-		// fmt.Printf("env[heatgo.log.color]: %v\n", c.viper.Get("heatgo.log.color"))
-		// fmt.Println()
 	}
 
 	// bind env
@@ -107,31 +63,12 @@ func (c *Config) Load(path string) (err error) {
 	err = c.viper.BindEnv("heatgo.app.floors", "HEATGO_APP_FLOORS")
 	err = c.viper.BindEnv("heatgo.app.fetchLimit", "HEATGO_APP_FETCHLIMIT")
 
-	//c.viper.SetDefault("heatgo.log.level", "debug")
-	//c.viper.SetDefault("heatgo.log.out", "stdout,server.log")
-	//c.viper.SetDefault("heatgo.log.json", false)
-	//c.viper.SetDefault("heatgo.log.color", true)
-	//c.viper.SetDefault("heatgo.log.shortCaller", false)
-
-	// ////////////////////////////////////////////////////////////////
-	// // env override 에 이슈가 없는 코드 블럭
-	// //AppTrace().Str(elf.LogObject, c.String()).Msg("begin to load env var")
-
 	// viper expects SYSENV_* as system environment variables
 	c.viper.SetEnvPrefix(viper.GetString("sysenv"))
 	c.viper.SetConfigType("env")
 	c.viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_")) // .env notOK, env Ok
 	if nil == c.viper.MergeInConfig() {
 	}
-	// ////////////////////////////////////////////////////////////////
-
-	// fmt.Printf("env config\n")
-	// fmt.Printf("config.all: %v\n", c.viper.AllSettings())
-	// fmt.Printf("env[heatgo.log.level]: %v\n", c.viper.Get("heatgo.log.level"))
-	// fmt.Printf("env[heatgo.log.json]: %v\n", c.viper.Get("heatgo.log.json"))
-	// fmt.Printf("env[heatgo.log.out]: %v\n", c.viper.Get("heatgo.log.out"))
-	// fmt.Printf("env[heatgo.log.color]: %v\n", c.viper.Get("heatgo.log.color"))
-	// fmt.Println()
 
 	////////////////////////////////////////////////////////////////
 	// // .env override 에 이슈가 없는 코드 블럭
@@ -141,14 +78,6 @@ func (c *Config) Load(path string) (err error) {
 	if nil == c.viper.MergeInConfig() {
 	}
 	////////////////////////////////////////////////////////////////
-
-	// fmt.Printf(".env config\n")
-	// fmt.Printf("config.all: %v\n", c.viper.AllSettings())
-	// fmt.Printf("env[heatgo.log.level]: %v\n", c.viper.Get("heatgo.log.level"))
-	// fmt.Printf("env[heatgo.log.json]: %v\n", c.viper.Get("heatgo.log.json"))
-	// fmt.Printf("env[heatgo.log.out]: %v\n", c.viper.Get("heatgo.log.out"))
-	// fmt.Printf("env[heatgo.log.color]: %v\n", c.viper.Get("heatgo.log.color"))
-	// fmt.Println()
 
 	return err
 }

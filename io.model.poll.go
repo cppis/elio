@@ -154,7 +154,7 @@ func (m *ioPoll) Write(n *Session, out []byte) (written int, err error) {
 
 		} else {
 			AppError().Str(LogObject, m.String()).Str(LogSession, n.String()).
-				Err(err).Msgf("failed to write with fd:%v written:%d/%d count.outqueue:%d", n.fd, written, l)
+				Err(err).Msgf("failed to write with fd:%v written:%d/%d", n.fd, written, l)
 		}
 	}
 
