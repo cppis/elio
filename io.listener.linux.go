@@ -40,7 +40,9 @@ func (l *Listener) Close() {
 	if nil != l.listener {
 		if IoDefault != l.ios {
 			if nil != l.listenF {
-				//fmt.Printf("poll:%s close listen.f:%p ...\n", m.String(), m.listenF)
+				AppDebug().Str(LogObject, l.String()).
+					Msgf("poll:%s close listen.f:%p ...", l.String(), l.listenF)
+
 				l.listenF.Close()
 				l.listenF = nil
 			}
@@ -50,7 +52,9 @@ func (l *Listener) Close() {
 			unix.Close(l.listenFd)
 		}
 
-		//fmt.Printf("service:%s close listener\n", m.String())
+		AppDebug().Str(LogObject, l.String()).
+			Msgf("service:%s close listener", l.String())
+
 		if e := l.listener.Close(); nil != e {
 			AppDebug().Str(LogObject, l.String()).
 				Msgf("failed to close listener with error:'%v'", e)

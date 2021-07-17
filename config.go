@@ -42,10 +42,11 @@ func (c *Config) Load(path string) (err error) {
 	c.viper.AddConfigPath("./")
 	c.viper.AutomaticEnv()
 
-	//AppTrace().Str(LogObject, c.String()).Msgf("begin to load config:%s", path)
+	AppTrace().Str(LogObject, c.String()).Msgf("begin to load config:%s", path)
 	if "" != path {
 		c.viper.SetConfigFile(path)
-		c.viper.SetConfigType("json")
+		c.viper.SetConfigType("yaml")
+		c.viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_")) // .env notOK, env Ok
 		err = c.viper.ReadInConfig()
 		if nil != err {
 			return err
@@ -53,20 +54,18 @@ func (c *Config) Load(path string) (err error) {
 	}
 
 	// bind env
-	err = c.viper.BindEnv("heatgo.log.level", "HEATGO_LOG_LEVEL")
-	err = c.viper.BindEnv("heatgo.log.out", "HEATGO_LOG_OUT")
-	err = c.viper.BindEnv("heatgo.log.json", "HEATGO_LOG_JSON")
-	err = c.viper.BindEnv("heatgo.log.color", "HEATGO_LOG_COLOR")
-	err = c.viper.BindEnv("heatgo.log.shortCaller", "HEATGO_LOG_SHORTCALLER")
-
-	err = c.viper.BindEnv("heatgo.app.interval", "HEATGO_APP_INTERVAL")
-	err = c.viper.BindEnv("heatgo.app.floors", "HEATGO_APP_FLOORS")
-	err = c.viper.BindEnv("heatgo.app.fetchLimit", "HEATGO_APP_FETCHLIMIT")
+	err = c.viper.BindEnv("elio.log.level", "ELIO_LOG_LEVEL")
+	err = c.viper.BindEnv("elio.log.out", "ELIO_LOG_OUT")
+	err = c.viper.BindEnv("elio.log.json", "ELIO_LOG_JSON")
+	err = c.viper.BindEnv("elio.log.color", "ELIO_LOG_COLOR")
+	err = c.viper.BindEnv("elio.log.shortCaller", "ELIO_LOG_SHORTCALLER")
+	err = c.viper.BindEnv("elio.app.intervalMs", "ELIO_APP_INTERVALMS")
+	err = c.viper.BindEnv("elio.app.fetchLimit", "ELIO_APP_FETCHLIMIT")
 
 	// viper expects SYSENV_* as system environment variables
 	c.viper.SetEnvPrefix(viper.GetString("sysenv"))
 	c.viper.SetConfigType("env")
-	c.viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_")) // .env notOK, env Ok
+	//c.viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_")) // .env notOK, env Ok
 	if nil == c.viper.MergeInConfig() {
 	}
 

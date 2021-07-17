@@ -120,11 +120,6 @@ func (c *IoCore) Shutdown(n *Session, how int) error {
 	return c.io.Shutdown(n, how)
 }
 
-//// IsRunning is running
-//func (c *IoCore) IsRunning() bool {
-//	return c.flagExit.Load()
-//}
-
 // Terminate terminate
 func (c *IoCore) Terminate() {
 	AppInfo().Str(LogObject, c.String()).Msg("terminate IoCore")
@@ -190,100 +185,6 @@ func StopDown(exit func()) {
 	go func() {
 		sig := <-gracefulStop
 		AppInfo().Msgf("caught sig:%+v\n", sig)
-		//fmt.Printf("caught sig:%+v\n", sig)
 		exit()
 	}()
 }
-
-// // InitLogFromFile init log from file
-// func InitLogFromFile(path string) {
-// 	// Output to stdout instead of the default stderr
-// 	// Can be any io.Writer, see below for File example
-// 	//log.SetOutput(os.Stdout)
-// 	if j, err := ioutil.ReadFile(path); err == nil {
-// 		InitLogByJSON(string(j))
-// 	}
-// }
-
-// // InitLogByJSON init log by JSON
-// func InitLogByJSON(config string) {
-// 	var result gjson.Result
-// 	result = gjson.Get(config, "log.level")
-// 	if succeed := result.Exists(); true == succeed {
-// 		//fmt.Printf("log level: %s\n", result.String())
-// 		if l, e := zerolog.ParseLevel(strings.ToLower(result.String())); nil == e {
-// 			zerolog.SetGlobalLevel(l)
-// 		}
-// 	}
-
-// 	var logJSON bool
-// 	result = gjson.Get(config, "log.json")
-// 	if succeed := result.Exists(); true == succeed {
-// 		//fmt.Printf("log json: %v\n", result.Bool())
-// 		logJSON = result.Bool()
-// 	}
-
-// 	result = gjson.Get(config, "log.out")
-// 	if succeed := result.Exists(); true == succeed {
-// 		var outs []string
-// 		for _, o := range result.Array() {
-// 			outs = append(outs, o.String())
-// 		}
-
-// 		var w []io.Writer
-// 		for _, o := range outs {
-// 			//fmt.Printf("app.env log out: %s\n", o)
-// 			if "stdout" == o {
-// 				if true == logJSON {
-// 					w = append(w, os.Stdout)
-// 				} else {
-// 					w = append(w, zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339})
-// 				}
-
-// 			} else if "stderr" == o {
-// 				if true == logJSON {
-// 					w = append(w, os.Stdout)
-// 				} else {
-// 					w = append(w, zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339})
-// 				}
-
-// 			} else {
-// 				if f, err := os.OpenFile(o, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666); nil == err {
-// 					// Add file and line number to log
-// 					w = append(w, f)
-// 				}
-// 			}
-// 		}
-
-// 		if 0 < len(w) {
-// 			log.Logger = log.With().Caller().Logger()
-// 			log.Logger = log.Output(io.MultiWriter(w[:]...))
-// 		}
-
-// 	} else {
-// 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339})
-// 	}
-// }
-
-// // Wait wait
-// func (c *IoCore) Wait(intervalMs time.Duration) (err error) {
-// 	ticker := time.NewTicker(intervalMs)
-// 	defer func() {
-// 		ticker.Stop()
-// 	}()
-
-// 	//tickPrev := time.Now()
-// 	for {
-// 		select {
-// 		case <-ticker.C: //tick := <-ticker.C:
-// 			//r.svc.OnLoop(tick, tick.Sub(tickPrev))
-// 			//tickPrev = tick
-// 		case <-c.ctx.Done():
-// 			return
-// 		}
-// 	}
-
-// 	AppInfo().Str(LogObject, c.String()).Msgf("IoCore end")
-
-// 	return err
-// }

@@ -45,6 +45,16 @@ const (
 	LogWalltime = "walltime"
 	// LogErrorCode errorcode
 	LogErrorCode = "errorcode"
+	// LogRoom room
+	LogRoom = "room"
+	// LogContext context
+	LogContext = "context"
+	// LogPayload payload
+	LogPayload = "payload"
+	// LogGitHash git last commit hash
+	LogGitHash = "githash"
+	// LogRecover recover
+	LogRecover = "recover"
 )
 
 // InitLog init log
@@ -52,7 +62,6 @@ func InitLog(level string, outs []string, json bool) {
 	zerolog.TimestampFieldName = "logtime"
 	zerolog.TimeFieldFormat = time.RFC3339Nano
 
-	//fmt.Printf("app.env log level: %s\n", h.envVar.logLevel)
 	if l, e := zerolog.ParseLevel(strings.ToLower(level)); nil == e {
 		zerolog.SetGlobalLevel(l)
 	}

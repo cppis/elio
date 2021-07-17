@@ -1,5 +1,5 @@
 elio:
 
-services:
-  echo:
-  
+echo:
+  in:
+    url: "0.0.0.0:7001"

@@ -22,7 +22,9 @@ func (l *Listener) Close() {
 	defer l.Unlock()
 
 	if nil != l.listener {
-		//fmt.Printf("service:%s close listener\n", m.String())
+		//AppDebug().Str(LogObject, l.String()).
+		//	Msgf("service:%s close listener", m.String())
+
 		if e := l.listener.Close(); nil != e {
 			AppDebug().Str(LogObject, l.String()).
 				Msgf("failed to close listener with error:'%v'", e)

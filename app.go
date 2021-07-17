@@ -12,6 +12,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/rcrowley/go-metrics"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
@@ -42,7 +43,7 @@ type App struct {
 	config   *Config
 	envApp   EnvApp
 	wg       sync.WaitGroup
-	metrics  MetricsApp
+	metrics  AppMetrics
 	services []Service
 	runs     []run
 }
@@ -96,7 +97,8 @@ func (a *App) Run() {
 		//for _, r := range a.runs {
 		// TODO: load service config in here r.svc.Name()
 		c := ProvideConfigIo(a.runs[i].svc.Name(), a.config)
-		c.InURL = "0.0.0.0:7000"
+		//c.InURL = "0.0.0.0:7000"
+		fmt.Printf("in.url:%v\n", c.InURL)
 
 		var ioHost *IoHost
 		var err error
@@ -120,7 +122,7 @@ func (a *App) Run() {
 			for {
 				select {
 				case tick := <-ticker.C:
-					r.svc.OnLoop(tick, tick.Sub(tickPrev))
+					r.svc.OnLoop(r.ioHost, tick, tick.Sub(tickPrev))
 					tickPrev = tick
 				case <-r.ctx.Done():
 					return
@@ -139,7 +141,7 @@ func (a *App) Run() {
 			select {
 			case <-ticker.C:
 				// TODO: work in here
-				fmt.Printf(".")
+				//fmt.Printf(".")
 			case <-a.ctx.Done():
 				return
 			}
@@ -150,6 +152,26 @@ func (a *App) Run() {
 // Register register service
 func (a *App) Register(s Service) {
 	a.services = append(a.services, s)
+}
+
+// GetMetrics get app metrics
+func (a *App) Metrics() *AppMetrics {
+	return &a.metrics
+}
+
+// MetricCounter get metric counter
+func (a *App) MetricCounter(name string) metrics.Counter {
+	return a.Metrics().GetOrRegisterCounter(name)
+}
+
+// MetricGauge get metric gauge
+func (a *App) MetricGauge(name string) metrics.Gauge {
+	return a.Metrics().GetOrRegisterGauge(name)
+}
+
+// MetricMeter get metric meter
+func (a *App) MetricMeter(name string) metrics.Meter {
+	return a.Metrics().GetOrRegisterMeter(name)
 }
 
 //// private scope
@@ -196,9 +218,7 @@ func (a *App) loadConfig(path string) {
 			a.envApp.logOuts = append(a.envApp.logOuts, v)
 		}
 	default:
-		//fmt.Printf("I don't know about type %T!\n", v)
 	}
-	//fmt.Printf("env[elio.log.out]: %v\n", outs)
 
 	a.envApp.logJson, _ = a.config.GetBoolOrDefault("elio.log.json", defaultLogJson)
 	a.envApp.logShortCaller, _ = a.config.GetBoolOrDefault("elio.log.shortCaller", defaultLogShortCaller)

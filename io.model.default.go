@@ -193,10 +193,11 @@ func (m *ioDefault) Running() {
 	AppInfo().Str(LogObject, m.String()).
 		Msgf("succeed to listen with url:%s", addr)
 	// if zerolog.InfoLevel < zerolog.GlobalLevel() {
-	// 	fmt.Printf("succeed to listen with url:%s", addr)
+	//	AppInfo().Str(LogObject, m.String()).
+	//		Msgf("succeed to listen with url:%s", addr)
 	// }
 
-	m.GetIoCore().Service.OnListen(m.GetIoCore())
+	//m.GetIoCore().Service.OnListen(m.GetIoCore())
 
 	for {
 		conn, err := m.GetIoCore().Listener.listener.Accept()
@@ -221,7 +222,7 @@ func (m *ioDefault) Running() {
 		go m.Reading(session)
 	}
 
-	m.GetIoCore().Service.OnShut(m.GetIoCore())
+	//m.GetIoCore().Service.OnShut(m.GetIoCore())
 }
 
 // Reading reading

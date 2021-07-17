@@ -25,7 +25,6 @@ func StackParse(in string) (out string, err error) {
 	o := &bytes.Buffer{}
 	var c *stack.Context
 	if c, err = stack.ParseDump(i, o, true); nil != err {
-		fmt.Printf("error:\n%s", err.Error())
 		return "", err
 	}
 

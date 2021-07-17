@@ -1,6 +1,9 @@
 package elio
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 const (
 	// defaultReadBufferLen default read buffer len
@@ -44,6 +47,8 @@ type ConfigIo struct {
 // ProvideConfigIo returns service config
 func ProvideConfigIo(name string, config *Config) ConfigIo {
 	c := ConfigIo{}
+
+	config.viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_")) // .env notOK, env Ok
 
 	c.ReadBufferLen, _ = config.GetIntOrDefault(fmt.Sprintf("%s.in.bufferlen", name), defaultReadBufferLen)
 	c.InURL, _ = config.GetStringOrDefault(fmt.Sprintf("%s.in.url", name), defaultInUrl)

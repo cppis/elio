@@ -47,14 +47,10 @@ func (m *ioPoll) Listen(addr string) bool {
 	var err error
 	if err = m.GetIoCore().Listener.Listen("tcp", addr); nil == err {
 		//AppInfo().Str(LogObject, m.String()).Msgf("succeed to listen with url:%s", addr)
-		//fmt.Printf("succeed to listen with url '%s'\n", m.GetIoCore().Addr.String())
 
 		if 1 == m.GetIoCore().InCount.Add(1) {
 			m.GetIoCore().InAddr.Store(addr)
 		}
-
-		//m.ctxAccept, m.cancelAccept = context.WithCancel(context.Background())
-		//m.ctxIo, m.cancelIo = context.WithCancel(context.Background())
 
 		go m.loopAccept()
 
@@ -78,7 +74,6 @@ func (m *ioPoll) Run() bool {
 
 // Shut shut listen
 func (m *ioPoll) Shut() {
-	//fmt.Printf("poll:%s shut\n", m.String())
 	addr := m.GetIoCore().InAddr.Load()
 
 	AppDebug().Str(LogObject, m.String()).
@@ -95,10 +90,8 @@ func (m *ioPoll) Shut() {
 func (m *ioPoll) End() {
 	m.CloseAll()
 	m.Shut()
-	//m.pollAccept.End()
-	m.pollIo.End()
 
-	//m.GetIoCore().Host.Wg.Done()
+	m.pollIo.End()
 }
 
 // Read read from session
@@ -112,7 +105,6 @@ func (m *ioPoll) Read(n *Session, in []byte) (receipt int, err error) {
 			AppTrace().Str(LogObject, m.String()).Str(LogSession, n.String()).
 				Msgf("succeed to read with fd:%v in:%d/%d", n.fd, r, receipt)
 
-			//fmt.Printf("session:%s on.read with %d bytes\n", n.String(), receipt)
 			_ = m.GetIoCore().Service.OnRead(n, n.buffer[:r])
 		}
 
@@ -178,32 +170,11 @@ func (m *ioPoll) Write(n *Session, out []byte) (written int, err error) {
 // PostWrite post write
 func (m *ioPoll) PostWrite(n *Session, out []byte) (written int, err error) {
 	if nil != out {
-		// co := n.CountOutQueue()
-		// if 0 == co {
-		// 	written, err = m.Write(n, out)
-		// 	if written == len(out) {
-		// 		return written, err
-		// 	}
-
-		// 	if (unix.EAGAIN != err) && (unix.EWOULDBLOCK != err) {
-		// 		AppError().Str(LogObject, m.String()).Str(LogSession, n.String()).
-		// 			Err(err).Msgf("failed to write %d", written)
-		// 		return written, err
-		// 	}
-
-		// 	AppDebug().Str(LogObject, m.String()).Str(LogSession, n.String()).
-		// 		Err(err).Msgf("unable to write %d", written)
-		// }
-
 		n.IncRef()
 		b := GetByteBuffer()
 		b.Write(out[written:])
 		n.outQueue.Append(b)
-
-		//written = len(out)
 	}
-
-	//fmt.Printf("poll:%s write %d B to fd:%d\n", m.String(), sent, n.fd)
 
 	if 0 < n.CountOutQueue() {
 		AppTrace().Str(LogObject, m.String()).Str(LogSession, n.String()).
@@ -213,7 +184,7 @@ func (m *ioPoll) PostWrite(n *Session, out []byte) (written int, err error) {
 		if nil != err {
 			AppError().Str(LogObject, m.String()).Str(LogSession, n.String()).
 				Err(err).Msg("failed to write")
-			//fmt.Printf("poll:%s failed to write to fd:%d with error:%v\n", m.String(), n.fd, err)
+
 			m.Close(n)
 		}
 	}
@@ -259,7 +230,8 @@ func (m *ioPoll) loopAccept() {
 	AppInfo().Str(LogObject, m.String()).
 		Msgf("succeed to listen with url:%s", addr)
 	// if zerolog.InfoLevel < zerolog.GlobalLevel() {
-	// 	fmt.Printf("succeed to listen with url:'%s'", addr.String())
+	//	AppDebug().Str(LogObject, m.String()).
+	//		Msgf("succeed to listen with url:'%s'", addr.String())
 	// }
 
 	var err error
@@ -284,18 +256,15 @@ func (m *ioPoll) loopAccept() {
 	if err = m.pollAccept.Begin(); nil == err {
 		// accepting is no need to be oneshot
 		if err = m.pollAccept.ControlAdd(m.GetIoCore().Listener.ToFd(), unix.EPOLLIN|unix.EPOLLEXCLUSIVE); nil != err {
-			//fmt.Println("poll add.r failed with error:", err.Error())
 			AppError().Str(LogObject, m.String()).Err(err).
 				Msgf("failed to ready listen with poll.accept:%s", m.pollAccept.String())
 		}
 
-		//fmt.Printf("poll:%s ready with listen.fd:%d\n", p.String(), p.listenFd)
 		//AppDebug().Str(LogObject, m.String()).
 		//	Msgf("succeed to ready with poll.accept:%s listen.fd:%d",
 		//		m.pollAccept.String(), m.GetIoCore().Listener.ToFd())
 
 		if err = unix.SetNonblock(m.GetIoCore().Listener.ToFd(), true); nil != err {
-			//fmt.Println("poll set.nonblock failed with error:", err.Error())
 			AppError().Str(LogObject, m.String()).Err(err).
 				Msgf("failed to set.nonblock poll.accept:%s", m.pollAccept.String())
 		}
@@ -306,8 +275,7 @@ func (m *ioPoll) loopAccept() {
 		return
 	}
 
-	//fmt.Println("succeed to poll.ready")
-	m.GetIoCore().Service.OnListen(m.GetIoCore())
+	//m.GetIoCore().Service.OnListen(m.GetIoCore())
 
 	AppInfo().Str(LogObject, m.String()).
 		Msgf("poll.accept.wait with %d events", m.GetIoCore().Config.InWaitCount)
@@ -327,7 +295,6 @@ func (m *ioPoll) loopAccept() {
 				if waits, err = m.pollAccept.Wait(events, waitTimeoutMsec); nil != err {
 					AppError().Str(LogObject, m.String()).Err(err).
 						Msgf("poll.accept:%s failed to wait", m.pollAccept.String())
-					//fmt.Printf("poll:%s wait exit...\n", m.poll.String())
 					break
 				}
 
@@ -335,8 +302,7 @@ func (m *ioPoll) loopAccept() {
 
 				for i := 0; i < waits; i++ {
 					//AppDebug().Str(LogObject, m.String()).
-					//Msgf("poll:%s wait event:%v with fd:%d", m.poll.String(), events[i].Events, events[i].Fd)
-					//fmt.Printf("poll:%s wait event:%v with fd:%d\n", m.poll.String(), events[i].Events, events[i].Fd)
+					//	Msgf("poll:%s wait event:%v with fd:%d", m.poll.String(), events[i].Events, events[i].Fd)
 
 					fd := int(events[i].Fd)
 
@@ -359,7 +325,7 @@ func (m *ioPoll) loopAccept() {
 
 	AppInfo().Str(LogObject, m.String()).
 		Msgf("service:%s poll:%s on.shut", m.String(), m.pollAccept.String())
-	m.GetIoCore().Service.OnShut(m.GetIoCore())
+	//m.GetIoCore().Service.OnShut(m.GetIoCore())
 
 	AppInfo().Str(LogObject, m.String()).Msgf("service:%s close poll.accpet", m.String())
 }
@@ -373,7 +339,8 @@ func (m *ioPoll) loopIo() {
 	// AppInfo().Str(LogObject, m.String()).
 	// 	Msgf("succeed to listen with url:'%s'", addr.String())
 	// if zerolog.InfoLevel < zerolog.GlobalLevel() {
-	// 	fmt.Printf("succeed to listen with url:'%s'", addr.String())
+	//	 AppInfo().Str(LogObject, m.String()).
+	//	 	Msgf("succeed to listen with url:'%s'", addr.String())
 	// }
 
 	var err error
@@ -420,17 +387,12 @@ func (m *ioPoll) loopIo() {
 				if waits, err = m.pollIo.Wait(events, waitTimeoutMsec); nil != err {
 					AppError().Str(LogObject, m.String()).Err(err).
 						Msgf("poll.io:%s failed to wait", m.pollIo.String())
-					//fmt.Printf("poll:%s wait exit...\n", m.poll.String())
 					break
 				}
-
-				//fmt.Printf("awake wait... %d events\n", waits)
-				//fmt.Printf("\n\n\npoll.wait: waits %d events\n\n\n", waits)
 
 				for i := 0; i < waits; i++ {
 					//AppDebug().Str(LogObject, m.String()).
 					//Msgf("poll:%s wait event:%v with fd:%d", m.poll.String(), events[i].Events, events[i].Fd)
-					//fmt.Printf("poll:%s wait event:%v with fd:%d\n", m.poll.String(), events[i].Events, events[i].Fd)
 
 					fd := int(events[i].Fd)
 					if fd == m.pollIo.wfd {
@@ -438,11 +400,6 @@ func (m *ioPoll) loopIo() {
 							Msgf("poll:%s wake up event:%v with fd:%d", m.pollIo.String(), events[i].Events, events[i].Fd)
 
 						_, _ = unix.Read(m.pollIo.wfd, m.pollIo.wfdBuf)
-
-						//jobs := m.pollIo.jobs.Fetch()
-						//for _, job := range jobs {
-						//	job.(Job).Work()
-						//}
 
 					} else {
 						var n *Session
@@ -459,14 +416,12 @@ func (m *ioPoll) loopIo() {
 						if unix.EPOLLOUT == events[i].Events&unix.EPOLLOUT {
 							AppTrace().Str(LogObject, m.String()).
 								Msgf("poll:%s awake fd:%d with events.epollout:%X", m.pollIo.String(), events[i].Fd, events[i].Events)
-							//fmt.Printf("events.epollout:%X with fd:%d", events[i].Events, events[i].Fd)
 
 							m.handleWrite(n)
 						}
 						if unix.EPOLLIN == events[i].Events&unix.EPOLLIN {
 							AppTrace().Str(LogObject, m.String()).
 								Msgf("poll:%s awake fd:%d with events.epollin:%X", m.pollIo.String(), events[i].Fd, events[i].Events)
-							//fmt.Printf("events.epollin:%X with fd:%d", events[i].Events, events[i].Fd)
 
 							m.handleRead(n)
 						}
@@ -494,7 +449,6 @@ func canRepost(err error) bool {
 }
 
 func (m *ioPoll) handleAccept(fd int) bool {
-	//fmt.Printf("awake accepting session:%d with EPOLLIN\n", fd)
 	err := m.accept(fd)
 	if true == canRepost(err) {
 		//AppDebug().Str(LogObject, m.String()).Str(LogSession, n.String()).Err(err).
@@ -592,8 +546,6 @@ func (m *ioPoll) handleWrite(n *Session) {
 // 	//	err = os.NewSyscallError("getsockopt", e)
 // 	//}
 
-// 	//fmt.Printf("get error events by fd:%d\n", n.fd)
-
 // 	t := fmt.Sprintf("run.error fd:%d with EPOLLERR", n.fd)
 // 	AppDebug().Str(LogObject, m.String()).
 // 		Str(LogSession, n.String()).Msg(t)
@@ -645,12 +597,11 @@ func (m *ioPoll) accept(fd int) (err error) {
 		nfd, sa, err = unix.Accept(fd)
 		if nil != err {
 			if (unix.EAGAIN == err) || (unix.EWOULDBLOCK == err) {
-				//fmt.Printf("poll accept fd:%d failed with error(unix.EAGAIN):%v\n", fd, err)
 				//AppDebug().Str(LogObject, m.String()).
 				//	Msgf("accepting would block with fd:%d error(EAGAIN):%v", fd, err)
 				break
 			}
-			//fmt.Printf("poll accept fd:%d failed with error:'%v'\n", fd, err)
+
 			AppError().Str(LogObject, m.String()).
 				Err(err).Msgf("accept to fd:%d failed", fd)
 			break
@@ -658,7 +609,6 @@ func (m *ioPoll) accept(fd int) (err error) {
 
 		//if false == m.GetIoCore().sessionCmap.Has(fmt.Sprintf("0x%08x", nfd)) {
 		if err := unix.SetNonblock(nfd, true); nil != err {
-			//fmt.Printf("accepting setnonblock failed with error:'%v'\n", err)
 			AppError().Str(LogObject, m.String()).
 				Err(err).Msgf("accept set.nonblock to fd:%d failed", nfd)
 			break
@@ -750,7 +700,6 @@ func (m *ioPoll) accept(fd int) (err error) {
 // 				AppTrace().Str(LogObject, m.String()).Str(LogSession, n.String()).
 // 					Msgf("succeed to read with fd:%v in:%d", n.fd, r)
 
-// 				//fmt.Printf("session:%s on.read with %d bytes\n", n.String(), receipt)
 // 				_ = m.GetIoCore().Config.Events.OnRead(n, n.buffer[:r])
 // 			}
 // 		}

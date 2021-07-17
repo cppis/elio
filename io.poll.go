@@ -110,7 +110,6 @@ type WaitResult struct {
 // 		var n int
 // 		n, err = unix.EpollWait(p.fd, events, -1)
 // 		if nil != err && unix.EINTR != err {
-// 			//fmt.Println("poll.wait failed with error:", err.Error())
 // 			AppError().Str(LogObject, p.String()).Err(err).
 // 				Msg("failed to poll.wait.run")
 // 			return results, err
@@ -133,13 +132,10 @@ type WaitResult struct {
 func (p *Poll) Wait(events []unix.EpollEvent, timeout int) (waits int, err error) {
 	waits, err = unix.EpollWait(p.fd, events, timeout)
 	if nil != err && unix.EINTR != err {
-		//fmt.Println("poll.wait failed with error:", err.Error())
 		//AppError().Str(LogObject, p.String()).Err(err).
 		//	Msg("failed to poll.wait")
 		return waits, err
 	}
-
-	//fmt.Printf("poll.wait succeed waits:%d\n", waits)
 
 	//AppDebug().Str(LogObject, p.String()).
 	//	Msgf("poll.wait awake with %v events", waits)
