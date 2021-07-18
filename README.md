@@ -24,7 +24,7 @@ To run `echo` service. Run this command:
 $ ECHO_IN_URL="0.0.0.0:7000" go run app/echo/main.go
 ```
 
-You can change the url of service `echo`' using environment variable `ECHO_IN_URL`.
+You can change the url of service `echo` using environment variable `ECHO_IN_URL`.
 
 <br/><br/><br/>
 
