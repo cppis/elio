@@ -85,24 +85,15 @@ If network event happens, `elio` calls proper event method of service.
 func (e *Echo) OnOpen(s *elio.Session) error {
 	fmt.Printf("o")
 
-	elio.AppDebug().Str(elio.LogObject, e.String()).
-		Str(elio.LogSession, s.String()).Msgf("service:%s on.open", e.Name())
-
 	return nil
 }
 
 func (e *Echo) OnClose(s *elio.Session, err error) {
 	fmt.Printf("c")
-
-	elio.AppDebug().Str(elio.LogObject, e.String()).
-		Str(elio.LogSession, s.String()).Msgf("service:%s on.close", e.Name())
 }
 
 func (e *Echo) OnError(s *elio.Session, err error) {
 	fmt.Printf("e")
-
-	elio.AppError().Str(elio.LogObject, e.String()).
-		Str(elio.LogSession, s.String()).Msgf("service:%s on.error", e.Name())
 }
 
 func (e *Echo) OnRead(s *elio.Session, in []byte) (processed int) {
@@ -133,11 +124,6 @@ const (
 )
 
 func (e *Echo) OnLoop(host *elio.IoHost, t time.Time, d time.Duration) {
-	//fmt.Printf("on loop with delta:%v\n", d)
-	if t.Sub(e.prev) > 10*time.Second {
-		fmt.Printf("e")
-	}
-
 	//host.RunDivision(t, r.callbackDivision)
 
 	_, _ = host.Dispatching(t, defaultFetchLimit)
