@@ -7,8 +7,6 @@ This library allows you to quickly write epoll-based servers.
 [![github-license](https://img.shields.io/github/go-mod/go-version/cppis/elio)](https://img.shields.io/github/go-mod/go-version/cppis/elio)
 [![tag version](https://img.shields.io/github/v/tag/cppis/elio)](https://img.shields.io/github/v/tag/cppis/elio)
 
-CODECOV_TOKEN='056dfbdd-3b3b-44bd-9690-751659347ea8'
-
 <br/>
 
 ## Installation  
