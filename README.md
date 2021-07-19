@@ -7,6 +7,8 @@ This library allows you to quickly write epoll-based servers.
 [![github-license](https://img.shields.io/github/go-mod/go-version/cppis/elio)](https://img.shields.io/github/go-mod/go-version/cppis/elio)
 [![tag version](https://img.shields.io/github/v/tag/cppis/elio)](https://img.shields.io/github/v/tag/cppis/elio)
 
+CODECOV_TOKEN='056dfbdd-3b3b-44bd-9690-751659347ea8'
+
 <br/>
 
 ## Installation  
@@ -18,17 +20,31 @@ $ go mod vendor
 
 <br/><br/><br/>
 
-## Run  
-To run `echo` service. Run this command:  
+## Run Echo  
+### using `go run`  
+To run `echo` service, run this command:  
 ```shell
 $ ECHO_IN_URL="0.0.0.0:7000" go run app/echo/main.go
 ```
 
 You can change the url of service `echo` using environment variable `ECHO_IN_URL`.
 
+<br/>
+
+### using `docker`  
+To build `echo` image, run this command:  
+```shell
+$ docker build -t elio:v0.1.0 -f app/echo/Dockerfile .
+```
+
+To run `echo` image, run this command:  
+```shell
+$ docker run -d -p 7000:7000 -p 2345:2345 elio:v0.1.0
+```
+
 <br/><br/><br/>
 
-## Example  
+## Echo example  
 `app/echo` is simple echo example using `elio`.  
 Here is the *main* function:  
 ```go
@@ -131,3 +147,10 @@ func (e *Echo) OnLoop(host *elio.IoHost, t time.Time, d time.Duration) {
 	e.prev = t
 }
 ```
+
+<br/><br/><br/>
+
+## Test  
+You can test echo easily by using telnet.  
+And, you can end server by send `q` character.  
+
