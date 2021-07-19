@@ -48,9 +48,9 @@ func (s *Sample) OnExit() {
 
 func (s *Sample) OnOpen(n *elio.Session) error {
 	//fmt.Printf("%s on open\n", e.Name())
-	n.GetIoCore().Host.PostToQueue(&EventOpen{
+	n.GetIo().Host.PostToQueue(&EventOpen{
 		session: n,
-		host:    n.GetIoCore().Host,
+		host:    n.GetIo().Host,
 	})
 
 	fmt.Printf("o")
@@ -64,9 +64,9 @@ func (s *Sample) OnOpen(n *elio.Session) error {
 func (s *Sample) OnClose(n *elio.Session, err error) {
 	//fmt.Printf("%s on close\n", e.Name())
 
-	n.GetIoCore().Host.PostToQueue(&EventClose{
+	n.GetIo().Host.PostToQueue(&EventClose{
 		session: n,
-		host:    n.GetIoCore().Host,
+		host:    n.GetIo().Host,
 	})
 
 	fmt.Printf("c")
@@ -88,7 +88,7 @@ const (
 func (s *Sample) OnRead(n *elio.Session, in []byte) (processed int) {
 	//fmt.Printf("on read %d\n", len(in))
 	//e.app.End()
-	//s.GetIoCore().End()
+	//s.GetIo().End()
 	//return len(in)
 	l := len(in)
 

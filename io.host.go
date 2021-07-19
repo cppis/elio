@@ -13,7 +13,7 @@ type DivCallback func(t time.Time, v interface{}) error
 
 // IoHost host
 type IoHost struct {
-	IoCores    []*IoCore
+	Ios        []*Io
 	Wg         *sync.WaitGroup
 	Url        *net.TCPAddr
 	Users      map[UID]interface{}
@@ -43,14 +43,14 @@ func (h *IoHost) String() string {
 
 // End end
 func (h *IoHost) End() {
-	for _, c := range h.IoCores {
+	for _, c := range h.Ios {
 		c.End()
 	}
 }
 
 // Terminate terminate
 func (h *IoHost) Terminate(safe bool) {
-	for _, c := range h.IoCores {
+	for _, c := range h.Ios {
 		//if true == safe {
 		//	c.SafeTerminate()
 		//} else {
@@ -225,17 +225,15 @@ const (
 // Host host
 func Host(config ConfigIo, service Service) (host *IoHost, err error) {
 	host = NewIoHost(defaultDivCount)
-	host.IoCores = make([]*IoCore, config.InCount)
+	host.Ios = make([]*Io, config.InCount)
 
 	for i := 0; i < config.InCount; i++ {
-		core := ProvideIoCore(config, service)
-		host.IoCores[i] = core
-
-		core.Host = host
+		io := ProvideIo(host, config, service)
+		host.Ios[i] = io
 
 		var addr *net.TCPAddr
-		if addr, err = net.ResolveTCPAddr("tcp", core.Config.InURL); nil == err {
-			core.Run(addr)
+		if addr, err = net.ResolveTCPAddr("tcp", io.Config.InURL); nil == err {
+			io.Run(addr)
 			host.Url = addr
 		}
 	}

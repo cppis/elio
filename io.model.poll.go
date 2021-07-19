@@ -13,7 +13,7 @@ import (
 
 // ioPoll service implementation
 type ioPoll struct {
-	ioCore     *IoCore
+	io         *Io
 	pollAccept *Poll
 	pollIo     *Poll
 }
@@ -28,28 +28,28 @@ func (m *ioPoll) String() string {
 	return fmt.Sprintf("ioPoll::%p", m)
 }
 
-func (m *ioPoll) GetIoCore() *IoCore {
-	return m.ioCore
+func (m *ioPoll) GetIo() *Io {
+	return m.io
 }
 
-func (m *ioPoll) SetIoCore(c *IoCore) {
-	m.ioCore = c
-	c.SetIo(m)
+func (m *ioPoll) SetIo(io *Io) {
+	m.io = io
+	io.SetIoModel(m)
 }
 
 // Listen listen
 func (m *ioPoll) Listen(addr string) bool {
-	m.GetIoCore().Host.Wg.Add(1)
+	m.GetIo().Host.Wg.Add(1)
 	defer func() {
-		m.GetIoCore().Host.Wg.Done()
+		m.GetIo().Host.Wg.Done()
 	}()
 
 	var err error
-	if err = m.GetIoCore().Listener.Listen("tcp", addr); nil == err {
+	if err = m.GetIo().Listener.Listen("tcp", addr); nil == err {
 		//AppInfo().Str(LogObject, m.String()).Msgf("succeed to listen with url:%s", addr)
 
-		if 1 == m.GetIoCore().InCount.Add(1) {
-			m.GetIoCore().InAddr.Store(addr)
+		if 1 == m.GetIo().InCount.Add(1) {
+			m.GetIo().InAddr.Store(addr)
 		}
 
 		go m.loopAccept()
@@ -65,7 +65,7 @@ func (m *ioPoll) Listen(addr string) bool {
 
 // Run run
 func (m *ioPoll) Run() bool {
-	m.GetIoCore().Host.Wg.Add(1)
+	m.GetIo().Host.Wg.Add(1)
 
 	go m.loopIo()
 
@@ -74,13 +74,13 @@ func (m *ioPoll) Run() bool {
 
 // Shut shut listen
 func (m *ioPoll) Shut() {
-	addr := m.GetIoCore().InAddr.Load()
+	addr := m.GetIo().InAddr.Load()
 
 	AppDebug().Str(LogObject, m.String()).
 		Msgf("shut service url:'%s' poll.accept:%s", addr, m.pollAccept.String())
 
-	if nil != m.GetIoCore().Listener.listener {
-		m.GetIoCore().Listener.Close()
+	if nil != m.GetIo().Listener.listener {
+		m.GetIo().Listener.Close()
 	}
 
 	m.pollAccept.End()
@@ -105,7 +105,7 @@ func (m *ioPoll) Read(n *Session, in []byte) (receipt int, err error) {
 			AppTrace().Str(LogObject, m.String()).Str(LogSession, n.String()).
 				Msgf("succeed to read with fd:%v in:%d/%d", n.fd, r, receipt)
 
-			_ = m.GetIoCore().Service.OnRead(n, n.buffer[:r])
+			_ = m.GetIo().Service.OnRead(n, n.buffer[:r])
 		}
 
 		if 0 == r || nil != err {
@@ -154,13 +154,13 @@ func (m *ioPoll) Write(n *Session, out []byte) (written int, err error) {
 		AppTrace().Str(LogObject, m.String()).Str(LogSession, n.String()).
 			Msgf("succeed to write with fd:%v out:%d/%d", n.fd, written, l)
 
-		m.GetIoCore().Service.OnWrite(n, out[:written])
+		m.GetIo().Service.OnWrite(n, out[:written])
 	}
 
 	if nil != err {
 		if (unix.EAGAIN != err) && (unix.EWOULDBLOCK != err) {
-			n.ioCore.Service.OnError(n, err)
-			n.ioCore.io.Close(n)
+			n.io.Service.OnError(n, err)
+			n.io.ioModel.Close(n)
 		}
 	}
 
@@ -215,7 +215,7 @@ func (m *ioPoll) CloseAll() {
 		m.Close(s)
 	}
 
-	m.GetIoCore().sessionCmap.IterCb(c)
+	m.GetIo().sessionCmap.IterCb(c)
 }
 
 const waitTimeoutMsec = -1 //10
@@ -223,9 +223,9 @@ const pollAcceptCount = 1  //4
 
 // loopAccept loop
 func (m *ioPoll) loopAccept() {
-	m.GetIoCore().Host.Wg.Add(1)
+	m.GetIo().Host.Wg.Add(1)
 
-	addr := m.GetIoCore().InAddr.Load()
+	addr := m.GetIo().InAddr.Load()
 
 	AppInfo().Str(LogObject, m.String()).
 		Msgf("succeed to listen with url:%s", addr)
@@ -241,7 +241,7 @@ func (m *ioPoll) loopAccept() {
 			m.pollAccept.End()
 			m.pollAccept = nil
 		}
-		m.GetIoCore().Host.Wg.Done()
+		m.GetIo().Host.Wg.Done()
 	}()
 
 	if m.pollAccept = NewPoll(); nil == m.pollAccept {
@@ -255,16 +255,16 @@ func (m *ioPoll) loopAccept() {
 
 	if err = m.pollAccept.Begin(); nil == err {
 		// accepting is no need to be oneshot
-		if err = m.pollAccept.ControlAdd(m.GetIoCore().Listener.ToFd(), unix.EPOLLIN|unix.EPOLLEXCLUSIVE); nil != err {
+		if err = m.pollAccept.ControlAdd(m.GetIo().Listener.ToFd(), unix.EPOLLIN|unix.EPOLLEXCLUSIVE); nil != err {
 			AppError().Str(LogObject, m.String()).Err(err).
 				Msgf("failed to ready listen with poll.accept:%s", m.pollAccept.String())
 		}
 
 		//AppDebug().Str(LogObject, m.String()).
 		//	Msgf("succeed to ready with poll.accept:%s listen.fd:%d",
-		//		m.pollAccept.String(), m.GetIoCore().Listener.ToFd())
+		//		m.pollAccept.String(), m.GetIo().Listener.ToFd())
 
-		if err = unix.SetNonblock(m.GetIoCore().Listener.ToFd(), true); nil != err {
+		if err = unix.SetNonblock(m.GetIo().Listener.ToFd(), true); nil != err {
 			AppError().Str(LogObject, m.String()).Err(err).
 				Msgf("failed to set.nonblock poll.accept:%s", m.pollAccept.String())
 		}
@@ -275,10 +275,10 @@ func (m *ioPoll) loopAccept() {
 		return
 	}
 
-	//m.GetIoCore().Service.OnListen(m.GetIoCore())
+	//m.GetIo().Service.OnListen(m.GetIo())
 
 	AppInfo().Str(LogObject, m.String()).
-		Msgf("poll.accept.wait with %d events", m.GetIoCore().Config.InWaitCount)
+		Msgf("poll.accept.wait with %d events", m.GetIo().Config.InWaitCount)
 
 	var wg sync.WaitGroup
 	wg.Add(pollAcceptCount)
@@ -288,7 +288,7 @@ func (m *ioPoll) loopAccept() {
 			defer w.Done()
 
 			var events []unix.EpollEvent
-			events = make([]unix.EpollEvent, m.GetIoCore().Config.InWaitCount)
+			events = make([]unix.EpollEvent, m.GetIo().Config.InWaitCount)
 
 			for {
 				var waits int
@@ -325,7 +325,7 @@ func (m *ioPoll) loopAccept() {
 
 	AppInfo().Str(LogObject, m.String()).
 		Msgf("service:%s poll:%s on.shut", m.String(), m.pollAccept.String())
-	//m.GetIoCore().Service.OnShut(m.GetIoCore())
+	//m.GetIo().Service.OnShut(m.GetIo())
 
 	AppInfo().Str(LogObject, m.String()).Msgf("service:%s close poll.accpet", m.String())
 }
@@ -334,7 +334,7 @@ const pollIoCount = 1
 
 // loopIo loop io
 func (m *ioPoll) loopIo() {
-	//addr := m.GetIoCore().InAddr.Load().(*net.TCPAddr)
+	//addr := m.GetIo().InAddr.Load().(*net.TCPAddr)
 
 	// AppInfo().Str(LogObject, m.String()).
 	// 	Msgf("succeed to listen with url:'%s'", addr.String())
@@ -370,10 +370,10 @@ func (m *ioPoll) loopIo() {
 	}
 
 	AppInfo().Str(LogObject, m.String()).
-		Msgf("poll.io.wait with %d events", m.GetIoCore().Config.InWaitCount)
+		Msgf("poll.io.wait with %d events", m.GetIo().Config.InWaitCount)
 
 	var events []unix.EpollEvent
-	events = make([]unix.EpollEvent, m.GetIoCore().Config.InWaitCount)
+	events = make([]unix.EpollEvent, m.GetIo().Config.InWaitCount)
 
 	var wg sync.WaitGroup
 	wg.Add(pollIoCount)
@@ -404,7 +404,7 @@ func (m *ioPoll) loopIo() {
 					} else {
 						var n *Session
 
-						if result, ok := m.GetIoCore().sessionCmap.Get(fmt.Sprintf("0x%08x", fd)); true == ok {
+						if result, ok := m.GetIo().sessionCmap.Get(fmt.Sprintf("0x%08x", fd)); true == ok {
 							n = result.(*Session)
 
 						} else {
@@ -576,15 +576,15 @@ func (m *ioPoll) handleWrite(n *Session) {
 
 func (m *ioPoll) releaseSession(n *Session, err error) {
 	if io.EOF != err {
-		m.GetIoCore().Service.OnError(n, err)
+		m.GetIo().Service.OnError(n, err)
 	}
 
-	m.GetIoCore().Service.OnClose(n, err)
+	m.GetIo().Service.OnClose(n, err)
 
 	m.pollIo.ControlDel(n.fd, 0)
 	m.Close(n)
 
-	m.GetIoCore().sessionCmap.Remove(fmt.Sprintf("0x%08x", n.fd))
+	m.GetIo().sessionCmap.Remove(fmt.Sprintf("0x%08x", n.fd))
 
 	n.DecRef()
 }
@@ -607,14 +607,14 @@ func (m *ioPoll) accept(fd int) (err error) {
 			break
 		}
 
-		//if false == m.GetIoCore().sessionCmap.Has(fmt.Sprintf("0x%08x", nfd)) {
+		//if false == m.GetIo().sessionCmap.Has(fmt.Sprintf("0x%08x", nfd)) {
 		if err := unix.SetNonblock(nfd, true); nil != err {
 			AppError().Str(LogObject, m.String()).
 				Err(err).Msgf("accept set.nonblock to fd:%d failed", nfd)
 			break
 		}
 
-		if true == m.GetIoCore().Config.InNoDelay {
+		if true == m.GetIo().Config.InNoDelay {
 			// This should disable Nagle's algorithm in all accepted sockets by default.
 			// Users may enable it with net.TCPConn.SetNoDelay(false).
 			if err = unix.SetsockoptInt(nfd, syscall.IPPROTO_TCP, syscall.TCP_NODELAY, 1); err != nil {
@@ -627,10 +627,10 @@ func (m *ioPoll) accept(fd int) (err error) {
 			}
 		}
 
-		if 0 != m.GetIoCore().Config.InRcvBuff {
-			if err = unix.SetsockoptInt(nfd, syscall.SOL_SOCKET, syscall.SO_RCVBUF, m.GetIoCore().Config.InRcvBuff*1024); err != nil {
+		if 0 != m.GetIo().Config.InRcvBuff {
+			if err = unix.SetsockoptInt(nfd, syscall.SOL_SOCKET, syscall.SO_RCVBUF, m.GetIo().Config.InRcvBuff*1024); err != nil {
 				AppError().Str(LogObject, m.String()).
-					Err(err).Msgf("accept set.rcvbuf:%d(KB) to fd:%d failed", m.GetIoCore().Config.InRcvBuff, nfd)
+					Err(err).Msgf("accept set.rcvbuf:%d(KB) to fd:%d failed", m.GetIo().Config.InRcvBuff, nfd)
 				break
 			} else {
 				//AppDebug().Str(LogObject, m.String()).
@@ -638,10 +638,10 @@ func (m *ioPoll) accept(fd int) (err error) {
 			}
 		}
 
-		if 0 != m.GetIoCore().Config.InSndBuff {
-			if err = unix.SetsockoptInt(nfd, syscall.SOL_SOCKET, syscall.SO_SNDBUF, m.GetIoCore().Config.InSndBuff*1024); err != nil {
+		if 0 != m.GetIo().Config.InSndBuff {
+			if err = unix.SetsockoptInt(nfd, syscall.SOL_SOCKET, syscall.SO_SNDBUF, m.GetIo().Config.InSndBuff*1024); err != nil {
 				AppError().Str(LogObject, m.String()).
-					Err(err).Msgf("accept set.sndbuf:%d(KB) to fd:%d failed", m.GetIoCore().Config.InSndBuff, nfd)
+					Err(err).Msgf("accept set.sndbuf:%d(KB) to fd:%d failed", m.GetIo().Config.InSndBuff, nfd)
 				break
 			} else {
 				//AppDebug().Str(LogObject, m.String()).
@@ -650,8 +650,8 @@ func (m *ioPoll) accept(fd int) (err error) {
 		}
 
 		/*//
-		if 0 < m.GetIoCore().Config.InRecvTimeo {
-			tv := unix.NsecToTimeval(int64(m.GetIoCore().Config.InRecvTimeo) * int64(time.Millisecond))
+		if 0 < m.GetIo().Config.InRecvTimeo {
+			tv := unix.NsecToTimeval(int64(m.GetIo().Config.InRecvTimeo) * int64(time.Millisecond))
 			if err = unix.SetsockoptTimeval(nfd, syscall.SOL_SOCKET, syscall.SO_RCVTIMEO, &tv); err != nil {
 				AppDebug().Str(LogObject, m.String()).
 					Err(err).Msgf("accept set.recvtimeout to fd:%d failed", nfd)
@@ -663,11 +663,11 @@ func (m *ioPoll) accept(fd int) (err error) {
 		}
 		//*/
 
-		n := NewSession(nfd, nil, m.GetIoCore())
+		n := NewSession(nfd, nil, m.GetIo())
 
-		m.GetIoCore().Service.OnOpen(n)
+		m.GetIo().Service.OnOpen(n)
 
-		m.GetIoCore().sessionCmap.Set(fmt.Sprintf("0x%08x", n.fd), n)
+		m.GetIo().sessionCmap.Set(fmt.Sprintf("0x%08x", n.fd), n)
 		n.sa = sa
 		if err = m.pollIo.ControlAdd(n.fd, unix.EPOLLET|unix.EPOLLONESHOT|unix.EPOLLIN); nil != err {
 			AppError().Str(LogObject, m.String()).Str(LogSession, n.String()).
@@ -696,11 +696,11 @@ func (m *ioPoll) accept(fd int) (err error) {
 // 		r, err = m.Read(n, n.buffer)
 
 // 		if 0 < r {
-// 			if nil != m.GetIoCore().Config.Events.OnRead {
+// 			if nil != m.GetIo().Config.Events.OnRead {
 // 				AppTrace().Str(LogObject, m.String()).Str(LogSession, n.String()).
 // 					Msgf("succeed to read with fd:%v in:%d", n.fd, r)
 
-// 				_ = m.GetIoCore().Config.Events.OnRead(n, n.buffer[:r])
+// 				_ = m.GetIo().Config.Events.OnRead(n, n.buffer[:r])
 // 			}
 // 		}
 

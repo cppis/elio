@@ -13,7 +13,7 @@ const writingInterval = 10 * time.Millisecond
 
 // ioDefault io model implementation
 type ioDefault struct {
-	ioCore *IoCore
+	io     *Io
 	jobs   SafeSlice
 	ctx    context.Context
 	cancel context.CancelFunc
@@ -29,30 +29,30 @@ func (m *ioDefault) String() string {
 	return fmt.Sprintf("ioDefault::%p", m)
 }
 
-func (m *ioDefault) GetIoCore() *IoCore {
-	return m.ioCore
+func (m *ioDefault) GetIo() *Io {
+	return m.io
 }
 
-func (m *ioDefault) SetIoCore(c *IoCore) {
-	m.ioCore = c
-	c.SetIo(m)
+func (m *ioDefault) SetIo(io *Io) {
+	m.io = io
+	io.SetIoModel(m)
 }
 
 // Listen listen
 func (m *ioDefault) Listen(addr string) (ok bool) {
-	m.GetIoCore().Host.Wg.Add(1)
+	m.GetIo().Host.Wg.Add(1)
 
 	defer func() {
-		m.GetIoCore().Host.Wg.Done()
+		m.GetIo().Host.Wg.Done()
 	}()
 
 	var err error
-	if err = m.GetIoCore().Listener.Listen("tcp", addr); nil == err {
+	if err = m.GetIo().Listener.Listen("tcp", addr); nil == err {
 		// AppInfo().Str(LogObject, m.String()).
-		// 	Msgf("succeed to listen with url '%s'", m.GetIoCore().Addr.String())
+		// 	Msgf("succeed to listen with url '%s'", m.GetIo().Addr.String())
 
-		if 1 == m.GetIoCore().InCount.Add(1) {
-			m.GetIoCore().InAddr.Store(addr)
+		if 1 == m.GetIo().InCount.Add(1) {
+			m.GetIo().InAddr.Store(addr)
 		}
 
 		m.ctx, m.cancel = context.WithCancel(context.Background())
@@ -70,7 +70,7 @@ func (m *ioDefault) Listen(addr string) (ok bool) {
 
 // Run run
 func (m *ioDefault) Run() (ok bool) {
-	m.GetIoCore().Host.Wg.Add(1)
+	m.GetIo().Host.Wg.Add(1)
 
 	go m.Writing()
 
@@ -109,11 +109,11 @@ func (m *ioDefault) Write(n *Session, out []byte) (written int, err error) {
 	}
 
 	if 0 < written {
-		m.GetIoCore().Service.OnWrite(n, out[:written])
+		m.GetIo().Service.OnWrite(n, out[:written])
 	}
 
 	if nil != err {
-		m.GetIoCore().Service.OnError(n, err)
+		m.GetIo().Service.OnError(n, err)
 		m.Close(n)
 	}
 
@@ -147,8 +147,8 @@ func (m *ioDefault) Trigger(job interface{}) (err error) {
 
 // Shut shut listen
 func (m *ioDefault) Shut() {
-	if nil != m.GetIoCore().Listener {
-		m.GetIoCore().Listener.Close()
+	if nil != m.GetIo().Listener {
+		m.GetIo().Listener.Close()
 	}
 }
 
@@ -158,7 +158,7 @@ func (m *ioDefault) End() {
 
 	m.CloseAll()
 
-	m.GetIoCore().Host.Wg.Done()
+	m.GetIo().Host.Wg.Done()
 }
 
 func (m *ioDefault) Close(n *Session) (err error) {
@@ -177,18 +177,18 @@ func (m *ioDefault) CloseAll() {
 		m.Close(s)
 	}
 
-	m.GetIoCore().sessionCmap.IterCb(c)
+	m.GetIo().sessionCmap.IterCb(c)
 }
 
 // Running running io
 func (m *ioDefault) Running() {
-	m.GetIoCore().Host.Wg.Add(1)
+	m.GetIo().Host.Wg.Add(1)
 
 	defer func() {
-		m.GetIoCore().Host.Wg.Done()
+		m.GetIo().Host.Wg.Done()
 	}()
 
-	addr := m.GetIoCore().InAddr.Load()
+	addr := m.GetIo().InAddr.Load()
 
 	AppInfo().Str(LogObject, m.String()).
 		Msgf("succeed to listen with url:%s", addr)
@@ -197,10 +197,10 @@ func (m *ioDefault) Running() {
 	//		Msgf("succeed to listen with url:%s", addr)
 	// }
 
-	//m.GetIoCore().Service.OnListen(m.GetIoCore())
+	//m.GetIo().Service.OnListen(m.GetIo())
 
 	for {
-		conn, err := m.GetIoCore().Listener.listener.Accept()
+		conn, err := m.GetIo().Listener.listener.Accept()
 		if nil != err {
 			AppError().Str(LogObject, m.String()).Err(err).
 				Msgf("service url:'%s' failed to accept", addr)
@@ -217,30 +217,30 @@ func (m *ioDefault) Running() {
 		// 	// do something else, for example create new conn
 		// }
 
-		session := NewSession(invalidFd, conn, m.GetIoCore())
+		session := NewSession(invalidFd, conn, m.GetIo())
 
 		go m.Reading(session)
 	}
 
-	//m.GetIoCore().Service.OnShut(m.GetIoCore())
+	//m.GetIo().Service.OnShut(m.GetIo())
 }
 
 // Reading reading
 func (m *ioDefault) Reading(n *Session) (err error) {
-	var bufferLen = m.GetIoCore().Config.ReadBufferLen
+	var bufferLen = m.GetIo().Config.ReadBufferLen
 	b := make([]byte, bufferLen)
 	var readBytes int
 
-	m.GetIoCore().sessionCmap.Set(n.String(), n)
+	m.GetIo().sessionCmap.Set(n.String(), n)
 	defer func() {
-		m.GetIoCore().Service.OnClose(n, err)
+		m.GetIo().Service.OnClose(n, err)
 		//n.DisposeNoWait()
-		m.GetIoCore().sessionCmap.Remove(n.String())
+		m.GetIo().sessionCmap.Remove(n.String())
 
 		n.DecRef()
 	}()
 
-	if err = m.GetIoCore().Service.OnOpen(n); nil != err {
+	if err = m.GetIo().Service.OnOpen(n); nil != err {
 		return err
 	}
 
@@ -251,7 +251,7 @@ func (m *ioDefault) Reading(n *Session) (err error) {
 	for {
 		readBytes, err = m.Read(n, b)
 		if readBytes != 0 {
-			m.GetIoCore().Service.OnRead(n, b[:readBytes])
+			m.GetIo().Service.OnRead(n, b[:readBytes])
 		}
 
 		if err != nil {
@@ -259,7 +259,7 @@ func (m *ioDefault) Reading(n *Session) (err error) {
 				AppError().Str(LogObject, m.String()).Str(LogSession, n.String()).Err(err).
 					Msgf("failed to read buffer.len:%d read.len:%d", len(b), readBytes)
 
-				m.GetIoCore().Service.OnError(n, err)
+				m.GetIo().Service.OnError(n, err)
 				m.Close(n)
 
 			} else {
@@ -276,12 +276,12 @@ func (m *ioDefault) Reading(n *Session) (err error) {
 }
 
 func (m *ioDefault) Writing() {
-	m.GetIoCore().Host.Wg.Add(1)
+	m.GetIo().Host.Wg.Add(1)
 
 	ticker := time.NewTicker(writingInterval)
 	defer func() {
 		ticker.Stop()
-		m.GetIoCore().Host.Wg.Done()
+		m.GetIo().Host.Wg.Done()
 	}()
 
 	for {
@@ -324,8 +324,8 @@ func (m *ioDefault) Writing() {
 
 // 			sent, err := EventOnWrite(n, b.Bytes())
 // 			if (nil == err) && (sent == lenBuffer) {
-// 				if nil != m.GetIoCore().Events.OnWrite {
-// 					m.GetIoCore().Events.OnWrite(n, b.Bytes())
+// 				if nil != m.GetIo().Events.OnWrite {
+// 					m.GetIo().Events.OnWrite(n, b.Bytes())
 // 				}
 // 			}
 // 		}

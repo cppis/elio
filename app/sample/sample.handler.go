@@ -6,10 +6,10 @@ import "github.com/cppis/elio"
 func (s *Sample) Query(n *elio.Session, c string) {
 	// add event to queue
 	// make event
-	n.GetIoCore().Host.PostToQueue(&EventQuery{
+	n.GetIo().Host.PostToQueue(&EventQuery{
 		context: n.GetContext().(*AppContext),
 		command: c,
-		host:    n.GetIoCore().Host,
+		host:    n.GetIo().Host,
 	})
 }
 
@@ -22,5 +22,5 @@ func (s *Sample) Echo(n *elio.Session, m string) {
 		context: n.GetContext().(*AppContext),
 		message: m,
 	}
-	n.GetIoCore().Host.PostToQueue(v)
+	n.GetIo().Host.PostToQueue(v)
 }

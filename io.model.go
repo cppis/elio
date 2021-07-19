@@ -1,9 +1,9 @@
 package elio
 
 // Io I/O model
-type Io interface {
-	GetIoCore() *IoCore
-	SetIoCore(c *IoCore)
+type IoModel interface {
+	GetIo() *Io
+	SetIo(c *Io)
 	Listen(addr string) bool
 	Run() bool
 	Shut() // close listen

@@ -112,7 +112,7 @@ func (c *AppContext) Write(o []byte) {
 				Int64(elio.LogUuid, c.UID.ToInt()).Err(err).
 				Msg("failed to write")
 
-			if retErr := c.GetSession().GetIoCore().Shutdown(c.GetSession(), elio.ShutRd); nil != retErr {
+			if retErr := c.GetSession().GetIo().Shutdown(c.GetSession(), elio.ShutRd); nil != retErr {
 				//elio.AppError().Str(elf.LogObject, c.String()).
 				//	Str(elf.LogSession, c.GetSession().String()).
 				//	Int64(elf.LogUuid, c.UID.ToInt()).Err(retErr).
@@ -148,7 +148,7 @@ func (c *AppContext) PostWrite(o []byte) {
 				Int64(elio.LogUuid, c.UID.ToInt()).Err(err).
 				Msg("failed to post.write")
 
-			if retErr := c.GetSession().GetIoCore().Shutdown(c.GetSession(), elio.ShutRd); nil != retErr {
+			if retErr := c.GetSession().GetIo().Shutdown(c.GetSession(), elio.ShutRd); nil != retErr {
 				//elio.AlogError().Str(elio.LogObject, c.String()).
 				//	Str(elf.LogSession, c.GetSession().String()).
 				//	Int64(elio.LogUuid, c.UID.ToInt()).Err(retErr).
@@ -182,7 +182,7 @@ func (c *AppContext) DirectOut(o []byte) (w int, err error) {
 				Int64(elio.LogUuid, c.UID.ToInt()).Err(err).
 				Msg("failed to write")
 
-			if retErr := c.GetSession().GetIoCore().Shutdown(c.GetSession(), elio.ShutRd); nil != retErr {
+			if retErr := c.GetSession().GetIo().Shutdown(c.GetSession(), elio.ShutRd); nil != retErr {
 				elio.AppError().Str(elio.LogObject, c.String()).
 					Str(elio.LogSession, c.GetSession().String()).
 					Int64(elio.LogUuid, c.UID.ToInt()).Err(retErr).

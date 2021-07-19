@@ -19,7 +19,7 @@ type Session struct {
 	conn       net.Conn
 	context    interface{}
 	stats      interface{}
-	ioCore     *IoCore
+	io         *Io
 	addrLocal  net.Addr // local addre
 	addrRemote net.Addr // remote addr
 	ipRemote   string
@@ -29,14 +29,14 @@ type Session struct {
 }
 
 // NewSession new session
-func NewSession(f int, c net.Conn, i *IoCore) *Session {
+func NewSession(f int, c net.Conn, i *Io) *Session {
 	n := new(Session) //poolSession.Get().(*Session) //
 	if nil != n {
 		AppDebug().Str(LogSession, n.String()).Msg("new session")
 
 		n.fd = f
 		n.conn = c
-		n.ioCore = i
+		n.io = i
 		n.buffer = make([]byte, i.Config.ReadBufferLen)
 		n.bufferKeep = &Buffer{}
 		n.ipRemote, _ = n.GetAddr()
@@ -88,7 +88,7 @@ func (n *Session) init() {
 	n.conn = nil
 	n.context = nil
 	n.stats = nil
-	n.ioCore = nil
+	n.io = nil
 	//n.buffer = nil
 	n.bufferKeep.Clear(-1)
 	n.addrLocal = nil
@@ -134,8 +134,8 @@ func (n *Session) GetConn() net.Conn {
 }
 
 // GetService get service
-func (n *Session) GetIoCore() *IoCore {
-	return n.ioCore
+func (n *Session) GetIo() *Io {
+	return n.io
 }
 
 // GetContext get context
@@ -170,12 +170,12 @@ func (n *Session) GetKeepBuffer() *Buffer {
 
 // Close close
 func (n *Session) Close() error {
-	return n.ioCore.io.Close(n)
+	return n.io.ioModel.Close(n)
 }
 
 // Shutdown shutdown
 func (n *Session) Shutdown(how int) error {
-	return n.ioCore.io.Shutdown(n, how)
+	return n.io.ioModel.Shutdown(n, how)
 }
 
 // Write write
@@ -190,12 +190,12 @@ func (n *Session) Write(out []byte) (sent int, err error) {
 		}
 	}()
 
-	return n.ioCore.io.Write(n, out)
+	return n.io.ioModel.Write(n, out)
 }
 
 // PostWrite post write
 func (n *Session) PostWrite(out []byte) (sent int, err error) {
-	return n.ioCore.io.PostWrite(n, out)
+	return n.io.ioModel.PostWrite(n, out)
 }
 
 // CountOutQueue count out queue

@@ -38,7 +38,7 @@ func (j *WriteJob) Work() (err error) {
 			PutByteBuffer(o.(*ByteBuffer))
 		}
 
-		written, err = j.session.ioCore.io.Write(j.session, out)
+		written, err = j.session.io.ioModel.Write(j.session, out)
 		if len(out) == written {
 		} else {
 			AppError().Str(LogSession, j.session.String()).
