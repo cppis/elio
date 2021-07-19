@@ -129,17 +129,9 @@ func (c *Io) Terminate() {
 	c.ioModel.End()
 }
 
-// SafeTerminate safe terminate
-//func (c *Io) SafeTerminate() {
-//	c.flagSafeExit.Store(true)
-//}
-
 // Init init
 func (c *Io) Init() {
 	c.sessionCmap = cmap.New()
-
-	//c.flagExit.Store(false)
-	//c.flagSafeExit.Store(false)
 }
 
 // GetIoModel get IO model
