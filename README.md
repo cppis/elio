@@ -19,6 +19,16 @@ $ go mod vendor
 <br/><br/><br/>
 
 ## Run Echo  
+`elio` refers some config from environment variable.  
+for example, `{Service}_IN_URL` is listen url of service.  
+You can run app in two ways.  
+One is using `go run` command and the other is using `docker` command.   
+
+> `elio.Service` interface has a `Name()` method,  
+> which used as prefix to get environment variable.  
+
+<br/>
+
 ### using `go run`  
 To run `echo` service, run this command:  
 ```shell
@@ -37,7 +47,7 @@ $ docker build -t elio:v0.1.0 -f app/echo/Dockerfile .
 
 To run `echo` image, run this command:  
 ```shell
-$ docker run -d -p 7000:7000 -p 2345:2345 elio:v0.1.0
+$ docker run -d -e ECHO_IN_URL=0.0.0.0:7000 -p 7000:7000 -p 2345:2345 elio:v0.1.0
 ```
 
 <br/><br/><br/>
