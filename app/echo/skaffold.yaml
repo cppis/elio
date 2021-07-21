@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2beta19
+kind: Config
+metadata:
+  name: echo
+build:
+  artifacts:
+  - image: go-mod-image
+    buildpacks:
+      builder: gcr.io/buildpacks/builder:v1
+  - image: dockerfile-image
+    docker:
+      dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - deployment.yaml
+    - deployment.yaml
+portForward:
+- resourceType: service
+  resourceName: go-mod-image
+  port: 7000

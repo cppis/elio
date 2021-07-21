@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-image
+  labels:
+    app: echo-image
+spec:
+  clusterIP: None
+  selector:
+    app: echo-image
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-image
+  labels:
+    app: echo-image
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-image
+  template:
+    metadata:
+      labels:
+        app: echo-image
+    spec:
+      containers:
+      - name: echo-image
+        image: echo-image
