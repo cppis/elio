@@ -1,30 +1,41 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dockerfile-image
+  name: echo
   labels:
-    app: dockerfile-image
+    app: echo
 spec:
   clusterIP: None
   selector:
-    app: dockerfile-image
+    app: echo
 ---
-apiVersion: apps/v1
-kind: Deployment
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: echo
+#  labels:
+#    app: echo
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: echo
+#  template:
+#    metadata:
+#      labels:
+#        app: echo
+#    spec:
+#      containers:
+#      - name: echo
+#        image: elio
+#        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Pod
 metadata:
-  name: dockerfile-image
-  labels:
-    app: dockerfile-image
+  name: echo
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: dockerfile-image
-  template:
-    metadata:
-      labels:
-        app: dockerfile-image
-    spec:
-      containers:
-      - name: dockerfile-image
-        image: dockerfile-image
+  progressDeadlineSeconds: 540
+  containers:
+  - name: echo
+    image: elio

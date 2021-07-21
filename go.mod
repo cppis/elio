@@ -12,4 +12,5 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0
 	go.uber.org/atomic v1.9.0
 	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c
+	golang.org/x/text v0.3.6 // indirect
 )

@@ -4,18 +4,12 @@ metadata:
   name: echo
 build:
   artifacts:
-  - image: go-mod-image
-    buildpacks:
-      builder: gcr.io/buildpacks/builder:v1
-  - image: dockerfile-image
-    docker:
-      dockerfile: Dockerfile
+  - image: elio
+  local: {}
+    #docker:
+    #  dockerfile: Dockerfile
 deploy:
+  statusCheckDeadlineSeconds: 540
   kubectl:
     manifests:
     - deployment.yaml
-    - deployment.yaml
-portForward:
-- resourceType: service
-  resourceName: go-mod-image
-  port: 7000

@@ -44,6 +44,7 @@ To build `echo` image, run this command:
 ```shell
 $ cd app/echo
 $ docker build -t elio:v0.1.2 .
+$ docker tag elio:latest elio:v0.1.2
 ```
 
 To run `echo` image, run this command:  
@@ -163,3 +164,9 @@ func (e *Echo) OnLoop(host *elio.IoHost, t time.Time, d time.Duration) {
 You can test echo easily by using telnet.  
 And, you can end server by send `q` character.  
 
+
+<br/><br/><br/>
+
+## TODO  
+# add go.mod to libray app  
+# skaffold use image  
