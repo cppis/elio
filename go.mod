@@ -2,8 +2,6 @@ module github.com/cppis/elio
 
 go 1.16
 
-//replace github.com/cppis/elio => ./
-
 require (
 	github.com/libp2p/go-reuseport v0.0.2
 	github.com/maruel/panicparse v1.6.1
@@ -15,3 +13,5 @@ require (
 	go.uber.org/atomic v1.7.0
 	golang.org/x/sys v0.0.0-20210510120138-977fb7262007
 )
+
+replace github.com/cppis/elio => ./
