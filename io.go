@@ -44,7 +44,7 @@ const (
 	Close
 )
 
-// Io Io
+// Io IO
 type Io struct {
 	Listener    *Listener //net.Listener
 	Config      ConfigIo
@@ -78,70 +78,70 @@ func NewIo(h *IoHost, c ConfigIo, s Service) *Io {
 	return nil
 }
 
-func (c *Io) String() string {
-	return fmt.Sprintf("Io::%p", c)
+func (i *Io) String() string {
+	return fmt.Sprintf("Io::%p", i)
 }
 
 // Run run Io
-func (c *Io) Run(addr *net.TCPAddr) (ok bool) {
-	AppInfo().Str(LogObject, c.String()).
-		Msgf("Io.run url:%s begin", c.Config.InURL)
+func (i *Io) Run(addr *net.TCPAddr) (ok bool) {
+	AppInfo().Str(LogObject, i.String()).
+		Msgf("Io.run url:%s begin", i.Config.InURL)
 
-	if ok = c.Listen(addr); ok {
-		c.ioModel.Run()
+	if ok = i.Listen(addr); ok {
+		i.ioModel.Run()
 	}
 
 	return ok
 }
 
 // Listen listen Io
-func (c *Io) Listen(addr *net.TCPAddr) (ok bool) {
-	return c.ioModel.Listen(addr.String())
+func (i *Io) Listen(addr *net.TCPAddr) (ok bool) {
+	return i.ioModel.Listen(addr.String())
 }
 
 // Shut shut
-func (c *Io) Shut() {
-	c.ioModel.Shut()
+func (i *Io) Shut() {
+	i.ioModel.Shut()
 }
 
 // End end
-func (c *Io) End() {
+func (i *Io) End() {
 	defer func() {
-		c.Host.Wg.Done()
+		i.Host.Wg.Done()
 	}()
 
-	//c.cancel()
-	c.ioModel.End()
+	//i.cancel()
+	i.ioModel.End()
 
-	//c.Host.Terminate()
+	//i.Host.Terminate()
 }
 
 // Shutdown shutdown
-func (c *Io) Shutdown(n *Session, how int) error {
-	return c.ioModel.Shutdown(n, how)
+func (i *Io) Shutdown(n *Session, how int) error {
+	return i.ioModel.Shutdown(n, how)
 }
 
 // Terminate terminate
-func (c *Io) Terminate() {
-	AppInfo().Str(LogObject, c.String()).Msg("terminate Io")
+func (i *Io) Terminate() {
+	AppInfo().Str(LogObject, i.String()).Msg("terminate Io")
 
-	c.ioModel.Shut()
-	c.ioModel.End()
+	i.ioModel.Shut()
+	i.ioModel.End()
 }
 
 // Init init
-func (c *Io) Init() {
-	c.sessionCmap = cmap.New()
+func (i *Io) Init() {
+	i.sessionCmap = cmap.New()
 }
 
 // GetIoModel get IO model
-func (c *Io) GetIoModel() IoModel {
-	return c.ioModel
+func (i *Io) GetIoModel() IoModel {
+	return i.ioModel
 }
 
 // SetIoModel set IO model
-func (c *Io) SetIoModel(ioModel IoModel) {
-	c.ioModel = ioModel
+func (i *Io) SetIoModel(ioModel IoModel) {
+	i.ioModel = ioModel
 }
 
 // GetBaseAndConfig get base and config

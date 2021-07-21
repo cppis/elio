@@ -16,7 +16,7 @@ func GetCurrentIO(io string) IOs {
 }
 
 // GenIO gen IO
-func GenIO(io string) IO {
+func GenIO(io string) IoModel {
 	AppInfo().Msgf("gen iomodel:'%s'", IoDefault.String())
 	return NewIoDefault()
 }

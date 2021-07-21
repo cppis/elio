@@ -42,7 +42,8 @@ You can change the url of service `echo` using environment variable `ECHO_IN_URL
 ### using `docker`  
 To build `echo` image, run this command:  
 ```shell
-$ docker build -t elio:v0.1.0 -f app/echo/Dockerfile .
+$ cd app/echo
+$ docker build -t elio:v0.1.0 .
 ```
 
 To run `echo` image, run this command:  

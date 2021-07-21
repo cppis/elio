@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: elio-echo
+spec:
+  containers:
+  - name: elio-echo
+    image: elio-echo
