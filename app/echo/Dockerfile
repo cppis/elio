@@ -7,7 +7,8 @@ ENV CGO_ENABLED=0
 #RUN apt-get update && apt-get install netcat-openbsd -y
 ADD . /build
 
-RUN go mod download
+#ENV GOPROXY=https://goproxy.io,direct
+#RUN go mod download
 
 #WORKDIR /build/app/echo
 # -gcflags "all=-N -l" disable compiler optimization

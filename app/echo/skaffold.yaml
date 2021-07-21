@@ -13,8 +13,8 @@ build:
 deploy:
   kubectl:
     manifests:
-    - echo.yaml
-    - echo.yaml
+    - deployment.yaml
+    - deployment.yaml
 portForward:
 - resourceType: service
   resourceName: go-mod-image
