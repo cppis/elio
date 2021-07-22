@@ -4,12 +4,25 @@ metadata:
   name: echo
 build:
   artifacts:
-  - image: elio
-  local: {}
-    #docker:
-    #  dockerfile: Dockerfile
+  - image: dockerfile-image
+    docker:
+      dockerfile: Dockerfile
 deploy:
-  statusCheckDeadlineSeconds: 540
   kubectl:
     manifests:
     - deployment.yaml
+portForward:
+- resourceType: service
+  resourceName: dockerfile-image
+  port: 7000
+profiles:
+- name: dev
+  deploy:
+    kubectl:
+      manifests:
+        - dev.yaml
+- name: debug
+  deploy:
+    kubectl:
+      manifests:
+        - debug.yaml

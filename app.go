@@ -98,7 +98,7 @@ func (a *App) Run() {
 		// TODO: load service config in here r.svc.Name()
 		c := ProvideConfigIo(a.runs[i].svc.Name(), a.config)
 		//c.InURL = "0.0.0.0:7000"
-		fmt.Printf("in.url:%v\n", c.InURL)
+		//fmt.Printf("in.url:%v\n", c.InURL)
 
 		var ioHost *IoHost
 		var err error
