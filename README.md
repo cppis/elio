@@ -52,6 +52,21 @@ To run `echo` image, run this command:
 $ docker run -d -e ECHO_IN_URL="0.0.0.0:7000" -p 7000:7000 -p 2345:2345 elio:v0.1.3
 ```
 
+<br/>
+
+### using `Skaffold`  
+To run `echo` using `Skaffold`, run this command:  
+```shell
+$ cd app/echo
+$ skaffold dev -p dev
+```
+
+If using `vscode`, you should open workspace `app/echo` for IDE.  
+To run `echo` in debugging mode using `Skaffold`, run this command:  
+```shell
+$ skaffold debug -p debug
+```
+
 <br/><br/><br/>
 
 ## Echo example  
@@ -167,5 +182,5 @@ And, you can end server by send `q` character.
 
 <br/><br/><br/>
 
-## [Setup Skaffold](docs/setup.skaffold.md)  
-skaffold settings for Kubernetes-native app.  
+## [Setup `Skaffold`](docs/setup.skaffold.md)  
+`Skaffold` settings for Kubernetes-native app.  
