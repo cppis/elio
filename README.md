@@ -10,22 +10,28 @@ This library allows you to quickly write epoll-based servers.
 <br/>
 
 ## Installation  
+### Download `elio`  
 ```shell
 $ git clone https://github.com/cppis/elio
 $ cd elio
-$ go mod vendor
 ```
+
+<br/>
+
+### [Setup `Skaffold`](docs/setup.skaffold.md)  
+`Skaffold` settings for continuous developing Kubernetes-native app.  
 
 <br/><br/><br/>
 
 ## Run Echo  
-`elio` refers some config from environment variable.  
+`elio` refers config from environment variable, or local files using [`viper`](https://github.com/spf13/viper).  
 for example, `{Service}_IN_URL` is listen url of service.  
-You can run app in two ways.  
-One is using `go run` command and the other is using `docker` command.   
 
-> `elio.Service` interface has a `Name()` method,  
-> which used as prefix to get environment variable.  
+You can run app in 3 ways.  
+using `go run`, `docker` and `Skaffold`.   
+
+> The `elio.Service` interface has a `Name()` method,  
+> which returns a string that is used as a prefix for environment variables.
 
 <br/>
 
@@ -35,7 +41,8 @@ To run `echo` service, run this command:
 $ ECHO_IN_URL="0.0.0.0:7000" go run app/echo/main.go
 ```
 
-You can change the url of service `echo` using environment variable `ECHO_IN_URL`.
+You can change the url of service `echo` by changing  
+environment variable `ECHO_IN_URL`.
 
 <br/>
 
@@ -55,6 +62,8 @@ $ docker run -d -e ECHO_IN_URL="0.0.0.0:7000" -p 7000:7000 -p 2345:2345 elio:v0.
 <br/>
 
 ### using `Skaffold`  
+To use the `Skaffold`, you need thd following the [Setup `Skaffold`](#setup-skaffold)  
+
 To run `echo` using `Skaffold`, run this command:  
 ```shell
 $ cd app/echo
@@ -178,9 +187,3 @@ func (e *Echo) OnLoop(host *elio.IoHost, t time.Time, d time.Duration) {
 ## Test  
 You can test echo easily by using telnet.  
 And, you can end server by send `q` character.  
-
-
-<br/><br/><br/>
-
-## [Setup `Skaffold`](docs/setup.skaffold.md)  
-`Skaffold` settings for Kubernetes-native app.  

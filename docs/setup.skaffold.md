@@ -51,11 +51,15 @@ against Kubernetes clusters.
     * Select `Virtual Switch Manager...` on the right panel.  
     * Select `New virtual network switch` on the left panel, select `External`  
       and press `Create Virtual Switch` button to create a virtual switch for minikube.  
+
       <figure>
-        <div style="text-align:center">
-          <img src="https://miro.medium.com/max/665/1*xwFelgX0H_c91tBknDu-_w.png" style="width: 320px; max-width: 100%; height: auto" title="cloudflare fixed the bug" />
-        </div>
+      <div style="text-align:center">
+        <a href="https://drive.google.com/uc?export=view&id=1NKLzsTq1L3s8bL0-worZnS6rGfL4iZey">
+        <img src="https://drive.google.com/uc?export=view&id=1NKLzsTq1L3s8bL0-worZnS6rGfL4iZey" style="width: 500px; max-width: 100%; height: auto" title="hypver-v-virtual-switches" />
+        </a>
+      </div>
       </figure>
+
     * Name the switch **Primary Virtual Switch** and click the **OK** button.  
     * To make *hyperv* the default driver:
         ```shell
