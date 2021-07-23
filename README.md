@@ -16,6 +16,8 @@ $ git clone https://github.com/cppis/elio
 $ cd elio
 ```
 
+> In the following, it is assumes that the **$PWD** is root path.  
+
 <br/>
 
 ### [Setup `Skaffold`](docs/setup.skaffold.md)  
@@ -27,18 +29,23 @@ $ cd elio
 `elio` refers config from environment variable, or local files using [`viper`](https://github.com/spf13/viper).  
 for example, `{Service}_IN_URL` is listen url of service.  
 
+> The `elio.Service` interface has a `Name()` method,  
+> which returns a string that is used as a prefix for environment variables.
+
 You can run app in 3 ways.  
 using `go run`, `docker` and `Skaffold`.   
 
-> The `elio.Service` interface has a `Name()` method,  
-> which returns a string that is used as a prefix for environment variables.
+first, move to echo project path.
+```shell
+cd app/echo
+```
 
 <br/>
 
 ### using `go run`  
-To run `echo` service, run this command:  
+To run `echo` service, run the following command:  
 ```shell
-$ ECHO_IN_URL="0.0.0.0:7000" go run app/echo/main.go
+$ ECHO_IN_URL="0.0.0.0:7000" go run main.go
 ```
 
 You can change the url of service `echo` by changing  
@@ -47,14 +54,13 @@ environment variable `ECHO_IN_URL`.
 <br/>
 
 ### using `docker`  
-To build `echo` image, run this command:  
+To build `echo` image, run the following command:  
 ```shell
-$ cd app/echo
 $ docker build -t elio:v0.1.3 .
 $ docker tag elio:latest elio:v0.1.3
 ```
 
-To run `echo` image, run this command:  
+To run `echo` image, run the following command:  
 ```shell
 $ docker run -d -e ECHO_IN_URL="0.0.0.0:7000" -p 7000:7000 -p 2345:2345 elio:v0.1.3
 ```
@@ -62,16 +68,13 @@ $ docker run -d -e ECHO_IN_URL="0.0.0.0:7000" -p 7000:7000 -p 2345:2345 elio:v0.
 <br/>
 
 ### using `Skaffold`  
-To use the `Skaffold`, you need thd following the [Setup `Skaffold`](#setup-skaffold)  
-
-To run `echo` using `Skaffold`, run this command:  
+To use the `Skaffold`, you need thd following the [Setup `Skaffold`](#setup-skaffold).  
+To run `echo` using `Skaffold`, run the following command:  
 ```shell
-$ cd app/echo
 $ skaffold dev -p dev
 ```
 
-If using `vscode`, you should open workspace `app/echo` for IDE.  
-To run `echo` in debugging mode using `Skaffold`, run this command:  
+Or, to run `echo` in debugging mode using `Skaffold`, run the following command:  
 ```shell
 $ skaffold debug -p debug
 ```
