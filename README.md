@@ -16,7 +16,7 @@ $ git clone https://github.com/cppis/elio
 $ cd elio
 ```
 
-> In the following, it is assumes that the **$PWD** is root path.  
+> Now, **$PWD** is the root path.  
 
 <br/>
 
