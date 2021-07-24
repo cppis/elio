@@ -20,8 +20,8 @@ $ cd elio
 
 <br/>
 
-### [Setup `Skaffold`](docs/setup.skaffold.md)  
-`Skaffold` settings for continuous developing Kubernetes-native app.  
+### [Setting `Skaffold` on Windows](docs/setting.skaffold.md)  
+`Skaffold` settings on windows for continuous developing Kubernetes-native app.  
 
 <br/><br/><br/>
 

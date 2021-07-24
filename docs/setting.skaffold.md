@@ -4,6 +4,15 @@ This post shows how to set [`Skaffold`](https://skaffold.dev/) up on **Windows 1
 <br/><br/>
 
 ## Prerequisites  
+### Windows 10+
+To update to WSL 2, you must be running Windows 10 or higher.
+
+* For x64 systems: **Version 1903** or higher, with **Build 18362** or higher.
+* For ARM64 systems: **Version 2004** or higher, with **Build 19041** or higher.
+* Builds lower than **18362** do not support WSL 2. Use the [Windows Update Assistant](https://www.microsoft.com/ko-kr/software-download/windows10ISO) to update your version of Windows.
+
+<br/>
+
 ### [Docker Desktop](https://www.docker.com/products/docker-desktop)  
 Docker Desktop includes a standalone Kubernetes server and client, as well as Docker CLI integration that runs on your machine. The Kubernetes server runs locally within your Docker instance, is not configurable, and is a single-node cluster.  
 
