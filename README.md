@@ -26,8 +26,9 @@ $ cd elio
 <br/><br/><br/>
 
 ## Run Echo  
-`elio` refers config from environment variable, or local files using [`viper`](https://github.com/spf13/viper).  
-for example, `{Service}_IN_URL` is listen url of service.  
+`elio` use the [`viper`](https://github.com/spf13/viper) package to read configs.  
+So reads configs from environment variable or local files using .  
+for example, `{Service}_IN_URL` is a listen url of service.  
 
 > The `elio.Service` interface has a `Name()` method,  
 > which returns a string that is used as a prefix for environment variables.
