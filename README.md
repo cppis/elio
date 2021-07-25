@@ -21,13 +21,14 @@ $ cd elio
 <br/>
 
 ### [Setting `Skaffold` on Windows](docs/setting.skaffold.md)  
-`Skaffold` settings on windows for continuous developing Kubernetes-native app.  
+`Skaffold` settings on windows for continuous developing a Kubernetes-native app.  
 
 <br/><br/><br/>
 
 ## Run Echo  
 `elio` use the [`viper`](https://github.com/spf13/viper) package to read configs.  
-So reads configs from environment variable or local files using .  
+It reads configs from environment variable or *yaml/json* files.  
+There is a predefined format of configs.  
 for example, `{Service}_IN_URL` is a listen url of service.  
 
 > The `elio.Service` interface has a `Name()` method,  
