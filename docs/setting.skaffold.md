@@ -1,4 +1,5 @@
-# Setup `Skaffold`  
+# Setting `Skaffold` on Windows
+
 This post shows how to set [`Skaffold`](https://skaffold.dev/) up on **Windows 10**.  
 
 <br/><br/>
