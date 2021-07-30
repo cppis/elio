@@ -37,6 +37,9 @@ func (s *Pubber) OnInit(ctx context.Context, cancel context.CancelFunc) error {
 	s.ctx = ctx
 	s.cancel = cancel
 
+	mqttUrl, _ := s.Config().GetStringOrDefault(fmt.Sprintf("%s.mqtt.url", s.Name()), "")
+	fmt.Printf("%s", mqttUrl)
+
 	elio.AppDebug().Str(elio.LogObject, s.String()).Msg("on init")
 	return nil
 }

@@ -154,7 +154,12 @@ func (a *App) Register(s Service) {
 	a.services = append(a.services, s)
 }
 
-// GetMetrics get app metrics
+// Config config
+func (a *App) Config() *Config {
+	return a.config
+}
+
+// Metrics get app metrics
 func (a *App) Metrics() *AppMetrics {
 	return &a.metrics
 }

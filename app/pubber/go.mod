@@ -1,4 +1,4 @@
-module github.com/cppis/elio/echo
+module github.com/cppis/elio/pubber
 
 go 1.16
 
