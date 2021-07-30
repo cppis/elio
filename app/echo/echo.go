@@ -17,61 +17,61 @@ type Echo struct {
 }
 
 func NewEcho(app *elio.App) *Echo {
-	e := new(Echo)
-	if nil != e {
-		e.app = app
+	s := new(Echo)
+	if nil != s {
+		s.app = app
 	}
-	return e
+	return s
 }
 
 // String string
-func (e *Echo) String() string {
-	return fmt.Sprintf("Echo::%p", e)
+func (s *Echo) String() string {
+	return fmt.Sprintf("Echo::%p", s)
 }
 
-func (e *Echo) Name() string {
+func (s *Echo) Name() string {
 	return "echo"
 }
 
-func (e *Echo) OnInit(ctx context.Context, cancel context.CancelFunc) error {
-	e.ctx = ctx
-	e.cancel = cancel
+func (s *Echo) OnInit(ctx context.Context, cancel context.CancelFunc) error {
+	s.ctx = ctx
+	s.cancel = cancel
 
-	elio.AppDebug().Str(elio.LogObject, e.String()).Msg("on init")
+	elio.AppDebug().Str(elio.LogObject, s.String()).Msg("on init")
 	return nil
 }
 
-func (e *Echo) OnExit() {
-	elio.AppDebug().Str(elio.LogObject, e.String()).Msg("on exit")
+func (s *Echo) OnExit() {
+	elio.AppDebug().Str(elio.LogObject, s.String()).Msg("on exit")
 }
 
-func (e *Echo) OnOpen(s *elio.Session) error {
+func (s *Echo) OnOpen(sn *elio.Session) error {
 	fmt.Printf("o")
 
-	elio.AppDebug().Str(elio.LogObject, e.String()).
-		Str(elio.LogSession, s.String()).Msgf("service:%s on.open", e.Name())
+	elio.AppDebug().Str(elio.LogObject, s.String()).
+		Str(elio.LogSession, sn.String()).Msgf("service:%s on.open", s.Name())
 
 	return nil
 }
 
-func (e *Echo) OnClose(s *elio.Session, err error) {
+func (s *Echo) OnClose(sn *elio.Session, err error) {
 	fmt.Printf("c")
 
-	elio.AppDebug().Str(elio.LogObject, e.String()).
-		Str(elio.LogSession, s.String()).Msgf("service:%s on.close", e.Name())
+	elio.AppDebug().Str(elio.LogObject, s.String()).
+		Str(elio.LogSession, sn.String()).Msgf("service:%s on.close", s.Name())
 }
 
-func (e *Echo) OnError(s *elio.Session, err error) {
+func (s *Echo) OnError(sn *elio.Session, err error) {
 	//fmt.Printf("e")
 
-	elio.AppError().Str(elio.LogObject, e.String()).
-		Str(elio.LogSession, s.String()).Msgf("service:%s on.error", e.Name())
+	elio.AppError().Str(elio.LogObject, s.String()).
+		Str(elio.LogSession, sn.String()).Msgf("service:%s on.error", s.Name())
 }
 
-func (e *Echo) OnRead(s *elio.Session, in []byte) (processed int) {
+func (s *Echo) OnRead(sn *elio.Session, in []byte) (processed int) {
 	fmt.Printf("+%d", len(in))
 
-	s.Write(in)
+	sn.Write(in)
 
 	if 'q' == in[0] {
 		elio.Elio().End()
@@ -80,7 +80,7 @@ func (e *Echo) OnRead(s *elio.Session, in []byte) (processed int) {
 	return processed
 }
 
-func (e *Echo) OnWrite(s *elio.Session, out []byte) {
+func (s *Echo) OnWrite(sn *elio.Session, out []byte) {
 	fmt.Printf("-%d", len(out))
 }
 
@@ -89,7 +89,7 @@ const (
 	defaultFetchLimit int = 2000
 )
 
-func (e *Echo) OnLoop(host *elio.IoHost, t time.Time, d time.Duration) {
+func (s *Echo) OnLoop(host *elio.IoHost, t time.Time, d time.Duration) {
 	//fmt.Printf("on loop with delta:%v\n", d)
 	//if t.Sub(e.prev) > 10*time.Second {
 	//	fmt.Printf("e")
@@ -99,5 +99,5 @@ func (e *Echo) OnLoop(host *elio.IoHost, t time.Time, d time.Duration) {
 
 	_, _ = host.Dispatching(t, defaultFetchLimit)
 
-	e.prev = t
+	s.prev = t
 }

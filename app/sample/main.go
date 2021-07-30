@@ -9,8 +9,8 @@ import (
 func main() {
 	app := elio.Elio()
 
-	echo := NewSample(app)
-	app.Register(echo)
+	sample := NewSample(app)
+	app.Register(sample)
 
 	fmt.Println("begin elio")
 	defer fmt.Println("end elio")
@@ -24,11 +24,11 @@ func main() {
 	// 	app.End()
 	// }(app)
 
-	// go func(echo *Echo) {
+	// go func(sample *Sample) {
 	// 	time.Sleep(5 * time.Second)
-	// 	fmt.Printf("\ncancel echo...\n")
-	// 	echo.cancel()
-	// }(echo)
+	// 	fmt.Printf("\ncancel sample...\n")
+	// 	sample.cancel()
+	// }(sample)
 
 	app.Wait()
 

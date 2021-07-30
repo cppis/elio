@@ -29,10 +29,6 @@ const (
 	MetricAppIoOutCountf = "%s.io.outcount"
 	// MetricAppIoOutSizef app io out size metric
 	MetricAppIoOutSizef = "%s.io.outsize"
-	// MetricPubEchosf publish app echo metric
-	MetricPubEchosf = "%s.pub.echos"
-	// MetricSubEchosf subscribe app echo metric
-	MetricSubEchosf = "%s.sub.echos"
 	// MetricPubAppStatesf publish app state metric
 	MetricPubAppStatesf = "%s.pub.appstates"
 	// MetricSubAppStatesf subscribe app state metric

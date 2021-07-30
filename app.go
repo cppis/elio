@@ -94,7 +94,7 @@ func (a *App) Run() {
 	a.wg.Add(len(a.runs))
 
 	for i := 0; i < len(a.runs); i++ {
-		//for _, r := range a.runs {
+		//for _, r := range a.runs {h
 		// TODO: load service config in here r.svc.Name()
 		c := ProvideConfigIo(a.runs[i].svc.Name(), a.config)
 		//c.InURL = "0.0.0.0:7000"
@@ -104,7 +104,7 @@ func (a *App) Run() {
 		var err error
 		if ioHost, err = Host(c, a.runs[i].svc); nil != err {
 			AppFatal().Str(LogObject, a.String()).
-				Err(err).Msg("failed to echo service")
+				Err(err).Msg("failed to host service")
 		} else {
 			AppInfo().Str(LogObject, a.String()).
 				Msgf("serve app:%s with url:%s", a.runs[i].svc.Name(), ioHost.Url)

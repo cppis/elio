@@ -13,7 +13,7 @@ func (s *Sample) Query(n *elio.Session, c string) {
 	})
 }
 
-// Echo echo
+// Sample sample
 func (s *Sample) Echo(n *elio.Session, m string) {
 	// add event to queue
 	// make event

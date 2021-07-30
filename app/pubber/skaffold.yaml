@@ -1,0 +1,28 @@
+apiVersion: skaffold/v2beta19
+kind: Config
+metadata:
+  name: redis-sample
+build:
+  artifacts:
+    - image: dockerfile-image
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+      - deployment.yaml
+portForward:
+  - resourceType: service
+    resourceName: dockerfile-image
+    port: 7000
+profiles:
+  - name: dev
+    deploy:
+      kubectl:
+        manifests:
+          - dev.yaml
+  - name: debug
+    deploy:
+      kubectl:
+        manifests:
+          - debug.yaml

@@ -1,0 +1,4 @@
+.idea/
+vendor/
+redis.sample
+redis.sample.exe
