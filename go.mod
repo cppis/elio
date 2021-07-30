@@ -1,9 +1,9 @@
-module cppis/elio
+module github.com/cppis/elio
 
 go 1.16
 
 require (
-	github.com/cppis/elio v0.1.3
+	github.com/cppis/elio v0.1.4
 	github.com/eclipse/paho.mqtt.golang v1.3.5
 	github.com/libp2p/go-reuseport v0.0.2
 	github.com/maruel/panicparse v1.6.1
