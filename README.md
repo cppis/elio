@@ -58,13 +58,13 @@ environment variable `ECHO_IN_URL`.
 ### using `docker`  
 To build `echo` image, run the following command:  
 ```shell
-$ docker build -t elio:v0.1.3 .
-$ docker tag elio:latest elio:v0.1.3
+$ docker build -t elio:v0.1.4 .
+$ docker tag elio:latest elio:v0.1.4
 ```
 
 To run `echo` image, run the following command:  
 ```shell
-$ docker run -d -e ECHO_IN_URL="0.0.0.0:7000" -p 7000:7000 -p 2345:2345 elio:v0.1.3
+$ docker run -d -e ECHO_IN_URL="0.0.0.0:7000" -p 7000:7000 -p 2345:2345 elio:v0.1.4
 ```
 
 <br/>

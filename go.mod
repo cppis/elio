@@ -3,7 +3,6 @@ module cppis/elio
 go 1.16
 
 require (
-	github.com/cppis/elio v0.1.3
 	github.com/eclipse/paho.mqtt.golang v1.3.5
 	github.com/libp2p/go-reuseport v0.0.2
 	github.com/maruel/panicparse v1.6.1
@@ -16,7 +15,3 @@ require (
 	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c
 	golang.org/x/text v0.3.6 // indirect
 )
-
-replace cppis/elio/echo => ./app/echo
-
-replace cppis/elio/pubber => ./app/pubber
