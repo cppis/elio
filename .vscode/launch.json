@@ -52,6 +52,7 @@
             "env": {
                 "ELIO_LOG_JSON": false,
                 "PUBBER_IN_URL": "0.0.0.0:9000",
+                "PUBBER_MQTT_URL": "0.0.0.0:9000"
             },
             "args": [],
             "showLog": true,
