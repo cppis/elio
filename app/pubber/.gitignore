@@ -1,4 +1,4 @@
 .idea/
 vendor/
-redis.sample
-redis.sample.exe
+pubber
+pubber.exe
