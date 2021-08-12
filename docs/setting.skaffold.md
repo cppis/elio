@@ -110,6 +110,13 @@ against Kubernetes clusters.
   The latest stable release binary can be found here:  
   Simply download it and place it in your `PATH` as `skaffold.exe`.
 
+
+
+#### [`--generate-manifests` Flag](https://skaffold.dev/docs/pipeline-stages/init/#--generate-manifests-flag)  
+`beta`  
+`skaffold init` allows for use of a `--generate-manifests` flag, which will try 
+to generate basic kubernetes manifests for a user’s project to help get things up and running. If bringing a project to skaffold that has no kubernetes manifests yet, it may be helpful to run skaffold init with this flag.  
+
 <br/>
 
 ### [Go in `Visual Studio Code`](https://code.visualstudio.com/docs/languages/go)  
@@ -148,13 +155,15 @@ for debugging as required for each container’s runtime technology.
 skaffold debug -p debug
 ```
 
+<br/>
+
+### Stop  
 The dev loop will run until the user cancels the `Skaffold` process with `Ctrl+C`.  
 Upon receiving this signal, `Skaffold` will clean up all deployed artifacts on the active cluster.  
 This can be optionally disabled by using the `--no-prune` flag.  
 
 <br/>
 
-### Stop  
 To stop minikube, run the following command:  
 ```shell
 minikube stop
