@@ -1,28 +1,33 @@
 apiVersion: skaffold/v2beta19
 kind: Config
 metadata:
-  name: redis-sample
+  name: pubber-config
 build:
   artifacts:
-    - image: dockerfile-image
+    - image: pubber-image
       docker:
-        dockerfile: Dockerfile
+        dockerfile: app/pubber/Dockerfile
 deploy:
   kubectl:
     manifests:
       - deployment.yaml
 portForward:
   - resourceType: service
-    resourceName: dockerfile-image
+    resourceName: pubber-service
     port: 7000
 profiles:
-  - name: dev
+  #- name: dev
+  #  deploy:
+  #    kubectl:
+  #      manifests:
+  #        - app/pubber/profile-dev.yaml
+  - name: local
     deploy:
       kubectl:
         manifests:
-          - dev.yaml
-  - name: debug
-    deploy:
-      kubectl:
-        manifests:
-          - debug.yaml
+          - app/pubber/profile-local.yaml
+  #- name: debug
+  #  deploy:
+  #    kubectl:
+  #      manifests:
+  #        - app/pubber/profile-debug.yaml

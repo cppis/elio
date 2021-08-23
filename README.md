@@ -71,14 +71,19 @@ $ docker run -d -e ECHO_IN_URL="0.0.0.0:7000" -p 7000:7000 -p 2345:2345 elio:v0.
 
 ### using `Skaffold`  
 To use the `Skaffold`, you need thd following the [Setup `Skaffold`](#setup-skaffold).  
+First move to Project root directory.  
+```shell
+$ cd {Project Root}
+```
+
 To run `echo` using `Skaffold`, run the following command:  
 ```shell
-$ skaffold dev -p dev
+$ skaffold -f app\echo\skaffold.yaml dev -p dev
 ```
 
 Or, to run `echo` in debugging mode using `Skaffold`, run the following command:  
 ```shell
-$ skaffold debug -p debug
+$ skaffold -f app\echo\skaffold.yaml debug -p debug
 ```
 
 <br/><br/><br/>
@@ -192,3 +197,8 @@ func (e *Echo) OnLoop(host *elio.IoHost, t time.Time, d time.Duration) {
 ## Test  
 You can test echo easily by using telnet.  
 And, you can end server by send `q` character.  
+
+<br/><br/><br/>
+
+## Reference  
+* [Building K8S cluster of EMQ X starting from scratch](https://www.emqx.com/en/blog/emqx-mqtt-broker-k8s-cluster)  

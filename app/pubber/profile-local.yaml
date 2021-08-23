@@ -1,0 +1,167 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pubber
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: pubber
+  name: emqx
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  namespace: pubber
+  name: emqx
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - endpoints
+    verbs:
+      - get
+      - watch
+      - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  #namespace: pubber
+  name: emqx
+roleRef:
+  kind: ClusterRole
+  name: emqx
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: emqx
+    namespace: pubber
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: pubber
+  name: pubber-service
+  labels:
+    namespace: pubber
+    app: pubber
+spec:
+  ports:
+    - port: 7000
+      protocol: TCP
+  clusterIP: None
+  selector:
+    namespace: pubber
+    app: pubber
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: pubber
+  name: emqx-service
+  labels:
+    namespace: pubber
+    app: pubber
+spec:
+  ports:
+    - name: mqtt
+      port: 1883
+      protocol: TCP
+      targetPort: mqtt
+    #- name: mqttssl
+    #  port: 8883
+    #  protocol: TCP
+    #  targetPort: mqttssl
+    #- name: mgmt
+    #  port: 8081
+    #  protocol: TCP
+    #  targetPort: mgmt
+    #- name: ws
+    #  port: 8083
+    #  protocol: TCP
+    #  targetPort: ws
+    #- name: wss
+    #  port: 8084
+    #  protocol: TCP
+    #  targetPort: wss
+    #- name: dashboard
+    #  port: 18083
+    #  protocol: TCP
+    #  targetPort: dashboard
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: pubber
+  name: pubber-deployment
+  labels:
+    namespace: pubber
+    app: pubber
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      namespace: pubber
+      app: pubber
+  template:
+    metadata:
+      labels:
+        namespace: pubber
+        app: pubber
+    spec:
+      containers:
+        - name: pubber
+          image: pubber-image
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: pubber
+  name: emqx-deployment
+  labels:
+    namespace: pubber
+    app: emqx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      namespace: pubber
+      app: emqx
+  template:
+    metadata:
+      namespace: pubber
+      labels:
+        namespace: pubber
+        app: emqx
+    spec:
+      serviceAccountName: emqx
+      containers:
+        - name: emqx
+          image: emqx/emqx:4.3.7
+          ports:
+            - name: mqtt
+              containerPort: 1883
+            #- name: mqttssl
+            #  containerPort: 8883
+            #- name: mgmt
+            #  containerPort: 8081
+            #- name: ws
+            #  containerPort: 8083
+            #- name: wss
+            #  containerPort: 8084
+            #- name: dashboard
+            #  containerPort: 18083
+          env:
+            - name: EMQX_NAME
+              value: emqx
+            - name: EMQX_CLUSTER__DISCOVERY
+              value: k8s
+            - name: EMQX_CLUSTER__K8S__APP_NAME
+              value: emqx
+            - name: EMQX_CLUSTER__K8S__SERVICE_NAME
+              value: emqx-service
+            - name: EMQX_CLUSTER__K8S__APISERVER
+              value: "https://kubernetes.default.svc:443"
+            - name: EMQX_CLUSTER__K8S__NAMESPACE
+              value: pubber

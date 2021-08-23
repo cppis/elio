@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pubber-service
+  labels:
+    app: pubber
+spec:
+  ports:
+    - port: 7000
+      protocol: TCP
+  clusterIP: None
+  selector:
+    app: pubber
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pubber-deployment
+  labels:
+    app: pubber
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pubber
+  template:
+    metadata:
+      labels:
+        app: pubber
+    spec:
+      containers:
+        - name: pubber
+          image: pubber-image
