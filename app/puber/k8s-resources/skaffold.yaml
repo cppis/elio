@@ -1,33 +1,33 @@
 apiVersion: skaffold/v2beta19
 kind: Config
 metadata:
-  name: pubber-config
+  name: puber-config
 build:
   artifacts:
-    - image: pubber-image
+    - image: puber-image
       docker:
-        dockerfile: app/pubber/Dockerfile
+        dockerfile: app/puber/k8s-resources/Dockerfile
 deploy:
   kubectl:
     manifests:
       - deployment.yaml
 portForward:
   - resourceType: service
-    resourceName: pubber-service
+    resourceName: puber-service
     port: 7000
 profiles:
   #- name: dev
   #  deploy:
   #    kubectl:
   #      manifests:
-  #        - app/pubber/profile-dev.yaml
+  #        - app/puber/k8s-resources/profiles/dev.yaml
   - name: local
     deploy:
       kubectl:
         manifests:
-          - app/pubber/profile-local.yaml
+          - app/puber/k8s-resources/profiles/local.yaml
   #- name: debug
   #  deploy:
   #    kubectl:
   #      manifests:
-  #        - app/pubber/profile-debug.yaml
+  #        - app/puber/k8s-resources/profiles/debug.yaml

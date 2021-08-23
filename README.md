@@ -78,12 +78,12 @@ $ cd {Project Root}
 
 To run `echo` using `Skaffold`, run the following command:  
 ```shell
-$ skaffold -f app\echo\skaffold.yaml dev -p dev
+$ skaffold -f app\echo\k8s-resources\skaffold.yaml dev -p dev
 ```
 
 Or, to run `echo` in debugging mode using `Skaffold`, run the following command:  
 ```shell
-$ skaffold -f app\echo\skaffold.yaml debug -p debug
+$ skaffold -f app\echo\k8s-resources\skaffold.yaml debug -p debug
 ```
 
 <br/><br/><br/>
@@ -197,8 +197,3 @@ func (e *Echo) OnLoop(host *elio.IoHost, t time.Time, d time.Duration) {
 ## Test  
 You can test echo easily by using telnet.  
 And, you can end server by send `q` character.  
-
-<br/><br/><br/>
-
-## Reference  
-* [Building K8S cluster of EMQ X starting from scratch](https://www.emqx.com/en/blog/emqx-mqtt-broker-k8s-cluster)  

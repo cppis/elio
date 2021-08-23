@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: pubber
+  name: puber
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: pubber
+  namespace: puber
   name: emqx
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  namespace: pubber
+  namespace: puber
   name: emqx
 rules:
   - apiGroups:
@@ -27,7 +27,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  #namespace: pubber
+  #namespace: puber
   name: emqx
 roleRef:
   kind: ClusterRole
@@ -36,33 +36,33 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: emqx
-    namespace: pubber
+    namespace: puber
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: pubber
-  name: pubber-service
+  namespace: puber
+  name: puber-service
   labels:
-    namespace: pubber
-    app: pubber
+    namespace: puber
+    app: puber
 spec:
   ports:
     - port: 7000
       protocol: TCP
   clusterIP: None
   selector:
-    namespace: pubber
-    app: pubber
+    namespace: puber
+    app: puber
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: pubber
+  namespace: puber
   name: emqx-service
   labels:
-    namespace: pubber
-    app: pubber
+    namespace: puber
+    app: puber
 spec:
   ports:
     - name: mqtt
@@ -93,46 +93,46 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: pubber
-  name: pubber-deployment
+  namespace: puber
+  name: puber-deployment
   labels:
-    namespace: pubber
-    app: pubber
+    namespace: puber
+    app: puber
 spec:
   replicas: 1
   selector:
     matchLabels:
-      namespace: pubber
-      app: pubber
+      namespace: puber
+      app: puber
   template:
     metadata:
       labels:
-        namespace: pubber
-        app: pubber
+        namespace: puber
+        app: puber
     spec:
       containers:
-        - name: pubber
-          image: pubber-image
+        - name: puber
+          image: puber-image
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: pubber
+  namespace: puber
   name: emqx-deployment
   labels:
-    namespace: pubber
+    namespace: puber
     app: emqx
 spec:
   replicas: 1
   selector:
     matchLabels:
-      namespace: pubber
+      namespace: puber
       app: emqx
   template:
     metadata:
-      namespace: pubber
+      namespace: puber
       labels:
-        namespace: pubber
+        namespace: puber
         app: emqx
     spec:
       serviceAccountName: emqx
@@ -164,4 +164,4 @@ spec:
             - name: EMQX_CLUSTER__K8S__APISERVER
               value: "https://kubernetes.default.svc:443"
             - name: EMQX_CLUSTER__K8S__NAMESPACE
-              value: pubber
+              value: puber

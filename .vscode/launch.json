@@ -42,13 +42,13 @@
             "buildFlags": ""
         },
         {
-            "name": "app.pubber",
+            "name": "app.puber",
             "type": "go",
             "request": "launch",
             "mode": "auto",
             "remotePath": "",
             "host": "127.0.0.1",
-            "program": "${workspaceRoot}/app/pubber",
+            "program": "${workspaceRoot}/app/puber",
             "env": {
                 "ELIO_LOG_JSON": false,
                 "PUBBER_IN_URL": "0.0.0.0:9000",

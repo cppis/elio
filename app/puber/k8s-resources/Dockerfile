@@ -11,7 +11,7 @@ RUN apt-get update && apt-get upgrade -y
 COPY ./ ./
 RUN go mod vendor
 
-WORKDIR /build/app/pubber
+WORKDIR /build/app/puber
 # `skaffold debug` sets SKAFFOLD_GO_GCFLAGS to disable compiler optimizations
 ARG SKAFFOLD_GO_GCFLAGS
 RUN go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" .
@@ -26,6 +26,6 @@ ENV GOTRACEBACK=all
 ENV ECHO_IN_URL="0.0.0.0:7000"
 EXPOSE 7000 56268
 
-COPY --from=builder /build/app/pubber/pubber /app
+COPY --from=builder /build/app/puber/puber /app
 # start with debugging
-CMD ["/app/pubber"]
+CMD ["/app/puber"]
