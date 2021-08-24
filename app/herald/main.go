@@ -7,8 +7,8 @@ import (
 func main() {
 	app := elio.Elio()
 
-	puber := NewPuber(app)
-	app.Register(puber)
+	herald := NewHerald(app)
+	app.Register(herald)
 
 	app.Run()
 

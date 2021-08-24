@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: puber
+  name: herald
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: puber
+  namespace: herald
   name: emqx
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  namespace: puber
+  namespace: herald
   name: emqx
 rules:
   - apiGroups:
@@ -27,7 +27,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  #namespace: puber
+  namespace: herald
   name: emqx
 roleRef:
   kind: ClusterRole
@@ -35,35 +35,34 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 subjects:
   - kind: ServiceAccount
+    namespace: herald
     name: emqx
-    namespace: puber
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: puber
-  name: puber-service
+  namespace: herald
+  name: herald-service
   labels:
-    namespace: puber
-    app: puber
+    app: herald
 spec:
   ports:
     - port: 7000
       protocol: TCP
   clusterIP: None
   selector:
-    namespace: puber
-    app: puber
+    app: herald
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: puber
+  namespace: herald
   name: emqx-service
   labels:
-    namespace: puber
-    app: puber
+    app: emqx
 spec:
+  selector:
+    app: emqx
   ports:
     - name: mqtt
       port: 1883
@@ -93,75 +92,60 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: puber
-  name: puber-deployment
+  namespace: herald
+  name: herald-deployment
   labels:
-    namespace: puber
-    app: puber
+    app: herald
 spec:
   replicas: 1
   selector:
     matchLabels:
-      namespace: puber
-      app: puber
+      app: herald
   template:
     metadata:
       labels:
-        namespace: puber
-        app: puber
+        app: herald
     spec:
       containers:
-        - name: puber
-          image: puber-image
+        - name: herald
+          image: herald-image
+          env:
+            - name: HERALD_IN_URL
+              value: 0.0.0.0:7000
+            - name: HERALD_MQTT_URL
+              value: emqx-service:1883
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: puber
+  namespace: herald
   name: emqx-deployment
   labels:
-    namespace: puber
     app: emqx
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      namespace: puber
       app: emqx
   template:
     metadata:
-      namespace: puber
       labels:
-        namespace: puber
         app: emqx
     spec:
       serviceAccountName: emqx
       containers:
-        - name: emqx
-          image: emqx/emqx:4.3.7
-          ports:
-            - name: mqtt
-              containerPort: 1883
-            #- name: mqttssl
-            #  containerPort: 8883
-            #- name: mgmt
-            #  containerPort: 8081
-            #- name: ws
-            #  containerPort: 8083
-            #- name: wss
-            #  containerPort: 8084
-            #- name: dashboard
-            #  containerPort: 18083
-          env:
-            - name: EMQX_NAME
-              value: emqx
-            - name: EMQX_CLUSTER__DISCOVERY
-              value: k8s
-            - name: EMQX_CLUSTER__K8S__APP_NAME
-              value: emqx
-            - name: EMQX_CLUSTER__K8S__SERVICE_NAME
-              value: emqx-service
-            - name: EMQX_CLUSTER__K8S__APISERVER
-              value: "https://kubernetes.default.svc:443"
-            - name: EMQX_CLUSTER__K8S__NAMESPACE
-              value: puber
+      - name: emqx
+        image: emqx/emqx:4.3.7
+        ports:
+        - name: mqtt
+          containerPort: 1883
+        #- name: mqttssl
+        #  containerPort: 8883
+        #- name: mgmt
+        #  containerPort: 8081
+        #- name: ws
+        #  containerPort: 8083
+        #- name: wss
+        #  containerPort: 8084
+        #- name: dashboard
+        #  containerPort: 18083

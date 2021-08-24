@@ -60,11 +60,11 @@ func (m *AppMetrics) Init(inMetric int) {
 	exp.Exp(m.Registry)
 
 	//if addr, err := net.ResolveUDPAddr("udp", StatsD_Address); nil != err {
-	//	AlogError().Str(elf.LogObject, m.String()).
+	//	AppError().Str(elio.LogObject, m.String()).
 	//	Err(err).Msg("failed to resolve statd address")
 	//
 	//} else {
-	//	p := fmt.Sprintf("%s-%s-%s", elf.GetAppParams().GetProject(), elf.GetAppParams().GetStage(), elf.GetAppParams().GetSuid())
+	//	p := fmt.Sprintf("%s-%s-%s", elio.GetAppParams().GetProject(), elio.GetAppParams().GetStage(), elio.GetAppParams().GetSuid())
 
 	//	go statsd.StatsD(m.Registry, StatsD_Interval, p, addr)
 	//}

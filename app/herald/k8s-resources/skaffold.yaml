@@ -1,33 +1,33 @@
 apiVersion: skaffold/v2beta19
 kind: Config
 metadata:
-  name: puber-config
+  name: herald-config
 build:
   artifacts:
-    - image: puber-image
+    - image: herald-image
       docker:
-        dockerfile: app/puber/k8s-resources/Dockerfile
+        dockerfile: app/herald/k8s-resources/Dockerfile
 deploy:
   kubectl:
     manifests:
       - deployment.yaml
 portForward:
   - resourceType: service
-    resourceName: puber-service
+    resourceName: herald-service
     port: 7000
 profiles:
   #- name: dev
   #  deploy:
   #    kubectl:
   #      manifests:
-  #        - app/puber/k8s-resources/profiles/dev.yaml
+  #        - app/herald/k8s-resources/profiles/dev.yaml
   - name: local
     deploy:
       kubectl:
         manifests:
-          - app/puber/k8s-resources/profiles/local.yaml
+          - app/herald/k8s-resources/profiles/local.yaml
   #- name: debug
   #  deploy:
   #    kubectl:
   #      manifests:
-  #        - app/puber/k8s-resources/profiles/debug.yaml
+  #        - app/herald/k8s-resources/profiles/debug.yaml

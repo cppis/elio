@@ -113,8 +113,8 @@ func (s *Sample) OnRead(n *elio.Session, in []byte) (processed int) {
 
 		} else {
 			if 0 <= parsed {
-				//AlogDebug().Str(elf.LogObject, a.String()).Str(elf.LogSession, s.String()).
-				//	Str(LogPayload, hex.Dump(i)).
+				//AppDebug().Str(elio.LogObject, a.String()).
+				//	Str(elio.LogSession, s.String()).Str(LogPayload, hex.Dump(i)).
 				//	Msgf("fd:%d buffer.len:%v process.len:%v process.count:%d parse.ok:ok", s.GetFd(), l, processed, counts)
 
 			} else {

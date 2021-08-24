@@ -198,11 +198,11 @@ func (h *IoHost) RunDivision(t time.Time, callback DivCallback) {
 		// 	//division := c.DivisionIndex.Load()
 		// 	ok := l.DelDivision(l.DivisionChecked, e.k)
 		// 	if false == ok {
-		// 		AppError().Str(elf.LogObject, l.String()).Err(err).
+		// 		AppError().Str(elio.LogObject, l.String()).Err(err).
 		// 			Msgf("failed to unregister context:%v:%d", e.k, l.DivisionChecked)
 
 		// 	} else {
-		// 		AppDebug().Str(elf.LogObject, l.String()).
+		// 		AppDebug().Str(elio.LogObject, l.String()).
 		// 			Msgf("succeed to unregister context:%v:%d", e.k, l.DivisionChecked)
 		// 	}
 		// }

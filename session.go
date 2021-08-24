@@ -186,7 +186,7 @@ func (n *Session) Write(out []byte) (sent int, err error) {
 				Msgf("panic in session.Write fd:%d with recover:%s", n.fd, r)
 
 			sent = -1
-			err = errors.New("elf.net failed to session.Write with panic")
+			err = errors.New("elio failed to session.Write with panic")
 		}
 	}()
 

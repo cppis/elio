@@ -43,10 +43,10 @@ func (c *Config) Load(path string) (err error) {
 	c.viper.AutomaticEnv()
 
 	AppTrace().Str(LogObject, c.String()).Msgf("begin to load config:%s", path)
+	c.viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_")) // .env notOK, env Ok
 	if "" != path {
 		c.viper.SetConfigFile(path)
 		c.viper.SetConfigType("yaml")
-		c.viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_")) // .env notOK, env Ok
 		err = c.viper.ReadInConfig()
 		if nil != err {
 			return err
@@ -71,7 +71,7 @@ func (c *Config) Load(path string) (err error) {
 
 	////////////////////////////////////////////////////////////////
 	// // .env override 에 이슈가 없는 코드 블럭
-	//AppTrace().Str(elf.LogObject, c.String()).Msg("begin to load env var")
+	//AppTrace().Str(elio.LogObject, c.String()).Msg("begin to load env var")
 	c.viper.SetConfigFile(".env")
 	//c.viper.SetEnvKeyReplacer(strings.NewReplacer("_", "."))		// .env OK, env notOk
 	if nil == c.viper.MergeInConfig() {

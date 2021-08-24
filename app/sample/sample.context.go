@@ -113,9 +113,9 @@ func (c *AppContext) Write(o []byte) {
 				Msg("failed to write")
 
 			if retErr := c.GetSession().GetIo().Shutdown(c.GetSession(), elio.ShutRd); nil != retErr {
-				//elio.AppError().Str(elf.LogObject, c.String()).
-				//	Str(elf.LogSession, c.GetSession().String()).
-				//	Int64(elf.LogUuid, c.UID.ToInt()).Err(retErr).
+				//elio.AppError().Str(elio.LogObject, c.String()).
+				//	Str(elio.LogSession, c.GetSession().String()).
+				//	Int64(elio.LogUuid, c.UID.ToInt()).Err(retErr).
 				//	Msg("failed to shutdown of write")
 			}
 			c.SetState(IOErrored)
@@ -150,7 +150,7 @@ func (c *AppContext) PostWrite(o []byte) {
 
 			if retErr := c.GetSession().GetIo().Shutdown(c.GetSession(), elio.ShutRd); nil != retErr {
 				//elio.AlogError().Str(elio.LogObject, c.String()).
-				//	Str(elf.LogSession, c.GetSession().String()).
+				//	Str(elio.LogSession, c.GetSession().String()).
 				//	Int64(elio.LogUuid, c.UID.ToInt()).Err(retErr).
 				//	Msg("failed to shutdown of write")
 			}
