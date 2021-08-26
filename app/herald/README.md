@@ -27,12 +27,8 @@ $ cd elio
 ## Run herald  
 ### using `Skaffold`  
 To use the `Skaffold`, you need thd following the [Setup `Skaffold`](#setup-skaffold).  
-First move to Project root directory.  
-```shell
-$ cd {Project Root}
-```
-
-To run `herald` using `Skaffold`, run the following command:  
+To run `herald` using `Skaffold`,  
+run the following command in the Project root directory:  
 ```shell
 $ skaffold -f app\herald\k8s-resources\skaffold.yaml dev -p local
 ```

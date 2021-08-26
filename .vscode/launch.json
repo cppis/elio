@@ -17,7 +17,7 @@
             "showLog": true
         },
         {
-            "name": "skaffold.app.echo",
+            "name": "skaffold.echo",
             "type": "go",
             "request": "attach",
             "mode": "remote",
@@ -58,6 +58,15 @@
             "args": [],
             "showLog": true,
             "buildFlags": ""
+        },
+        {
+            "name": "skaffold.herald",
+            "type": "go",
+            "request": "attach",
+            "mode": "remote",
+            "host": "127.0.0.1",
+            "port": 56268,
+            "cwd": "${workspaceFolder}/app/herald"
         },
         {
             "name": "app.sample",
