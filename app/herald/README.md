@@ -46,7 +46,32 @@ $ skaffold -f app\herald\k8s-resources\skaffold.yaml debug -p debug
 
 ## Test  
 You can test echo easily by using telnet.  
-And, you can end server by send `q` character.  
+
+app protocol is custom `t2p` like http.  
+procotol header is separated by newline(`\n` or `\r\n`).  
+And packet delimiter is double newline(`\n\n` or `\r\n\r\n`).
+
+### echo: echo message    
+  ```
+  echo<newline>
+  {message}<newline><newline>
+  ```
+### sub: subcribe to topic    
+  ```
+  sub<newline>
+  {topic}<newline><newline>
+  ```
+### unsub: unsubcribe from topic  
+  ```
+  unsub<newline>
+  {topic}<newline><newline>
+  ```
+### pub: publish message to topic  
+  ```
+  pub<newline>
+  {topic}<newline>
+  {message}<newline><newline>
+  ```
 
 <br/><br/><br/>
 
