@@ -52,11 +52,11 @@ func (q *Mqtter) Mqtt() *elio.MqttClient {
 	}
 
 	if nil == err {
-		elio.AppError().Str(elio.LogObject, q.String()).Err(err).
-			Msgf("failed to connect to broker:%s with mqtt.client:%s", q.url, q.mqtt.String())
-
 		return q.mqtt
 	}
+
+	elio.AppError().Str(elio.LogObject, q.String()).Err(err).
+		Msgf("failed to connect to broker:%s with mqtt.client:%s", q.url, q.mqtt.String())
 
 	return nil
 }
@@ -69,8 +69,8 @@ func (q *Mqtter) Pub(n *elio.Session, t string, p string) {
 		//	Msgf("failed to publish to mqtt.client:%s", q.mqtt.String())
 
 	} else {
-		//elio.AppTrace().Str(elio.LogObject, q.String()).
-		//	Msgf("succeed to publish to mqtt.client:%s with payload:%s", q.mqtt.String(), p)
+		elio.AppDebug().Str(elio.LogObject, q.String()).
+			Msgf("succeed to publish to mqtt.client:%s with topic:%s payload:%s", q.mqtt.String(), t, p)
 
 	}
 }
@@ -83,8 +83,8 @@ func (q *Mqtter) Sub(n *elio.Session, t string, c mqtt.MessageHandler) {
 		//	Msgf("failed to subscribe to mqtt.client:%s", q.mqtt.String())
 
 	} else {
-		//elio.AppTrace().Str(elio.LogObject, q.String()).
-		//	Msgf("succeed to subscribe to mqtt.client:%s", q.mqtt.String())
+		elio.AppDebug().Str(elio.LogObject, q.String()).
+			Msgf("succeed to subscribe to mqtt.client:%s with topic:%s", q.mqtt.String(), t)
 
 	}
 }

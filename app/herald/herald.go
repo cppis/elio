@@ -255,5 +255,5 @@ func (s *Herald) mqttOnConnect(c mqtt.Client) {
 // mqttOnSub mqtt on subscribe
 func (s *Herald) mqttOnSub(c mqtt.Client, m mqtt.Message) {
 	elio.AppInfo().Str(elio.LogObject, s.String()).
-		Msgf("topic:%s payload:%s", m.Topic(), string(m.Payload()))
+		Msgf("mqtt on.sub with topic:%s payload:%s", m.Topic(), string(m.Payload()))
 }

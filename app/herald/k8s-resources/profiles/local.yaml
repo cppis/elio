@@ -57,37 +57,52 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: herald
-  name: emqx-service
-  labels:
-    app: emqx
+  name: emqx-headless
 spec:
+  type: ClusterIP
+  clusterIP: None
   selector:
     app: emqx
   ports:
     - name: mqtt
       port: 1883
       protocol: TCP
-      targetPort: mqtt
+      targetPort: 1883
     #- name: mqttssl
     #  port: 8883
     #  protocol: TCP
-    #  targetPort: mqttssl
+    #  targetPort: 8883
     #- name: mgmt
     #  port: 8081
     #  protocol: TCP
-    #  targetPort: mgmt
-    #- name: ws
+    #  targetPort: 8081
+    #- name: websocket
     #  port: 8083
     #  protocol: TCP
-    #  targetPort: ws
+    #  targetPort: 8083
     #- name: wss
     #  port: 8084
     #  protocol: TCP
-    #  targetPort: wss
+    #  targetPort: 8084
     #- name: dashboard
     #  port: 18083
     #  protocol: TCP
-    #  targetPort: dashboard
+    #  targetPort: 18083
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: herald
+  name: emqx-config
+data:
+  EMQX_NAME: emqx
+  EMQX_CLUSTER__DISCOVERY: k8s
+  EMQX_CLUSTER__K8S__APP_NAME: emqx
+  EMQX_CLUSTER__K8S__SERVICE_NAME: emqx-headless
+  EMQX_CLUSTER__K8S__ADDRESS_TYPE: "hostname"
+  EMQX_CLUSTER__K8S__APISERVER: https://kubernetes.default.svc:443
+  EMQX_CLUSTER__K8S__SUFFIX: "svc.cluster.local"
+  EMQX_CLUSTER__K8S__NAMESPACE: herald
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -113,17 +128,20 @@ spec:
             - name: HERALD_IN_URL
               value: 0.0.0.0:7000
             - name: HERALD_MQTT_URL
-              value: emqx-service:1883
+              value: emqx@emqx-statefulset-0.emqx-headless.herald.svc.cluster.local:1883
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   namespace: herald
-  name: emqx-deployment
+  name: emqx-statefulset
   labels:
     app: emqx
 spec:
   replicas: 3
+  serviceName: emqx-headless
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: emqx
@@ -134,18 +152,34 @@ spec:
     spec:
       serviceAccountName: emqx
       containers:
-      - name: emqx
-        image: emqx/emqx:4.3.7
-        ports:
-        - name: mqtt
-          containerPort: 1883
-        #- name: mqttssl
-        #  containerPort: 8883
-        #- name: mgmt
-        #  containerPort: 8081
-        #- name: ws
-        #  containerPort: 8083
-        #- name: wss
-        #  containerPort: 8084
-        #- name: dashboard
-        #  containerPort: 18083
+        - name: emqx
+          image: emqx/emqx:4.3.7
+          ports:
+            - name: mqtt
+              containerPort: 1883
+            #- name: mqttssl
+            #  containerPort: 8883
+            #- name: mgmt
+            #  containerPort: 8081
+            #- name: ws
+            #  containerPort: 8083
+            #- name: wss
+            #  containerPort: 8084
+            #- name: dashboard
+            #  containerPort: 18083
+          envFrom:
+            - configMapRef:
+                name: emqx-config
+          volumeMounts:
+            - name: emqx-pvc
+              mountPath: "/opt/emqx/data/mnesia"
+  volumeClaimTemplates:
+    - metadata:
+        name: emqx-pvc
+        #annotations:
+        #  volume.alpha.kubernetes.io/storage-class: manual
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
