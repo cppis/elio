@@ -51,7 +51,7 @@ against Kubernetes clusters.
 
 <br/>
 
-### [`minikube`](https://minikube.sigs.k8s.io/docs/start/)   
+### [`minikube`(Optional)](https://minikube.sigs.k8s.io/docs/start/)   
 `minikube` quickly sets up a local Kubernetes cluster on macOS, Linux, and Windows.  
 `minikube` focus on helping application developers and new Kubernetes users.  
 
@@ -110,6 +110,14 @@ against Kubernetes clusters.
   The latest stable release binary can be found here:  
   Simply download it and place it in your `PATH` as `skaffold.exe`.
 
+  > You can permanently add a path to system `PATH`:   
+  > ```shell
+  > $ setx /M path "%path%;{Skaffold Path}"
+  > ```
+  > Or add to user `PATH`:   
+  > ```shell
+  > $ setx path "%path%;{Skaffold Path}"
+  > ```
 
 
 #### [`--generate-manifests` Flag](https://skaffold.dev/docs/pipeline-stages/init/#--generate-manifests-flag)  
