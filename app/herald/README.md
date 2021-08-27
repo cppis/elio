@@ -33,9 +33,11 @@ run the following command in the Project root directory:
 $ skaffold -f app\herald\k8s-resources\skaffold.yaml dev -p local
 ```
 
+> To change detection triggered to manual mode, use option `--trigger=manual`.  
+
 Or, to run `herald` in debugging mode using `Skaffold`, run the following command:  
 ```shell
-$ skaffold -f app\herald\k8s-resources\skaffold.yaml debug -p debug
+$ skaffold -f app\herald\k8s-resources\skaffold.yaml debug -p local
 ```
 
 <br/><br/><br/>
