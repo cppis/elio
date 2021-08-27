@@ -81,17 +81,3 @@ And packet delimiter is double newline(`\n\n` or `\r\n\r\n`).
 
 ## TO-DO  
 * Run `emqx` as stateful cluster in kubernetes  
-
-<br/><br/><br/>
-
-## Commands  
-```shell
-$ kubectl describe all -n herald
-$ kubectl apply -f app/herald/k8s-resources/profiles/exclude.yaml
-$ kubectl delete -f app/herald/k8s-resources/profiles/exclude.yaml
-$ kubectl get pv -n herald
-$ kubectl get pvc -n herald
-$ kubectl delete pv {PVC} -n herald
-$ kubectl delete pvc {PVC} -n herald
-```
-
