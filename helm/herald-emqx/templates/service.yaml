@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "herald.fullname" . }}
+  labels:
+    {{- include "herald.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: t2p
+      protocol: TCP
+      name: t2p
+  selector:
+    {{- include "herald.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emqx-headless
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app: emqx
+  ports:
+    - name: mqtt
+      port: 1883
+      protocol: TCP
+      targetPort: 1883
+    #- name: mqttssl
+    #  port: 8883
+    #  protocol: TCP
+    #  targetPort: 8883
+    #- name: mgmt
+    #  port: 8081
+    #  protocol: TCP
+    #  targetPort: 8081
+    #- name: websocket
+    #  port: 8083
+    #  protocol: TCP
+    #  targetPort: 8083
+    #- name: wss
+    #  port: 8084
+    #  protocol: TCP
+    #  targetPort: 8084
+    #- name: dashboard
+    #  port: 18083
+    #  protocol: TCP
+    #  targetPort: 18083

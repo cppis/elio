@@ -15,17 +15,21 @@ const (
 	defaultToquiesceMs uint = 1000
 )
 
+type sessionSet map[*elio.Session]struct{}
+
 type Mqtter struct {
-	mqtt      *elio.MqttClient
-	url       string
-	onConnect mqtt.OnConnectHandler
+	mqtt       *elio.MqttClient
+	url        string
+	onConnect  mqtt.OnConnectHandler
+	topics     map[string]sessionSet
 }
 
 func NewMqtter(url string, onConnect mqtt.OnConnectHandler) *Mqtter {
 	q := new(Mqtter)
 	if nil != q {
 		q.url = url
-		q.onConnect = onConnect
+		q.onConnect  = onConnect
+		q.topics	 = make(map[string]sessionSet)
 	}
 	return q
 }
@@ -86,6 +90,7 @@ func (q *Mqtter) Sub(n *elio.Session, t string, c mqtt.MessageHandler) {
 		elio.AppDebug().Str(elio.LogObject, q.String()).
 			Msgf("succeed to subscribe to mqtt.client:%s with topic:%s", q.mqtt.String(), t)
 
+		q.sessionSet[n] = struct{}{}
 	}
 }
 
@@ -100,6 +105,7 @@ func (q *Mqtter) Unsub(n *elio.Session, t string) {
 		//elio.AppTrace().Str(elio.LogObject, q.String()).
 		//	Msgf("succeed to unsubscribe to mqtt.client:%s", q.mqtt.String())
 
+		delete(q.sessionSet, n)
 	}
 }
 
@@ -156,4 +162,34 @@ func (q *Mqtter) getMqtt() *elio.MqttClient {
 // setMqtt set mqtt client
 func (q *Mqtter) setMqtt(c *elio.MqttClient) {
 	q.mqtt = c
+}
+
+func (q *Mqtter) addSet(t string, n *elio.Session) {
+	_, ok := q.topics[t]
+	if false == ok {
+		q.topics[t] = make(sessionSet)
+	}
+
+	q.topics[t][n] = struct{}{}
+}
+
+func (q *Mqtter) delSet(t string, n *elio.Session) (ok bool) {
+	_, ok = q.topics[t]
+	if true == ok {
+		_, ok = q.topics[t][n]
+		if true == ok {
+			delete(q.topics[t], n)
+		}
+	}
+
+	return ok
+}
+
+func (q *Mqtter) findSet(t string, n *elio.Session) (ok bool) {
+	_, ok = q.topics[t]
+	if true == ok {
+		_, ok = q.topics[t][n]
+	}
+
+	return ok
 }
