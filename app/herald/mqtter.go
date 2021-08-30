@@ -18,18 +18,18 @@ const (
 type sessionSet map[*elio.Session]struct{}
 
 type Mqtter struct {
-	mqtt       *elio.MqttClient
-	url        string
-	onConnect  mqtt.OnConnectHandler
-	topics     map[string]sessionSet
+	mqtt      *elio.MqttClient
+	url       string
+	onConnect mqtt.OnConnectHandler
+	topics    map[string]sessionSet
 }
 
 func NewMqtter(url string, onConnect mqtt.OnConnectHandler) *Mqtter {
 	q := new(Mqtter)
 	if nil != q {
 		q.url = url
-		q.onConnect  = onConnect
-		q.topics	 = make(map[string]sessionSet)
+		q.onConnect = onConnect
+		q.topics = make(map[string]sessionSet)
 	}
 	return q
 }
@@ -90,7 +90,7 @@ func (q *Mqtter) Sub(n *elio.Session, t string, c mqtt.MessageHandler) {
 		elio.AppDebug().Str(elio.LogObject, q.String()).
 			Msgf("succeed to subscribe to mqtt.client:%s with topic:%s", q.mqtt.String(), t)
 
-		q.sessionSet[n] = struct{}{}
+		q.addSet(t, n)
 	}
 }
 
@@ -105,7 +105,7 @@ func (q *Mqtter) Unsub(n *elio.Session, t string) {
 		//elio.AppTrace().Str(elio.LogObject, q.String()).
 		//	Msgf("succeed to unsubscribe to mqtt.client:%s", q.mqtt.String())
 
-		delete(q.sessionSet, n)
+		q.delSet(t, n)
 	}
 }
 
@@ -153,6 +153,15 @@ func (q *Mqtter) Unsubscribe(topic string) error {
 	return fmt.Errorf("mqtt is not prepared")
 }
 
+// OnSub on subscribe from topic
+func (q *Mqtter) OnSub(t string, p string) {
+	if _, ok := q.topics[t]; true == ok {
+		for n, _ := range q.topics[t] {
+			n.Write([]byte(p))
+		}
+	}
+}
+
 // private methods
 // getMqtt get mqtt client
 func (q *Mqtter) getMqtt() *elio.MqttClient {
@@ -164,11 +173,25 @@ func (q *Mqtter) setMqtt(c *elio.MqttClient) {
 	q.mqtt = c
 }
 
+func (q *Mqtter) delAll(n *elio.Session) {
+	for _, t := range q.topics {
+		if _, ok := t[n]; true == ok {
+			elio.AppDebug().Str(elio.LogObject, q.String()).
+				Msgf("delete object:%s from topic:%s", n.String(), t)
+
+			delete(t, n)
+		}
+	}
+}
+
 func (q *Mqtter) addSet(t string, n *elio.Session) {
 	_, ok := q.topics[t]
 	if false == ok {
 		q.topics[t] = make(sessionSet)
 	}
+
+	elio.AppDebug().Str(elio.LogObject, q.String()).
+		Msgf("add object:%s to topic:%s", n.String(), t)
 
 	q.topics[t][n] = struct{}{}
 }
@@ -178,6 +201,9 @@ func (q *Mqtter) delSet(t string, n *elio.Session) (ok bool) {
 	if true == ok {
 		_, ok = q.topics[t][n]
 		if true == ok {
+			elio.AppDebug().Str(elio.LogObject, q.String()).
+				Msgf("delete object:%s to topic:%s", n.String(), t)
+
 			delete(q.topics[t], n)
 		}
 	}

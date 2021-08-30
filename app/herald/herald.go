@@ -66,6 +66,8 @@ func (s *Herald) OnOpen(n *elio.Session) error {
 func (s *Herald) OnClose(n *elio.Session, err error) {
 	//fmt.Printf("c")
 
+	s.mqtter.delAll(n)
+
 	elio.AppDebug().Str(elio.LogObject, s.String()).
 		Str(elio.LogSession, n.String()).Msgf("service:%s on.close", s.Name())
 }
@@ -256,4 +258,6 @@ func (s *Herald) mqttOnConnect(c mqtt.Client) {
 func (s *Herald) mqttOnSub(c mqtt.Client, m mqtt.Message) {
 	elio.AppInfo().Str(elio.LogObject, s.String()).
 		Msgf("mqtt on.sub with topic:%s payload:%s", m.Topic(), string(m.Payload()))
+
+	s.mqtter.OnSub(m.Topic(), string(m.Payload()))
 }
