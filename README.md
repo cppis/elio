@@ -23,6 +23,11 @@ $ cd elio
 ### [Setting `Skaffold` on Windows](docs/setting.skaffold.md)  
 `Skaffold` settings on windows for continuous developing a Kubernetes-native app.  
 
+<br/>
+
+### [Setting `Helm` on Windows](docs/setting.helm.md)  
+`Helm` settings on windows for managing packages for a Kubernetes.  
+
 <br/><br/><br/>
 
 ## Run Echo  

@@ -1,6 +1,29 @@
 # herald with helm
 
-build and tag image from Project Root:  
+<figure>
+  <div style="text-align:center">
+    <img src="https://miro.medium.com/max/400/1*ANDxSZMbvvhaxwqdI-6rPw.png" style="width: 120px; max-width: 100%; height: auto" title="helm" />
+  </div>
+</figure>
+
+## Installation  
+### Download `elio`  
+```shell
+$ git clone https://github.com/cppis/elio
+$ cd elio
+```
+
+> Now, **$PWD** is the root path.  
+
+<br/>
+
+### [Setting `Helm` on Windows](docs/setting.helm.md)  
+`Helm` settings on windows for managing packages for a Kubernetes.  
+
+<br/><br/><br/>
+
+## Run  
+To build and tag image from Project Root:  
 ```shell
 $ cd {Project Root}
 $ docker build -t herald:v0.0.1 -f app/herald/k8s-resources/Dockerfile .
