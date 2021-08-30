@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: emqx-statefulset
   labels:
     app: emqx

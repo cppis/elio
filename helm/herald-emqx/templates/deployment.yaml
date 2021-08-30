@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: {{ .Release.Namespace }}
   name: {{ include "herald.fullname" . }}
   labels:
     {{- include "herald.labels" . | nindent 4 }}
@@ -37,21 +38,13 @@ spec:
             - name: t2p
               containerPort: 7000
               protocol: TCP
-          #livenessProbe:
-          #  httpGet:
-          #    path: /
-          #    port: http
-          #readinessProbe:
-          #  httpGet:
-          #    path: /
-          #    port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: "HERALD_IN_URL"
               value: "0.0.0.0:7000"
             - name: "HERALD_MQTT_URL"
-              value: "emqx@emqx-statefulset-0.emqx-headless.default.svc.cluster.local:1883"
+              value: "emqx@emqx-statefulset-0.emqx-headless.{{ .Release.Namespace }}.svc.cluster.local:1883"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

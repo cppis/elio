@@ -3,7 +3,7 @@
 build and tag image from Project Root:  
 ```shell
 $ cd {Project Root}
-$ docker build -t herald:v0.0.1 -f /app/herald/k8s-resources/Dockerfile .
+$ docker build -t herald:v0.0.1 -f app/herald/k8s-resources/Dockerfile .
 ```
 
 Test docker image:  
@@ -25,15 +25,29 @@ $ helm create herald
 ## Install a *release*  
 To install chart as release `herald-emqx-release`:  
 ```shell
+$ helm install herald-emqx-release helm/herald-emqx
+```
+
+<br/>
+
+Or you can specify *value.yaml* or *namespace*:  
+```shell
 $ helm install 
     -f hello-world/values.yaml
     -n herald
     herald-emqx-release helm/herald-emqx
 ```
 
-helm install herald-emqx-release helm/herald-emqx
+> To pass environment variable add `--set` option like `--set HERALD_IN_URL="0.0.0.0:8000"`.  
 
-> To pass environment variable add `--set` option like `--set HERALD_IN_URL="0.0.0.0:800"`
+<br/>
+
+To simulate an install for debugging:  
+```shell
+$ helm install herald-emqx-release helm/herald-emqx --dry-run --debug
+```
+
+<br/>
 
 To find exposed service port:  
 ```shell
@@ -41,9 +55,18 @@ $ kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" servic
 $ kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}"
 ```
 
+<br/>
+
 To list release:  
 ```shell
 helm list
+```
+
+<br/>
+
+To get status of release for debugging:  
+```shell
+$ helm status herald-emqx-release
 ```
 
 <br/><br/>
@@ -54,9 +77,9 @@ To uninstall a release `herald-emqx-release`:
 $ helm uninstall herald-emqx-release
 ```
 
-```shell
-helm delete herald-emqx-release --purge
-```
+> To simulate an uninstall for debugging, add `--dry-run` option.
+
+<br/>
 
 delete namespace in the kubernetes cluster:  
 ```shell
