@@ -34,7 +34,11 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: app/herald/k8s-resources
+          context: .
+          file: app/herald/k8s-resources/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/simplewhale:latest
           labels: ${{ steps.meta.outputs.labels }}
+          
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
