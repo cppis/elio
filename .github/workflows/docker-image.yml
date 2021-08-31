@@ -37,8 +37,8 @@ jobs:
           context: .
           file: app/herald/k8s-resources/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+      #- name: Image digest
+      #  run: echo ${{ steps.docker_build.outputs.digest }}
