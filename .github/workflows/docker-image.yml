@@ -6,8 +6,10 @@
 name: Publish Docker image
 
 on:
-  tags:
-    - 'v*'
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0
 
 jobs:
   push_to_registry:
