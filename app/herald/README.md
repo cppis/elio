@@ -6,7 +6,7 @@ It is a sample app to introduce pub/sub using message broker(`emqx`).
 
 ![docs/images/herald.skaffold.png](../../docs/images/herald.skaffold.config.png)  
 
-<br/>
+<br/><br/>
 
 ## Installation  
 ### Download `elio`  
