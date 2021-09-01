@@ -4,7 +4,7 @@ It is a sample app to introduce pub/sub using message broker(`emqx`).
 
 `k8s-resources/profiles/local.yaml`:  
 
-![docs/images/herald.skaffold.png](../../docs/images/herald.skaffold.config.png)  
+![docs/images/herald.skaffold.png](https://github.com/cppis/elio/blob/dev/docs/images/herald.skaffold.config.png?raw=true)  
 
 <br/><br/>
 
