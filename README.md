@@ -3,7 +3,8 @@
 This library allows you to quickly write epoll-based servers.  
 
 [![github-license](https://img.shields.io/github/license/cppis/elio)](https://img.shields.io/github/license/cppis/elio)
-[![build workflow](https://github.com/cppis/elio/actions/workflows/build-elio.yml/badge.svg)](https://github.com/cppis/elio/actions/workflows/build-elio.yml/badge.svg)
+[![Build App](https://github.com/cppis/elio/actions/workflows/build-app.yml/badge.svg)](https://github.com/cppis/elio/actions/workflows/build-app.yml/badge.svg)
+[![Publish App](https://github.com/cppis/elio/actions/workflows/publish-app.yml/badge.svg)](https://github.com/cppis/elio/actions/workflows/publish-app.yml/badge.svg)
 [![github-license](https://img.shields.io/github/go-mod/go-version/cppis/elio)](https://img.shields.io/github/go-mod/go-version/cppis/elio)
 [![tag version](https://img.shields.io/github/v/tag/cppis/elio)](https://img.shields.io/github/v/tag/cppis/elio)
 
