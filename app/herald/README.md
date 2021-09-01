@@ -1,6 +1,6 @@
 # herald
 `herald` means messanger.  
-It is a sample app to introduce pub/sub using message broker(`emqx`).  
+It is a sample app to test pub/sub of backing `emqx` message broker.  
 
 `k8s-resources/profiles/local.yaml`:  
 
