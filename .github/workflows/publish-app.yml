@@ -49,4 +49,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: cppis/herald
-          readme-filepath: app/herald/README.md
+          readme-filepath: app/herald/hub.md

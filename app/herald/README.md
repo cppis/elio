@@ -1,8 +1,10 @@
 # herald
-`herald` means messanger.  
-It is a sample app to test pub/sub of backing `emqx` message broker.  
+`herald` means a messanger.  
+It is a sample app to test pub/sub of backing `emqx` message broker  
+using [`elio`](https://github.com/cppis/elio) library.  
 
-`k8s-resources/profiles/local.yaml`:  
+If you run `skaffold` with `k8s-resources/profiles/local.yaml`,  
+it is configured as follows in a Kubernetes:  
 
 ![docs/images/herald.skaffold.png](https://github.com/cppis/elio/blob/dev/docs/images/herald.skaffold.config.png?raw=true)  
 
