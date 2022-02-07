@@ -9,7 +9,10 @@ using [`elio`](https://github.com/cppis/elio) library.
 
 ## Run  
 ```shell
-$ docker run -e HERALD_IN_URL=0.0.0.0:7000 -e HERALD_MQTT_URL=localhost:1883 -p 7000:7000 cppis/herald
+$ docker run \
+  -e HERALD_IN_URL=0.0.0.0:7000 \
+  -e HERALD_MQTT_URL=localhost:1883 \
+  -p 7000:7000 cppis/herald
 ```
 * HERALD_IN_URL: `herald` listen URL  
 * HERALD_MQTT_URL: `herald` backing `mqtt` URL  
