@@ -7,6 +7,10 @@ build:
   - image: dockerfile-image
     docker:
       dockerfile: app/echo/k8s-resources/Dockerfile
+    #sync:
+    #  manual:
+    #  - src: '../echo.go'
+    #    dest: static
 deploy:
   kubectl:
     manifests:

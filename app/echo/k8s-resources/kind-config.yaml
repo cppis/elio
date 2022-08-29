@@ -1,0 +1,9 @@
+# cluster-config.win.yaml 로 저장합니다.
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+containerdConfigPatches:
+...
+nodes:
+  - role: control-plane
+  - role: worker
+  - role: worker

@@ -1,6 +1,6 @@
-# Setting `Skaffold` on Windows
+# Setting `Skaffold` on WSL
 
-This post shows how to set [`Skaffold`](https://skaffold.dev/) up on **Windows 10**.  
+This post shows how to set [`Skaffold`](https://skaffold.dev/) up on **Windows WSL2**.  
 
 <br/><br/>
 
@@ -11,6 +11,12 @@ To update to WSL 2, you must be running Windows 10 or higher.
 * For x64 systems: **Version 1903** or higher, with **Build 18362** or higher.
 * For ARM64 systems: **Version 2004** or higher, with **Build 19041** or higher.
 * Builds lower than **18362** do not support WSL 2. Use the [Windows Update Assistant](https://www.microsoft.com/ko-kr/software-download/windows10ISO) to update your version of Windows.
+
+<br/>
+
+### [WSL2](https://docs.microsoft.com/en-us/windows/wsl/)  
+* [Install Linux on Windows with WSL](https://docs.microsoft.com/en-us/windows/wsl/install)
+* [Advanced settings configuration in WSL](https://docs.microsoft.com/en-us/windows/wsl/wsl-config)
 
 <br/>
 
@@ -43,63 +49,22 @@ to build simple, reliable, and efficient software.
 
 <br/>
 
+### [Kind](https://kind.sigs.k8s.io/)  
+[Kind](https://kind.sigs.k8s.io/) is a tool for running local Kubernetes clusters using Docker container `nodes`.  
+* [Kind Installation](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)  
+  ```bash
+  curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.14.0/kind-linux-amd64
+  chmod +x ./kind
+  sudo mv ./kind /usr/local/bin/kind
+  ```
+
+<br/>
+
 ### [`kubectl`](https://kubernetes.io/docs/tasks/tools/)  
 The Kubernetes command-line tool, `kubectl`, allows you to run commands  
 against Kubernetes clusters. 
 
-* [Install kubectl on Windows](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)  
-
-<br/>
-
-### [`minikube`(Optional)](https://minikube.sigs.k8s.io/docs/start/)   
-`minikube` quickly sets up a local Kubernetes cluster on macOS, Linux, and Windows.  
-`minikube` focus on helping application developers and new Kubernetes users.  
-
-* Download and run the stand-alone minikube [Windows installer](https://storage.googleapis.com/minikube/releases/latest/minikube-installer.exe).  
-* [hyperv driver](https://minikube.sigs.k8s.io/docs/drivers/hyperv/)  
-  [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/) is a native hypervisor built in to modern versions of Microsoft Windows.  
-  * [Enabling Hyper-V](https://minikube.sigs.k8s.io/docs/drivers/hyperv/#enabling-hyper-v)  
-  <figure>
-    <div style="text-align:center">
-      <img src="https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/media/enable_role_upd.png" style="width: 320px; max-width: 100%; height: auto" title="cloudflare fixed the bug" />
-    </div>
-  </figure>
-
-
-    ```shell
-    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
-    ```
-    If Hyper-V was not previously active, you will need to **reboot**.  
-
-  * Add Virtual Network Switch  
-    * Type `hyper-v` in search bar to open the **Hyper-V Manager** and run it.  
-    * Select `Virtual Switch Manager...` on the right panel.  
-    * Select `New virtual network switch` on the left panel, select `External`  
-      and press `Create Virtual Switch` button to create a virtual switch for minikube.  
-
-      <figure>
-      <div style="text-align:center">
-        <a href="https://drive.google.com/uc?export=view&id=1NKLzsTq1L3s8bL0-worZnS6rGfL4iZey">
-        <img src="https://drive.google.com/uc?export=view&id=1NKLzsTq1L3s8bL0-worZnS6rGfL4iZey" style="width: 500px; max-width: 100%; height: auto" title="hypver-v-virtual-switches" />
-        </a>
-      </div>
-      </figure>
-
-    * Name the switch **Primary Virtual Switch** and click the **OK** button.  
-    * To make *hyperv* the default driver:
-        ```shell
-        minikube config set driver hyperv
-        ```
-
-    <br/>
-
-    > Once you have the switch created we are now ready to start minikube.  
-    > If you don't want to use *hyperv* for default,  
-    > Run the following command to start the minikube VM with our applied changes.  
-    > 
-    > ```shell
-    > minikube start --vm-driver hyperv --hyperv-virtual-switch "Primary Virtual Switch"  
-    > ```
+* [Install and Set Up kubectl on Linux](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)  
 
 <br/>
 
@@ -146,43 +111,55 @@ The following figure shows `Skaffolder` workflow.
 
 ### Start  
 After all settings are done, run local kubernetes by the following command:  
-(Assumes `minikube` default driver is hyperv)
 ```shell
-minikube start
-cd app/echo
+kind create cluster --config app/echo/k8s-resources/kind-config.yaml --name elio
+kubectl config current-context
+  kind-elio
+cd $ELIO_ROOT
 ```
 
 `skaffold dev` enables continuous local development on an application.  
 ```shell
-skaffold dev -p dev
+skaffold -f ./app/echo/k8s-resources/skaffold.yaml dev -p dev
 ```
 
 Or, `skaffold debug` acts like `skaffold dev`, but it configures containers in pods  
 for debugging as required for each container’s runtime technology.  
 ```shell
-skaffold debug -p debug
+skaffold -f ./app/echo/k8s-resources/skaffold.yaml debug -p debug
+```
+
+<br/>
+
+### Test  
+You can test echo easily by using telnet.  
+And, you can end server by send `Ctrl+c`.  
+
+```
+telnet localhost 7000
 ```
 
 <br/>
 
 ### Stop  
-The dev loop will run until the user cancels the `Skaffold` process with `Ctrl+C`.  
-Upon receiving this signal, `Skaffold` will clean up all deployed artifacts on the active cluster.  
-This can be optionally disabled by using the `--no-prune` flag.  
+#### [Kubernetes resource cleanup](https://skaffold.dev/docs/pipeline-stages/cleanup/#kubernetes-resource-cleanup)  
+After running `skaffold run` or `skaffold deploy` and deploying your app to a cluster, running `skaffold delete` will remove all the resources you deployed. Cleanup is enabled by default, it can be turned off by `--cleanup=false`  
 
-<br/>
+#### [Ctrl + C](https://skaffold.dev/docs/pipeline-stages/cleanup/#ctrl--c)  
+When running `skaffold dev` or `skaffold debug`, pressing `Ctrl+C` (SIGINT signal) will kick off the cleanup process which will mimic the behavior of `skaffold delete`. If for some reason the Skaffold process was unable to catch the SIGINT signal, `skaffold delete` can always be run later to clean up the deployed Kubernetes resources.
 
-To stop minikube, run the following command:  
-```shell
-minikube stop
+To enable image pruning, you can run Skaffold with both `--no-prune=false` and `--cache-artifacts=false`:
+
+```
+skaffold dev --no-prune=false --cache-artifacts=false
 ```
 
 <br/>
 
 ### Delete  
-To delete minikube, run the following command:  
+To delete kind, run the following command:  
 ```shell
-minikube delete
+kind delete clusters elio
 ```
 
 <br/><br/><br/>

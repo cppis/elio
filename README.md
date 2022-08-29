@@ -15,13 +15,14 @@ This library allows you to quickly write epoll-based servers.
 ```shell
 $ git clone https://github.com/cppis/elio && cd elio
 $ go mod vendor
+$ export ELIO_ROOT=$(pwd)
 ```
 
-> Now, **$PWD** is the root path.  
+> Now, **$ELIO_ROOT** is the root path.  
 
 <br/>
 
-### [Setting `Skaffold` on Windows](docs/setting.skaffold.md)  
+### [Setting `Skaffold` on WSL](docs/setting.skaffold.md)  
 `Skaffold` settings on windows for continuous developing a Kubernetes-native app.  
 
 <br/>
@@ -45,7 +46,7 @@ using `go run`, `docker` and `Skaffold`.
 
 first, move to echo project path.
 ```shell
-cd app/echo
+cd $ELIO_ROOT/app/echo
 ```
 
 <br/>
@@ -79,17 +80,17 @@ $ docker run -d -e ECHO_IN_URL="0.0.0.0:7000" -p 7000:7000 -p 2345:2345 elio:v0.
 To use the `Skaffold`, you need thd following the [Setup `Skaffold`](#setup-skaffold).  
 First move to Project root directory.  
 ```shell
-$ cd {Project Root}
+$ cd $ELIO_ROOT
 ```
 
 To run `echo` using `Skaffold`, run the following command:  
 ```shell
-$ skaffold -f app/echo/k8s-resources/skaffold.yaml dev -p dev
+$ skaffold -f ./app/echo/k8s-resources/skaffold.yaml dev -p dev
 ```
 
 Or, to run `echo` in debugging mode using `Skaffold`, run the following command:  
 ```shell
-$ skaffold -f app/echo/k8s-resources/skaffold.yaml debug -p debug
+$ skaffold -f ./app/echo/k8s-resources/skaffold.yaml debug -p debug
 ```
 
 <br/><br/><br/>
