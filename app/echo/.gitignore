@@ -2,3 +2,4 @@
 vendor/
 echo
 echo.exe
+__debug_bin

@@ -25,7 +25,7 @@ RUN go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" .
 
 
 # Run on scratch
-FROM alpine:3.10
+FROM alpine:latest
 WORKDIR /app
 
 # front

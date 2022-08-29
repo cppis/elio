@@ -13,8 +13,8 @@ This library allows you to quickly write epoll-based servers.
 ## Installation  
 ### Download `elio`  
 ```shell
-$ git clone https://github.com/cppis/elio
-$ cd elio
+$ git clone https://github.com/cppis/elio && cd elio
+$ go mod vendor
 ```
 
 > Now, **$PWD** is the root path.  
@@ -53,7 +53,7 @@ cd app/echo
 ### using `go run`  
 To run `echo` service, run the following command:  
 ```shell
-$ ECHO_IN_URL="0.0.0.0:7000" go run main.go
+$ ECHO_IN_URL="0.0.0.0:7000" go run .
 ```
 
 You can change the url of service `echo` by changing  
@@ -84,12 +84,12 @@ $ cd {Project Root}
 
 To run `echo` using `Skaffold`, run the following command:  
 ```shell
-$ skaffold -f app\echo\k8s-resources\skaffold.yaml dev -p dev
+$ skaffold -f app/echo/k8s-resources/skaffold.yaml dev -p dev
 ```
 
 Or, to run `echo` in debugging mode using `Skaffold`, run the following command:  
 ```shell
-$ skaffold -f app\echo\k8s-resources\skaffold.yaml debug -p debug
+$ skaffold -f app/echo/k8s-resources/skaffold.yaml debug -p debug
 ```
 
 <br/><br/><br/>
