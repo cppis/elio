@@ -51,24 +51,11 @@ against Kubernetes clusters.
 ### [`Skaffold`](https://skaffold.dev/docs/install/)  
 `Skaffold` is a command line tool that facilitates continuous development for Kubernetes-native applications. Skaffold handles the workflow for building, pushing, and deploying your application, and provides building blocks for creating CI/CD pipelines. This enables you to focus on iterating on your application locally while Skaffold continuously deploys to your local or remote Kubernetes cluster.  
 
-* [Download Skaffold](https://storage.googleapis.com/skaffold/releases/latest/skaffold-windows-amd64.exe)  
-  The latest stable release binary can be found here:  
-  Simply download it and place it in your `PATH` as `skaffold.exe`.
-
-  > You can permanently add a path to system `PATH`:   
-  > ```shell
-  > $ setx /M path "%path%;{Skaffold Path}"
-  > ```
-  > Or add to user `PATH`:   
-  > ```shell
-  > $ setx path "%path%;{Skaffold Path}"
-  > ```
-
-
-#### [`--generate-manifests` Flag](https://skaffold.dev/docs/pipeline-stages/init/#--generate-manifests-flag)  
-`beta`  
-`skaffold init` allows for use of a `--generate-manifests` flag, which will try 
-to generate basic kubernetes manifests for a user’s project to help get things up and running. If bringing a project to skaffold that has no kubernetes manifests yet, it may be helpful to run skaffold init with this flag.  
+* [Installing Skaffold](https://skaffold.dev/docs/install/)  
+  ```
+  curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && \
+  sudo install skaffold /usr/local/bin/
+  ```
 
 <br/>
 

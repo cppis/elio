@@ -1,0 +1,9 @@
+dependencies:
+- name: common
+  repository: https://charts.bitnami.com/bitnami
+  version: 2.0.1
+- name: emqx
+  repository: https://repos.emqx.io/charts
+  version: 4.3.11
+digest: sha256:5d88a51fc1d257d03e26c5f4a7e05fcb3685b57f0b74fc8f262950533b961445
+generated: "2022-09-01T00:08:59.5200532+09:00"

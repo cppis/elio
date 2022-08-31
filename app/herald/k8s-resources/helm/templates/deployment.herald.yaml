@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  replicas: {{ .Values.herald.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.herald.image }}
+        env:
+          - name: HERALD_IN_URL
+            value: "{{ .Values.herald.inUrl }}"
+          - name: HERALD_MQTT_URL
+            value: "{{ tpl (.Release.Name) . }}-emqx:1883"
+      initContainers:
+      - name: wait-for-emqx
+        image: bitnami/kubectl
+        imagePullPolicy: IfNotPresent
+        command:
+          - /bin/sh
+          - -exc
+          - |
+            n=0
+            until [ $n -ge 20 ]; do
+                POD_READY=$(kubectl get pods -n {{ .Release.Namespace }} {{ .Release.Name }}-emqx-0 -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}')
+                if [ "${POD_READY}" = "True" ] ; then
+                    break
+                fi
+                sleep 5
+            done
+        env:
+          - name: WAITFOR_POD
+            value: {{ .Release.Name }}-emqx-0
+          - name: WAITFOR_NAMESPACE
+            value: {{ .Release.Namespace }}

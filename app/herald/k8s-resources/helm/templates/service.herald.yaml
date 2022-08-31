@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Release.Name }}-service
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: {{ .Release.Name }}
+  type: {{ .Values.herald.service.type }}
+  ports:
+    - port: {{ .Values.herald.service.port }}
+      {{- if .Values.herald.service.nodePort }}
+      nodePort: {{ .Values.herald.service.nodePort }}
+      {{- end }}
+      protocol: TCP
+      name: herald

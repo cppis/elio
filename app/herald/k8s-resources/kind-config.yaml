@@ -7,5 +7,9 @@ containerdConfigPatches:
     endpoint = ["http://kind-registry:5000"]
 nodes:
   - role: control-plane
-  - role: worker
+    extraPortMappings:
+      - containerPort: 30000
+        hostPort: 7000
+        listenAddress: "0.0.0.0"
+        protocol: tcp
   - role: worker

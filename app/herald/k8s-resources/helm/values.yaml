@@ -1,0 +1,62 @@
+# Default values for app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+#  # Annotations to add to the service account
+#  annotations: {}
+#  # The name of the service account to use.
+#  # If not set and create is true, a name is generated using the fullname template
+#  name: "emqx"
+
+emqx:
+  replicaCount: 1
+  service:
+    type: ClusterIP
+  url:
+  k8sApiServer: "https://kubernetes.default.svc:443"
+  k8sSuffix: "svc.cluster.local"
+  persistence:
+    enabled: false
+    storageClass: manual
+  #resources:
+  #  limits:
+  #    cpu: 500m
+  #    memory: 512Mi
+  #  requests:
+  #    cpu: 50m
+  #    memory: 128Mi
+
+podAnnotations: {}
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+
+# herald config
+herald:
+  replicaCount: 1
+  image: "localhost:5001/skaffold-herald:latest"
+  service:
+    type: NodePort
+    port: 7000
+    nodePort: 30000
+  inUrl: "0.0.0.0:7000"
