@@ -34,10 +34,10 @@ Docker Desktop includes a standalone Kubernetes server and client, as well as Do
 
 <br/>
 
-### [`Go` 1.16+](https://golang.org/doc/install)  
+### [`Go` 1.19+](https://golang.org/doc/install)  
 Go is an open source programming language that makes it easy  
 to build simple, reliable, and efficient software.  
-[Download](https://golang.org/doc/install#download) and [Install](https://golang.org/doc/install#install) [`Go`](https://golang.org/) v1.6 or higher for Windows   
+[Download](https://golang.org/doc/install#download) and [Install](https://golang.org/doc/install#install) [`Go`](https://golang.org/) v1.19 or higher  
 
   <figure>
   <div style="text-align:center">
