@@ -53,7 +53,7 @@ run the following command:
 skaffold -f app/echo/assets.k8s/skaffold.yaml dev -p dev
 ```
 
-> Use `-vdebug` option for debugging.  
+> To debugging `Skaffold`, use option `-vdebug`.  
 
 Or, `skaffold debug` acts like `skaffold dev`, but it configures containers in pods  
 for debugging as required for each container’s runtime technology.  

@@ -85,8 +85,10 @@ helm uninstall herald
 To run `herald` using `Skaffold`,  
 run the following command in the Project root directory:  
 ```shell
-skaffold -f app/herald/assets.k8s/skaffold.yaml dev -vdebug
+skaffold -f app/herald/assets.k8s/skaffold.yaml dev
 ```
+
+> To debugging `Skaffold`, use option `-vdebug`.  
 
 > To change detection triggered to manual mode, use option `--trigger=manual`.  
 
@@ -103,6 +105,8 @@ You can test echo easily by using telnet.
 app protocol is custom `t2p` like http.  
 procotol header is separated by newline(`\n` or `\r\n`).  
 And packet delimiter is double newline(`\n\n` or `\r\n\r\n`).
+
+<br/>
 
 ### connect: connect to echo using `telnet`  
   ```bash
@@ -146,8 +150,6 @@ kubectl run -it --rm --restart=Never busybox --image=gcr.io/google-containers/bu
 ```bash
 kubectl port-forward $(kubectl get pods --selector=app=herald --output=jsonpath={.items..metadata.name}) 7002:7002
 ```
-
-<br/><br/><br/>
 
 <br/><br/><br/>
 

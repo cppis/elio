@@ -54,9 +54,9 @@ affinity: {}
 # herald config
 herald:
   replicaCount: 1
-  image: "localhost:5001/skaffold-herald:latest"
+  image: skaffold-herald
   service:
     type: NodePort
     port: 7002
-    nodePort: 30000
+    nodePort: 30002
   inUrl: "0.0.0.0:7002"
