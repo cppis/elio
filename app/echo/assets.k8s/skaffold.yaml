@@ -1,0 +1,32 @@
+apiVersion: skaffold/v2beta19
+kind: Config
+metadata:
+  name: echo
+build:
+  artifacts:
+  - image: elio-echo
+    docker:
+      dockerfile: app/echo/assets.k8s/Dockerfile
+    #sync:
+    #  manual:
+    #  - src: '../echo.go'
+    #    dest: static
+deploy:
+  kubectl:
+    manifests:
+    - deployment.yaml
+portForward:
+- resourceType: deployment
+  resourceName: elio-echo
+  port: 7001
+profiles:
+- name: dev
+  deploy:
+    kubectl:
+      manifests:
+        - app/echo/assets.k8s/profiles/dev.yaml
+- name: debug
+  deploy:
+    kubectl:
+      manifests:
+        - app/echo/assets.k8s/profiles/debug.yaml

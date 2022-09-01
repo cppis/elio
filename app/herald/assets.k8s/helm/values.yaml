@@ -57,6 +57,6 @@ herald:
   image: "localhost:5001/skaffold-herald:latest"
   service:
     type: NodePort
-    port: 7000
+    port: 7002
     nodePort: 30000
-  inUrl: "0.0.0.0:7000"
+  inUrl: "0.0.0.0:7002"

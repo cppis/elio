@@ -52,7 +52,7 @@
             "env": {
                 "ELIO_LOG_JSON": false,
                 "ELIO_LOG_LEVEL": "trace",
-                "HERALD_IN_URL": "0.0.0.0:7000",
+                "HERALD_IN_URL": "0.0.0.0:7002",
                 "HERALD_MQTT_URL": "0.0.0.0:1883"
             },
             "args": [],

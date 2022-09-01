@@ -10,9 +10,9 @@ using [`elio`](https://github.com/cppis/elio) library.
 ## Run  
 ```shell
 $ docker run \
-  -e HERALD_IN_URL=0.0.0.0:7000 \
+  -e HERALD_IN_URL=0.0.0.0:7002 \
   -e HERALD_MQTT_URL=localhost:1883 \
-  -p 7000:7000 cppis/herald
+  -p 7002:7002 cppis/herald
 ```
 * HERALD_IN_URL: `herald` listen URL  
 * HERALD_MQTT_URL: `herald` backing `mqtt` URL  
@@ -25,6 +25,11 @@ You can test echo easily by using telnet.
 app protocol is custom `t2p` like http.  
 procotol header is separated by newline(`\n` or `\r\n`).  
 And packet delimiter is double newline(`\n\n` or `\r\n\r\n`).
+
+### connect: telnet to echo      
+  ```bash
+  telnet localhost 7002
+  ```
 
 ### echo: echo message    
   ```

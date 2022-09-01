@@ -1,0 +1,37 @@
+apiVersion: skaffold/v2beta19
+kind: Config
+#build:
+#  artifacts:
+#    - image: localhost:5001/skaffold-herald
+#      docker:
+#        dockerfile: app/herald/assets.k8s/Dockerfile
+deploy:
+  helm:
+    releases:
+    - name: skaffold-herald
+      chartPath: app/herald/assets.k8s/helm
+      artifactOverrides:
+        herald:
+          image: localhost:5001/skaffold-herald
+portForward:
+  - resourceType: deployment
+    resourceName: skaffold-herald
+    port: 7002
+    localPort: 7002
+
+#profiles:
+#  - name: dev
+#    deploy:
+#      kubectl:
+#        manifests:
+#          - app/herald/assets.k8s/profiles/dev.yaml
+#  - name: local
+#    deploy:
+#      kubectl:
+#        manifests:
+#          - app/herald/assets.k8s/profiles/local.yaml
+#  - name: debug
+#    deploy:
+#      kubectl:
+#        manifests:
+#          - app/herald/assets.k8s/profiles/debug.yaml
