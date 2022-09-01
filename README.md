@@ -43,7 +43,7 @@ $ export ELIO_ROOT=$(pwd)
 
 <br/><br/><br/>
 
-## Under the Hood of Echo  
+## Under the Hood of `Echo`  
 
 `app/echo` is simple echo server written by `elio`.  
 This is the *main* function of `app/echo`:  
