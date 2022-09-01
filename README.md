@@ -39,6 +39,8 @@ $ export ELIO_ROOT=$(pwd)
 ### [Running `Herald`](app/herald/README.md)  
 `Herald` is a simple pub/sub client created using `elio` library.  
 
+* Docker Hub: [cppis/herald](https://hub.docker.com/repository/docker/cppis/herald)  
+
 <br/><br/><br/>
 
 ## Echo example  

@@ -8,6 +8,8 @@ it is configured as follows in a Kubernetes:
 
 ![docs/images/herald.helm](https://github.com/cppis/elio/blob/dev/docs/images/herald.helm.png?raw=true)  
 
+* Docker Hub: [cppis/herald](https://hub.docker.com/repository/docker/cppis/herald)  
+
 <br/><br/><br/>
 
 ## Prerequisites  
@@ -42,7 +44,7 @@ environment variable `HERALD_IN_URL`.
 
 ### using `Docker`  
 ```bash
-docker run -d -e HERALD_IN_URL="0.0.0.0:7002" -p 7002:7002 cppis/elio:latest
+docker run -d -e HERALD_IN_URL="0.0.0.0:7002" -p 7002:7002 cppis/herald:latest
 ```
 
 <br/><br/><br/>
@@ -161,14 +163,3 @@ To delete a kind, run the following command:
 ```bash
 kind delete cluster --name elio
 ```
-
-<br/><br/><br/>
-
-## Reference  
-* [Building K8S cluster of EMQ X starting from scratch](https://www.emqx.com/en/blog/emqx-mqtt-broker-k8s-cluster)  
-
-
-<br/><br/><br/>
-
-## TO-DO  
-* Run `emqx` as stateful cluster in kubernetes  
