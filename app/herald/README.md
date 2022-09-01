@@ -13,15 +13,22 @@ it is configured as follows in a Kubernetes:
 ## Prerequisites  
 ### [Setting `Skaffold` on WSL](docs/setting.skaffold.md)  
 
-Before start, set the working path to the **$ELIO_ROOT**.  
+<br/>
+
+### Setting up [`elio`](https://github.com/cppis/elio)  
+
+Before start, set up `elio` project.  
 ```
-cd $ELIO_ROOT
+git clone https://github.com/cppis/elio && cd elio
+go mod vendor
+export ELIO_ROOT=$(pwd)
 ```
+
 > **$ELIO_ROOT** is the project root path.  
 
 <br/><br/><br/>
 
-## Running on Host  
+## Running app on Host  
 ### Using `go run`  
 To run `herald` service, run the following command:  
 ```shell
@@ -33,7 +40,7 @@ environment variable `HERALD_IN_URL`.
 
 <br/><br/><br/>
 
-## Running on Kubernetes  
+## Running app on Kubernetes  
 ### Create a Kind cluster  
 
 To create a kind, run the following command:  
@@ -90,12 +97,17 @@ docker push localhost:5001/skaffold-herald:latest
 
 <br/><br/><br/>
 
-## Test  
+## Testing app  
 You can test echo easily by using telnet.  
 
 app protocol is custom `t2p` like http.  
 procotol header is separated by newline(`\n` or `\r\n`).  
 And packet delimiter is double newline(`\n\n` or `\r\n\r\n`).
+
+### connect: connect to echo using `telnet`  
+  ```bash
+  telnet localhost 7002
+  ```
 
 ### echo: echo message    
   ```
@@ -139,7 +151,7 @@ kubectl port-forward $(kubectl get pods --selector=app=herald --output=jsonpath=
 
 <br/><br/><br/>
 
-## Ending  
+## Ending app  
 ### [Kubernetes resource cleanup](https://skaffold.dev/docs/pipeline-stages/cleanup/#kubernetes-resource-cleanup)  
 After running `skaffold run` or `skaffold deploy` and deploying your app to a cluster, running `skaffold delete` will remove all the resources you deployed. Cleanup is enabled by default, it can be turned off by `--cleanup=false`  
 

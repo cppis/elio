@@ -6,15 +6,22 @@
 ## Prerequisites  
 ### [Setting `Skaffold` on WSL](docs/setting.skaffold.md)  
 
-Before start, set the working path to the **$ELIO_ROOT**.  
+<br/>
+
+### Setting up [`elio`](https://github.com/cppis/elio)  
+
+Before start, set up `elio` project.  
 ```
-cd $ELIO_ROOT
+git clone https://github.com/cppis/elio && cd elio
+go mod vendor
+export ELIO_ROOT=$(pwd)
 ```
-> **$ELIO_ROOT** is the project root path.  
+
+> Now, **$ELIO_ROOT** is the project root path.  
 
 <br/><br/><br/>
 
-## Running a app on Host  
+## Running app on Host  
 ### Using `go run`  
 To run `echo` service, run the following command:  
 ```shell
@@ -26,7 +33,7 @@ environment variable `ECHO_IN_URL`.
 
 <br/><br/><br/>
 
-## Running a app on Kubernetes  
+## Running app on Kubernetes  
 ### Create a Kind cluster  
 
 To create a kind, run the following command:  
@@ -56,7 +63,7 @@ skaffold -f app/echo/assets.k8s/skaffold.yaml debug -p debug
 
 <br/><br/><br/>
 
-## Testing  
+## Testing app  
 You can test echo easily by using telnet.  
 And, you can end server by send `q` character.  
 
@@ -68,7 +75,7 @@ telnet localhost 7001
 
 <br/><br/><br/>
 
-## Ending a app  
+## Ending app  
 ### [Kubernetes resource cleanup](https://skaffold.dev/docs/pipeline-stages/cleanup/#kubernetes-resource-cleanup)  
 After running `skaffold run` or `skaffold deploy` and deploying your app to a cluster, running `skaffold delete` will remove all the resources you deployed. Cleanup is enabled by default, it can be turned off by `--cleanup=false`  
 
