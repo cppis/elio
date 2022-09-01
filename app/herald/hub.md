@@ -3,7 +3,7 @@
 It is a sample app to test pub/sub of backing `emqx` message broker  
 using [`elio`](https://github.com/cppis/elio) library.  
 
-![docs/images/cppis.herald.png](https://github.com/cppis/elio/blob/dev/docs/images/cppis.herald.png?raw=true)  
+![docs/images/herald.helm.png](https://github.com/cppis/elio/blob/dev/docs/images/herald.helm.png?raw=true)  
 
 <br/><br/>
 
