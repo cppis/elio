@@ -10,7 +10,7 @@
 
 ### Setting up [`elio`](https://github.com/cppis/elio)  
 
-Before start, set up `elio` project.  
+Before start, set up `elio` project:  
 ```
 git clone https://github.com/cppis/elio && cd elio
 go mod vendor

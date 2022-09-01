@@ -1,7 +1,7 @@
 # Herald
-`herald` means a messanger.  
-It is a sample app to test pub/sub of backing `emqx` message broker  
-using [`elio`](https://github.com/cppis/elio) library.  
+`Herald` means a messanger.  
+It is a simple app to test pub/sub of backing `emqx` message broker.  
+Herald uses [`elio`](https://github.com/cppis/elio) library.  
 
 If you run `skaffold` with `assets.k8s/skaffold.yaml`,  
 it is configured as follows in a Kubernetes:  
@@ -24,7 +24,7 @@ go mod vendor
 export ELIO_ROOT=$(pwd)
 ```
 
-> **$ELIO_ROOT** is the project root path.  
+> Now, **$ELIO_ROOT** is the project root path.  
 
 <br/><br/><br/>
 
@@ -37,6 +37,13 @@ HERALD_IN_URL="0.0.0.0:7002" go run app/herald
 
 You can change the listening url of service `herald` by changing  
 environment variable `HERALD_IN_URL`.
+
+<br/>
+
+### using `Docker`  
+```bash
+docker run -d -e HERALD_IN_URL="0.0.0.0:7002" -p 7002:7002 cppis/elio:latest
+```
 
 <br/><br/><br/>
 
@@ -54,16 +61,18 @@ kind create cluster --config app/herald/assets.k8s/kind.cluster.yaml --name elio
 >   kind-elio
 > ```
 
-### Using the `Helm`  
+### Using `Helm`  
 
 To deploy using helm, run the following command:  
 ```bash
 helm upgrade --install herald app/herald/assets.k8s/helm
 ```
 
+helm uninstall herald
+
 <br/>
 
-### Using the `Kind`+`Skaffold`  
+### Using `Skaffold`  
 
 To run `herald` using `Skaffold`,  
 run the following command in the Project root directory:  
@@ -76,23 +85,6 @@ skaffold -f app/herald/assets.k8s/skaffold.yaml dev -vdebug
 Or, to run `herald` in debugging mode using `Skaffold`, run the following command:  
 ```shell
 skaffold -f app/herald/assets.k8s/skaffold.yaml debug
-```
-
-<br/>
-
-### using `Helm`  
-```bash
-cd $ELIO_ROOT
-helm install herald .
-helm uninstall herald
-```
-
-<br/>
-
-### using `Docker`  
-```bash
-docker build --no-cache -t localhost:5001/skaffold-herald:latest -f app/herald/assets.k8s/Dockerfile .
-docker push localhost:5001/skaffold-herald:latest
 ```
 
 <br/><br/><br/>

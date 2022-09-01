@@ -10,8 +10,16 @@ This library allows you to quickly write epoll-based servers.
 
 <br/><br/><br/>
 
-## Installation  
-### Download `elio`  
+## Prerequisites  
+### [Setting `Skaffold` on WSL](docs/setting.skaffold.md)  
+`Skaffold` settings on windows for continuous developing a Kubernetes-native app.  
+<br/><br/><br/>
+
+<br/>
+
+### Setting up `elio`  
+
+Before start, set up `elio` project:  
 ```shell
 $ git clone https://github.com/cppis/elio && cd elio
 $ go mod vendor
@@ -19,16 +27,6 @@ $ export ELIO_ROOT=$(pwd)
 ```
 
 > Now, **$ELIO_ROOT** is the project root path.  
-
-<br/>
-
-### [Setting `Skaffold` on WSL](docs/setting.skaffold.md)  
-`Skaffold` settings on windows for continuous developing a Kubernetes-native app.  
-
-<br/>
-
-### [Setting `Helm` on Windows](docs/setting.helm.md)  
-`Helm` settings on windows for managing packages for a Kubernetes.  
 
 <br/><br/><br/>
 
