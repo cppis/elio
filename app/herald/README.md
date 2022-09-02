@@ -1,4 +1,5 @@
 # Herald
+
 `Herald` means a messanger.  
 It is a simple app to test pub/sub of backing `emqx` MQTT broker.  
 `Herald` written with [`elio`](https://github.com/cppis/elio) library.  
@@ -15,6 +16,10 @@ It is a simple app to test pub/sub of backing `emqx` MQTT broker.
 <br/>
 
 ### [Setting `Kind Registry`](docs/setting.kindregistry.md)  
+
+<br/>
+
+### [Setting Service Ports](docs/../../../docs/setting.service.ports.md)  
 
 <br/>
 

@@ -24,7 +24,6 @@ deploy:
           image: localhost:5001/skaffold-herald
       imageStrategy:
         helm: {}
-
 portForward:
   - resourceType: deployment
     resourceName: skaffold-herald
