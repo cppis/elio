@@ -29,30 +29,30 @@ export ELIO_ROOT=$(pwd)
 
 ## Running app on Host  
 
-You can easily run a `herald` container on the host (without MQTT Broker):  
+You can easily run a `Herald` container on the host (without MQTT Broker):  
 
 ![herald.container](https://github.com/cppis/elio/blob/dev/docs/images/herald.container.png?raw=true)  
 
 <br/>
 
 ### Using `go run`  
-To run `herald` service, run the following command:  
+To run `Herald` service, run the following command:  
 ```shell
 HERALD_IN_URL="0.0.0.0:7002" go run app/herald
 ```
 
-You can change the listening url of service `herald` by changing  
+You can change the listening url of service `Herald` by changing  
 environment variable `HERALD_IN_URL`.
 
 <br/>
 
 ### using `Docker`  
-To run `herald` container, run the following command:  
+To run `Herald` container, run the following command:  
 ```bash
-docker run -d -e HERALD_IN_URL="0.0.0.0:7002" -p 7002:7002 --name herald cppis/herald:latest
+docker run -d -e HERALD_IN_URL="0.0.0.0:7002" -p 7002:7002 --name herald cppis/Herald:latest
 ```
 
-To kill `herald` container, run the following command:  
+To kill `Herald` container, run the following command:  
 ```bash
 docker kill herald 
 ```
@@ -61,7 +61,7 @@ docker kill herald
 
 ## Running app on Kubernetes  
 
-You can easily run a `herald` + `emqx`(MQTT Broker) chart on the kubernetes cluster.   
+You can easily run a `Herald` + `emqx`(MQTT Broker) chart on the kubernetes cluster.   
 
 ![herald.chart](https://github.com/cppis/elio/blob/dev/docs/images/herald.chart.png?raw=true)  
 
@@ -101,14 +101,14 @@ helm uninstall herald
 To run `herald` using `Skaffold`,  
 run the following command in the Project root directory:  
 ```shell
-skaffold -f app/herald/assets.k8s/skaffold.yaml dev
+skaffold -f app/Herald/assets.k8s/skaffold.yaml dev
 ```
 
 > To debugging `Skaffold`, use option `-vdebug`.  
 
 > To change detection triggered to manual mode, use option `--trigger=manual`.  
 
-Or, to run `herald` in debugging mode using `Skaffold`, run the following command:  
+Or, to run `Herald` in debugging mode using `Skaffold`, run the following command:  
 ```shell
 skaffold -f app/herald/assets.k8s/skaffold.yaml debug
 ```
@@ -129,21 +129,32 @@ And packet delimiter is double newline(`\n\n` or `\r\n\r\n`).
   telnet localhost 7002
   ```
 
+<br/>
+
 ### echo: echo message    
   ```
   echo<newline>
   {message}<newline><newline>
   ```
+
+<br/>
+
 ### sub: subcribe to topic    
   ```
   sub<newline>
   {topic}<newline><newline>
   ```
+
+<br/>
+
 ### unsub: unsubcribe from topic  
   ```
   unsub<newline>
   {topic}<newline><newline>
   ```
+
+<br/>
+
 ### pub: publish message to topic  
   ```
   pub<newline>
@@ -155,13 +166,15 @@ And packet delimiter is double newline(`\n\n` or `\r\n\r\n`).
 
 ## Debugging Tips  
 
-* Running _telnet_ in Kubernetes:
+### Running _telnet_ in Kubernetes:
 
 ```bash
 kubectl run -it --rm --restart=Never busybox --image=gcr.io/google-containers/busybox -- sh
 ```
 
-* Port forwarding a pod in Kubernetes:
+<br/>
+
+### Port forwarding a pod in Kubernetes:
  
 ```bash
 kubectl port-forward $(kubectl get pods --selector=app=herald --output=jsonpath={.items..metadata.name}) 7002:7002
@@ -173,6 +186,8 @@ kubectl port-forward $(kubectl get pods --selector=app=herald --output=jsonpath=
 ### [Kubernetes resource cleanup](https://skaffold.dev/docs/pipeline-stages/cleanup/#kubernetes-resource-cleanup)  
 After running `skaffold run` or `skaffold deploy` and deploying your app to a cluster, running `skaffold delete` will remove all the resources you deployed. Cleanup is enabled by default, it can be turned off by `--cleanup=false`  
 
+<br/>
+
 ### [Ctrl + C](https://skaffold.dev/docs/pipeline-stages/cleanup/#ctrl--c)  
 When running `skaffold dev` or `skaffold debug`, pressing `Ctrl+C` (SIGINT signal) will kick off the cleanup process which will mimic the behavior of `skaffold delete`. If for some reason the Skaffold process was unable to catch the SIGINT signal, `skaffold delete` can always be run later to clean up the deployed Kubernetes resources.
 
@@ -181,6 +196,8 @@ To enable image pruning, you can run Skaffold with both `--no-prune=false` and `
 ```
 skaffold dev --no-prune=false --cache-artifacts=false
 ```
+
+<br/>
 
 ### Delete a Kind cluster  
 To delete a kind, run the following command:  
