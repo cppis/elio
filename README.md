@@ -13,7 +13,6 @@ This library allows you to quickly write epoll-based servers.
 ## Prerequisites  
 ### [Setting `Skaffold` on WSL](docs/setting.skaffold.md)  
 `Skaffold` settings on windows for continuous developing a Kubernetes-native app.  
-<br/><br/><br/>
 
 <br/>
 
