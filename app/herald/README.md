@@ -6,7 +6,7 @@ Herald uses [`elio`](https://github.com/cppis/elio) library.
 If you run `skaffold` with `assets.k8s/skaffold.yaml`,  
 it is configured as follows in a Kubernetes:  
 
-![docs/images/herald.helm](https://github.com/cppis/elio/blob/dev/docs/images/herald.helm.png?raw=true)  
+![herald.concept](https://github.com/cppis/elio/blob/dev/docs/images/herald.concept.png?raw=true)  
 
 * Docker Hub: [cppis/herald](https://hub.docker.com/repository/docker/cppis/herald)  
 
@@ -31,6 +31,13 @@ export ELIO_ROOT=$(pwd)
 <br/><br/><br/>
 
 ## Running app on Host  
+
+You can easily run a `herald` container on the host (without emqx):  
+
+![herald.container](https://github.com/cppis/elio/blob/dev/docs/images/herald.container.png?raw=true)  
+
+<br/>
+
 ### Using `go run`  
 To run `herald` service, run the following command:  
 ```shell
@@ -56,6 +63,13 @@ docker kill herald
 <br/><br/><br/>
 
 ## Running app on Kubernetes  
+
+You can easily run a `herald` + `emqx` chart on the kubernetes cluster:   
+
+![herald.chart](https://github.com/cppis/elio/blob/dev/docs/images/herald.chart.png?raw=true)  
+
+<br/>
+
 ### Create a Kind cluster  
 
 To create a kind, run the following command:  

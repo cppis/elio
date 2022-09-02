@@ -54,7 +54,7 @@ affinity: {}
 # herald config
 herald:
   replicaCount: 1
-  image: skaffold-herald
+  image: cppis/herald:latest
   service:
     type: NodePort
     port: 7002
