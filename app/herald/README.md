@@ -15,7 +15,7 @@ It is a simple app to test pub/sub of backing `emqx` MQTT broker.
 
 <br/>
 
-### [Setting `Kind Registry`](docs/setting.kindregistry.md)  
+### [Setting `Kind Registry`](docs/setting.kind.registry.md)  
 
 <br/>
 
