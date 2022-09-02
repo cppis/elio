@@ -49,12 +49,12 @@ environment variable `HERALD_IN_URL`.
 ### using `Docker`  
 To run `Herald` container, run the following command:  
 ```bash
-docker run -d -e HERALD_IN_URL="0.0.0.0:7002" -p 7002:7002 --name herald cppis/Herald:latest
+docker run -d -e HERALD_IN_URL="0.0.0.0:7002" -p 7002:7002 --name herald cppis/herald:latest
 ```
 
 To kill `Herald` container, run the following command:  
 ```bash
-docker kill herald 
+docker rm -f herald 
 ```
 
 <br/><br/><br/>
