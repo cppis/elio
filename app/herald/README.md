@@ -14,6 +14,10 @@ It is a simple app to test pub/sub of backing `emqx` MQTT broker.
 
 <br/>
 
+### [Setting `Kind Registry`](docs/setting.kindregistry.md)  
+
+<br/>
+
 ### Setting up [`elio`](https://github.com/cppis/elio)  
 
 Before start, set up `elio` project.  
@@ -101,7 +105,7 @@ helm uninstall herald
 To run `herald` using `Skaffold`,  
 run the following command in the Project root directory:  
 ```shell
-skaffold -f app/Herald/assets.k8s/skaffold.yaml dev
+skaffold -f app/herald/assets.k8s/skaffold.yaml dev
 ```
 
 > To debugging `Skaffold`, use option `-vdebug`.  

@@ -12,7 +12,13 @@ This library allows you to quickly write epoll-based servers.
 
 ## Prerequisites  
 ### [Setting `Skaffold` on WSL](docs/setting.skaffold.md)  
-`Skaffold` settings on windows for continuous developing a Kubernetes-native app.  
+Covers `Skaffold` settings on WSL for continuous developing a Kubernetes-native app.  
+
+<br/>
+
+### [Setting `Kind Registry`](docs/setting.kindregistry.md)  
+Covers how to configure KIND with a local container image registry.  
+
 <br/><br/><br/>
 
 <br/>

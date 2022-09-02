@@ -4,7 +4,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   name: {{ .Release.Name }}-service
   labels:
-    {{- include "app.labels" . | nindent 4 }}
+    app: {{ .Release.Name }}
 spec:
   selector:
     app: {{ .Release.Name }}

@@ -8,6 +8,10 @@
 
 <br/>
 
+### [Setting `Kind Registry`](docs/setting.kindregistry.md)  
+
+<br/>
+
 ### Setting up [`elio`](https://github.com/cppis/elio)  
 
 Before start, set up `elio` project:  

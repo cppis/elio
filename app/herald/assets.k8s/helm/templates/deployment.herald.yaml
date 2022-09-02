@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ .Release.Name }}
   labels:
-    app: {{ .Chart.Name }}
+    app: {{ .Release.Name }}
 spec:
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: {{ .Release.Name }}
   replicas: {{ .Values.herald.replicaCount }}
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
+        app: {{ .Release.Name }}
     spec:
       containers:
-      - name: {{ .Chart.Name }}
+      - name: {{ .Release.Name }}
         image: {{ .Values.herald.image }}
         env:
           - name: HERALD_IN_URL

@@ -58,7 +58,9 @@ herald:
   inUrl: "0.0.0.0:7002"
   service:
     type: NodePort
+    nodePort: 30002
     port: 7002
   debug:
     type: NodePort
+    nodePort: 30003
     port: 56268

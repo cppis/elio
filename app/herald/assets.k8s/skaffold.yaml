@@ -28,9 +28,9 @@ deploy:
 portForward:
   - resourceType: deployment
     resourceName: skaffold-herald
-    port: 7002
+    port: 30002
     localPort: 7002
   - resourceType: deployment
     resourceName: skaffold-herald
-    port: 56268
+    port: 30003
     localPort: 56268
