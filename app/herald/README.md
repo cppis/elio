@@ -133,14 +133,16 @@ And packet delimiter is double newline(`\n\n` or `\r\n\r\n`).
 
 <br/>
 
-### connect: connect to echo using `telnet`  
+### connect
+connect to echo using `telnet`  
   ```bash
   telnet localhost 7002
   ```
 
 <br/>
 
-### echo: echo message    
+### echo
+echo message    
   ```
   echo<newline>
   {message}<newline><newline>
@@ -148,7 +150,8 @@ And packet delimiter is double newline(`\n\n` or `\r\n\r\n`).
 
 <br/>
 
-### sub: subcribe to topic    
+### sub
+subcribe to topic    
   ```
   sub<newline>
   {topic}<newline><newline>
@@ -156,7 +159,8 @@ And packet delimiter is double newline(`\n\n` or `\r\n\r\n`).
 
 <br/>
 
-### unsub: unsubcribe from topic  
+### unsub
+unsubcribe from topic  
   ```
   unsub<newline>
   {topic}<newline><newline>
