@@ -32,7 +32,7 @@ export ELIO_ROOT=$(pwd)
 
 ## Running app on Host  
 
-You can easily run a `herald` container on the host (without emqx):  
+You can easily run a `herald` container on the host (without MQTT Broker):  
 
 ![herald.container](https://github.com/cppis/elio/blob/dev/docs/images/herald.container.png?raw=true)  
 
@@ -64,7 +64,7 @@ docker kill herald
 
 ## Running app on Kubernetes  
 
-You can easily run a `herald` + `emqx` chart on the kubernetes cluster:   
+You can easily run a `herald` + `emqx`(MQTT Broker) chart on the kubernetes cluster:   
 
 ![herald.chart](https://github.com/cppis/elio/blob/dev/docs/images/herald.chart.png?raw=true)  
 
