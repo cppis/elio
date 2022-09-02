@@ -16,7 +16,7 @@ Covers `Skaffold` settings on WSL for continuous developing a Kubernetes-native 
 
 <br/>
 
-### [Setting `Kind Registry`](docs/setting.kindregistry.md)  
+### [Setting `Kind Registry`](docs/setting.kind.registry.md)  
 Covers how to configure KIND with a local container image registry.  
 
 <br/>
