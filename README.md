@@ -11,13 +11,20 @@ This library allows you to quickly write epoll-based servers.
 <br/><br/><br/>
 
 ## Prerequisites  
-### [Setting `Skaffold` on WSL](docs/setting.skaffold.md)  
+### [Setting `Skaffold` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.skaffold.md)  
+
 Covers `Skaffold` settings on WSL for continuous developing a Kubernetes-native app.  
 
 <br/>
 
-### [Setting `Kind Registry`](docs/setting.kind.registry.md)  
+### [Setting `Kind Registry`](https://github.com/cppis/elio/blob/dev/docs/setting.kind.registry.md)  
+
 Covers how to configure KIND with a local container image registry.  
+
+<br/>
+
+### [Setting Service Ports](https://github.com/cppis/elio/blob/dev/docs/setting.service.ports.md)  
+Covers the port settings for the Kubernetes service.  
 
 <br/>
 

@@ -5,11 +5,15 @@
 <br/><br/><br/>
 
 ## Prerequisites  
-### [Setting `Skaffold` on WSL](docs/setting.skaffold.md)  
+### [Setting `Skaffold` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.skaffold.md)  
 
 <br/>
 
-### [Setting `Kind Registry`](docs/setting.kindregistry.md)  
+### [Setting `Kind Registry`](https://github.com/cppis/elio/blob/dev/docs/setting.kind.registry.md)  
+
+<br/>
+
+### [Setting Service Ports](https://github.com/cppis/elio/blob/dev/docs/setting.service.ports.md)  
 
 <br/>
 
