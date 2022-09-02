@@ -11,15 +11,15 @@ It is a simple app to test pub/sub of backing `emqx` MQTT broker.
 <br/><br/><br/>
 
 ## Prerequisites  
-### [Setting `Skaffold` on WSL](docs/setting.skaffold.md)  
+### [Setting `Skaffold` on WSL](../../docs/setting.skaffold.md)  
 
 <br/>
 
-### [Setting `Kind Registry`](docs/setting.kind.registry.md)  
+### [Setting `Kind Registry`](../../docs/setting.kind.registry.md)  
 
 <br/>
 
-### [Setting Service Ports](docs/../../../docs/setting.service.ports.md)  
+### [Setting Service Ports](../../docs/setting.service.ports.md)  
 
 <br/>
 

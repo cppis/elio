@@ -1,4 +1,8 @@
-# [Create A Cluster And Registry](https://kind.sigs.k8s.io/docs/user/local-registry/#create-a-cluster-and-registry)  
+# Setting `Kind Registry`  
+
+<br/>
+
+## [Create A Cluster And Registry](https://kind.sigs.k8s.io/docs/user/local-registry/#create-a-cluster-and-registry)  
 
 If you don't have a Kubernetes local image registry, create one.  
 
