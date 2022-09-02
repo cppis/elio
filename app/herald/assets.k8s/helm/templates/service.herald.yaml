@@ -16,3 +16,9 @@ spec:
       {{- end }}
       protocol: TCP
       name: herald
+    - port: {{ .Values.herald.debug.port }}
+      {{- if .Values.herald.debug.nodePort }}
+      nodePort: {{ .Values.herald.debug.nodePort }}
+      {{- end }}
+      protocol: TCP
+      name: herald-debug

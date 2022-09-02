@@ -9,6 +9,9 @@ spec:
   - port: 7001
     name: echo
     protocol: TCP
+  - port: 56268
+    name: echo-debug
+    protocol: TCP
   clusterIP: None
   selector:
     app: elio-echo

@@ -55,8 +55,10 @@ affinity: {}
 herald:
   replicaCount: 1
   image: cppis/herald:latest
+  inUrl: "0.0.0.0:7002"
   service:
     type: NodePort
     port: 7002
-    nodePort: 30002
-  inUrl: "0.0.0.0:7002"
+  debug:
+    type: NodePort
+    port: 56268

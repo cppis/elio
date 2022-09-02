@@ -35,7 +35,7 @@
             "program": "${workspaceRoot}/app/echo",
             "env": {
                 "ELIO_LOG_JSON": "false",
-                "ECHO_IN_URL": "0.0.0.0:8000",
+                "ECHO_IN_URL": "0.0.0.0:7001",
             },
             "args": [],
             "showLog": true,
@@ -66,7 +66,9 @@
             "mode": "remote",
             "host": "127.0.0.1",
             "port": 56268,
-            "cwd": "${workspaceFolder}/app/herald"
+            "cwd": "${workspaceFolder}/app/herald",
+            "trace": "log",
+            "showLog": true           
         },
         {
             "name": "app.sample",

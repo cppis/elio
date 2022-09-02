@@ -38,7 +38,7 @@ You can easily run a `Herald` container on the host (without MQTT Broker):
 ### Using `go run`  
 To run `Herald` service, run the following command:  
 ```shell
-HERALD_IN_URL="0.0.0.0:7002" go run app/herald
+HERALD_IN_URL="0.0.0.0:7002" go run ./app/herald
 ```
 
 You can change the listening url of service `Herald` by changing  

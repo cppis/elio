@@ -48,7 +48,7 @@ type App struct {
 	runs     []run
 }
 
-//// public scope
+// // public scope
 // String object to string
 func (a *App) String() string {
 	return fmt.Sprintf("App::%p", a)
@@ -97,7 +97,7 @@ func (a *App) Run() {
 		//for _, r := range a.runs {h
 		// TODO: load service config in here r.svc.Name()
 		c := ProvideConfigIo(a.runs[i].svc.Name(), a.config)
-		//c.InURL = "0.0.0.0:7000"
+		//c.InURL = "0.0.0.0:7001"
 		//fmt.Printf("in.url:%v\n", c.InURL)
 
 		var ioHost *IoHost
@@ -179,7 +179,7 @@ func (a *App) MetricMeter(name string) metrics.Meter {
 	return a.Metrics().GetOrRegisterMeter(name)
 }
 
-//// private scope
+// // private scope
 // getContext get context
 func (a *App) getContext() context.Context {
 	return a.ctx

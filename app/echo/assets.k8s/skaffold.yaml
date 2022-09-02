@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta19
+apiVersion: skaffold/v2beta29
 kind: Config
 metadata:
   name: echo
@@ -11,14 +11,13 @@ build:
     #  manual:
     #  - src: '../echo.go'
     #    dest: static
-deploy:
-  kubectl:
-    manifests:
-    - deployment.yaml
 portForward:
 - resourceType: deployment
   resourceName: elio-echo
   port: 7001
+- resourceType: deployment
+  resourceName: elio-echo
+  port: 56268
 profiles:
 - name: dev
   deploy:
