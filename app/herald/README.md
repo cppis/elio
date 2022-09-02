@@ -1,10 +1,7 @@
 # Herald
 `Herald` means a messanger.  
-It is a simple app to test pub/sub of backing `emqx` message broker.  
-Herald uses [`elio`](https://github.com/cppis/elio) library.  
-
-If you run `skaffold` with `assets.k8s/skaffold.yaml`,  
-it is configured as follows in a Kubernetes:  
+It is a simple app to test pub/sub of backing `emqx` MQTT broker.  
+`Herald` written with [`elio`](https://github.com/cppis/elio) library.  
 
 ![herald.concept](https://github.com/cppis/elio/blob/dev/docs/images/herald.concept.png?raw=true)  
 
@@ -64,9 +61,14 @@ docker kill herald
 
 ## Running app on Kubernetes  
 
-You can easily run a `herald` + `emqx`(MQTT Broker) chart on the kubernetes cluster:   
+You can easily run a `herald` + `emqx`(MQTT Broker) chart on the kubernetes cluster.   
 
 ![herald.chart](https://github.com/cppis/elio/blob/dev/docs/images/herald.chart.png?raw=true)  
+
+<br/>
+
+If the kubernetes cluster does not exist, Follow the next step `Create a Kind cluster`.  
+If you have, Follow the next step `Using Helm` or Using `Skaffold`.  
 
 <br/>
 
