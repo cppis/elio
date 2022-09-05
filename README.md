@@ -10,14 +10,14 @@ This library allows you to quickly write epoll-based servers.
 
 <br/><br/><br/>
 
-## Apps  
+## Apps written using `elio` library  
 ### [Running `Echo`](app/echo/README.md)  
-`Echo` is a simple echo server written using `elio` library.  
+`Echo` is a simple echo server.  
 
 <br/>
 
 ### [Running `Herald`](app/herald/README.md)  
-`Herald` is a simple pub/sub client written using `elio` library.  
+`Herald` is a simple MQTT pub/sub test client.  
 
 * Docker Hub: [cppis/herald](https://hub.docker.com/repository/docker/cppis/herald)  
 
