@@ -12,7 +12,13 @@ It is a simple app to test pub/sub of backing `emqx` MQTT broker.
 
 ## Prerequisites  
 
-### Setting up [`elio`](https://github.com/cppis/elio)  
+### ⚓ [Setting `Go` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.go.md)  
+
+Covers `Go` settings on WSL.  
+
+<br/>
+
+### ⚓ Setting up [`elio`](https://github.com/cppis/elio)  
 
 Before start, set up `elio` project.  
 ```
@@ -25,20 +31,20 @@ export ELIO_ROOT=$(pwd)
 
 <br/>
 
-### [Setting `Docker` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.docker.md)  
+### ⚓ [Setting `Docker` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.docker.md)  
 
 Covers `Docker` settings on WSL.  
 
 <br/>
 
-### [Setting `Kubernetes` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
+### ⚓ [Setting `Kubernetes` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
 
 Covers `Kubernetes`+`Skaffold` settings on WSL for continuous developing a Kubernetes-native app.  
 
 
 <br/>
 
-### [Setting Service Ports](https://github.com/cppis/elio/blob/dev/docs/setting.service.ports.md)  
+### ⚓ [Setting Service Ports](https://github.com/cppis/elio/blob/dev/docs/setting.service.ports.md)  
 
 Covers the port settings for the Kubernetes *Service*.  
 
@@ -52,10 +58,10 @@ You can easily run a `Herald` container on the host (without MQTT Broker):
 
 <br/>
 
-### Using `go run`  
+### 🚀 Using `go run`  
 To run `Herald` service, run the following command:  
 ```shell
-HERALD_IN_URL="0.0.0.0:7002" go run ./app/herald
+HERALD_IN_URL="0.0.0.0:7003" go run ./app/herald
 ```
 
 You can change the listening url of service `Herald` by changing  
@@ -63,10 +69,10 @@ environment variable `HERALD_IN_URL`.
 
 <br/>
 
-### Using `Docker`  
+### 🚀 Using `Docker`  
 To run `Herald` container, run the following command:  
 ```bash
-docker run -d -e HERALD_IN_URL="0.0.0.0:7002" -p 7002:7002 --name herald cppis/herald:latest
+docker run -d -e HERALD_IN_URL="0.0.0.0:7003" -p 7003:7003 --name herald cppis/herald:latest
 ```
 
 To kill `Herald` container, run the following command:  
@@ -89,11 +95,11 @@ If you have, Follow the next step 'Using `Helm`' or 'Using `Skaffold`'.
 
 <br/>
 
-### Create a `Kind` cluster  
+### 🚀 Create a `Kind` cluster  
 
 To create a `kind`, run the following command:  
 ```bash
-kind create cluster --config app/herald/assets.k8s/kind.cluster.yaml --name elio
+kind create cluster --config app/assets.k8s/kind.cluster.yaml --name elio
 ```
 
 > To check if the kind cluster is up and running, run the following command:  
@@ -104,7 +110,7 @@ kind create cluster --config app/herald/assets.k8s/kind.cluster.yaml --name elio
 
 <br/>
 
-### Using `Helm`  
+### 🚀 Using `Helm`  
 
 To deploy using helm, run the following command:  
 ```bash
@@ -115,7 +121,7 @@ helm uninstall herald
 
 <br/>
 
-### Using `Skaffold`  
+### 🚀 Using `Skaffold`  
 
 To run `herald` using `Skaffold`,  
 run the following command in the Project root directory:  
@@ -143,15 +149,15 @@ And packet delimiter is double newline(`\n\n` or `\r\n\r\n`).
 
 <br/>
 
-### connect
+### 🚀 connect
 connect to echo using `telnet`  
   ```bash
-  telnet localhost 7002
+  telnet localhost 7003
   ```
 
 <br/>
 
-### echo
+### 🚀 echo
 echo message    
   ```
   echo<newline>
@@ -160,7 +166,7 @@ echo message
 
 <br/>
 
-### sub
+### 🚀 sub
 subcribe to topic    
   ```
   sub<newline>
@@ -169,7 +175,7 @@ subcribe to topic
 
 <br/>
 
-### unsub
+### 🚀 unsub
 unsubcribe from topic  
   ```
   unsub<newline>
@@ -178,7 +184,8 @@ unsubcribe from topic
 
 <br/>
 
-### pub: publish message to topic  
+### 🚀 pub
+publish message to topic  
   ```
   pub<newline>
   {topic}<newline>
@@ -189,7 +196,7 @@ unsubcribe from topic
 
 ## Debugging Tips  
 
-### Running _telnet_ in Kubernetes:
+### 🚀 Running _telnet_ in Kubernetes:
 
 ```bash
 kubectl run -it --rm --restart=Never busybox --image=gcr.io/google-containers/busybox -- sh
@@ -197,21 +204,21 @@ kubectl run -it --rm --restart=Never busybox --image=gcr.io/google-containers/bu
 
 <br/>
 
-### Port forwarding a pod in Kubernetes:
+### 🚀 Port forwarding a pod in Kubernetes:
  
 ```bash
-kubectl port-forward $(kubectl get pods --selector=app=herald --output=jsonpath={.items..metadata.name}) 7002:7002
+kubectl port-forward $(kubectl get pods --selector=app=herald --output=jsonpath={.items..metadata.name}) 7003:7003
 ```
 
 <br/><br/><br/>
 
 ## Ending app  
-### [Kubernetes resource cleanup](https://skaffold.dev/docs/pipeline-stages/cleanup/#kubernetes-resource-cleanup)  
+### 🚀 [Kubernetes resource cleanup](https://skaffold.dev/docs/pipeline-stages/cleanup/#kubernetes-resource-cleanup)  
 After running `skaffold run` or `skaffold deploy` and deploying your app to a cluster, running `skaffold delete` will remove all the resources you deployed. Cleanup is enabled by default, it can be turned off by `--cleanup=false`  
 
 <br/>
 
-### [Ctrl + C](https://skaffold.dev/docs/pipeline-stages/cleanup/#ctrl--c)  
+### 🚀 [Ctrl + C](https://skaffold.dev/docs/pipeline-stages/cleanup/#ctrl--c)  
 When running `skaffold dev` or `skaffold debug`, pressing `Ctrl+C` (SIGINT signal) will kick off the cleanup process which will mimic the behavior of `skaffold delete`. If for some reason the Skaffold process was unable to catch the SIGINT signal, `skaffold delete` can always be run later to clean up the deployed Kubernetes resources.
 
 To enable image pruning, you can run Skaffold with both `--no-prune=false` and `--cache-artifacts=false`:
@@ -222,7 +229,7 @@ skaffold dev --no-prune=false --cache-artifacts=false
 
 <br/>
 
-### Delete a Kind cluster  
+### 🚀 Delete a Kind cluster  
 To delete a kind, run the following command:  
 ```bash
 kind delete cluster --name elio

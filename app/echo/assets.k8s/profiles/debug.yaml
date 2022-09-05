@@ -5,16 +5,18 @@ metadata:
   labels:
     app: elio-echo
 spec:
+  selector:
+    app: elio-echo
+  type: NodePort
   ports:
   - port: 7001
+    nodePort: 30001
     name: echo
     protocol: TCP
   - port: 56268
+    nodePort: 30002
     name: echo-debug
     protocol: TCP
-  clusterIP: None
-  selector:
-    app: elio-echo
 ---
 apiVersion: apps/v1
 kind: Deployment

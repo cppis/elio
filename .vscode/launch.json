@@ -9,7 +9,6 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "remotePath": "",
             "host": "127.0.0.1",
             "program": "${fileDirname}",
             "env": {},
@@ -19,18 +18,23 @@
         {
             "name": "skaffold.echo",
             "type": "go",
+            "debugAdapter": "dlv-dap", 
             "request": "attach",
             "mode": "remote",
+            "port": 56267,
             "host": "127.0.0.1",
-            "port": 56268,
-            "cwd": "${workspaceFolder}/app/echo"
+            "cwd": "${workspaceFolder}/app/echo", 
+            "substitutePath": [
+                { "from": "${workspaceFolder}", "to": "/build" }
+            ],
+            "trace": "log",
+            "showLog": true
         },
         {
             "name": "app.echo",
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "remotePath": "",
             "host": "127.0.0.1",
             "program": "${workspaceRoot}/app/echo",
             "env": {
@@ -46,13 +50,12 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "remotePath": "",
             "host": "127.0.0.1",
             "program": "${workspaceRoot}/app/herald",
             "env": {
                 "ELIO_LOG_JSON": false,
                 "ELIO_LOG_LEVEL": "trace",
-                "HERALD_IN_URL": "0.0.0.0:7002",
+                "HERALD_IN_URL": "0.0.0.0:7003",
                 "HERALD_MQTT_URL": "0.0.0.0:1883"
             },
             "args": [],
@@ -62,20 +65,23 @@
         {
             "name": "skaffold.herald",
             "type": "go",
+            "debugAdapter": "dlv-dap", 
             "request": "attach",
             "mode": "remote",
-            "host": "127.0.0.1",
             "port": 56268,
+            "host": "127.0.0.1", // can skip for localhost
             "cwd": "${workspaceFolder}/app/herald",
+            "substitutePath": [
+                { "from": "${workspaceFolder}", "to": "/build" }
+            ],
             "trace": "log",
-            "showLog": true           
+            "showLog": true
         },
         {
             "name": "app.sample",
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "remotePath": "",
             "host": "127.0.0.1",
             "program": "${workspaceRoot}/app/sample",
             "env": {},
@@ -90,7 +96,6 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "remotePath": "",
             "host": "127.0.0.1",
             "program": "${workspaceRoot}/app/echo",
             "env": {},

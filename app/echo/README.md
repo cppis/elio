@@ -6,7 +6,13 @@
 
 ## Prerequisites  
 
-### Setting up [`elio`](https://github.com/cppis/elio)  
+### ⚓ [Setting `Go` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.go.md)  
+
+Covers `Go` settings on WSL.  
+
+<br/>
+
+### ⚓ Setting up [`elio`](https://github.com/cppis/elio)  
 
 Before start, set up `elio` project:  
 ```
@@ -19,20 +25,20 @@ export ELIO_ROOT=$(pwd)
 
 <br/>
 
-### [Setting `Docker` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.docker.md)  
+### ⚓ [Setting `Docker` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.docker.md)  
 
 Covers `Docker` settings on WSL.  
 
 <br/>
 
-### [Setting `Kubernetes` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
+### ⚓ [Setting `Kubernetes` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
 
 Covers `Kubernetes`+`Skaffold` settings on WSL for continuous developing a Kubernetes-native app.  
 
 <br/><br/><br/>
 
 ## Running app on Host  
-### Using `go run`  
+### 🚀 Using `go run`  
 To run `echo` service, run the following command:  
 ```shell
 ECHO_IN_URL="0.0.0.0:7001" go run ./app/echo
@@ -48,11 +54,11 @@ environment variable `ECHO_IN_URL`.
 If the kubernetes cluster does not exist, Follow the next step `Create a Kind cluster`.  
 If you have, Follow the next step 'Using `Skaffold`'.  
 
-### Create a Kind cluster  
+### 🚀 Create a Kind cluster  
 
 To create a kind, run the following command:  
 ```bash
-kind create cluster --config app/echo/assets.k8s/kind.cluster.yaml --name elio
+kind create cluster --config app/assets.k8s/kind.cluster.yaml --name elio
 ```
 
 > To check if the kind cluster is up and running, run the following command:  
@@ -63,7 +69,7 @@ kind create cluster --config app/echo/assets.k8s/kind.cluster.yaml --name elio
 
 <br/>
 
-### Using `Skaffold`  
+### 🚀 Using `Skaffold`  
 
 To run `echo` using `Skaffold`,  
 run the following command:  
@@ -94,12 +100,12 @@ telnet localhost 7001
 <br/><br/><br/>
 
 ## Ending app  
-### [Kubernetes resource cleanup](https://skaffold.dev/docs/pipeline-stages/cleanup/#kubernetes-resource-cleanup)  
+### 🚀 [Kubernetes resource cleanup](https://skaffold.dev/docs/pipeline-stages/cleanup/#kubernetes-resource-cleanup)  
 After running `skaffold run` or `skaffold deploy` and deploying your app to a cluster, running `skaffold delete` will remove all the resources you deployed. Cleanup is enabled by default, it can be turned off by `--cleanup=false`  
 
 <br/>
 
-### [Ctrl + C](https://skaffold.dev/docs/pipeline-stages/cleanup/#ctrl--c)  
+### 🚀 [Ctrl + C](https://skaffold.dev/docs/pipeline-stages/cleanup/#ctrl--c)  
 When running `skaffold dev` or `skaffold debug`, pressing `Ctrl+C` (SIGINT signal) will kick off the cleanup process which will mimic the behavior of `skaffold delete`. If for some reason the Skaffold process was unable to catch the SIGINT signal, `skaffold delete` can always be run later to clean up the deployed Kubernetes resources.
 
 To enable image pruning, you can run Skaffold with both `--no-prune=false` and `--cache-artifacts=false`:
@@ -110,7 +116,7 @@ skaffold dev --no-prune=false --cache-artifacts=false
 
 <br/>
 
-### Delete a Kind cluster  
+### 🚀 Delete a Kind cluster  
 To delete a kind, run the following command:  
 ```bash
 kind delete cluster --name elio

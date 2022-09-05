@@ -8,11 +8,19 @@ containerdConfigPatches:
 nodes:
   - role: control-plane
     extraPortMappings:
+      - containerPort: 30001
+        hostPort: 7001
+        listenAddress: "0.0.0.0"
+        protocol: tcp
       - containerPort: 30002
-        hostPort: 7002
+        hostPort: 56267
         listenAddress: "0.0.0.0"
         protocol: tcp
       - containerPort: 30003
+        hostPort: 7003
+        listenAddress: "0.0.0.0"
+        protocol: tcp
+      - containerPort: 30004
         hostPort: 56268
         listenAddress: "0.0.0.0"
         protocol: tcp

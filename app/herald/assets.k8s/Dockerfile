@@ -23,8 +23,8 @@ WORKDIR /app
 
 # front
 ENV GOTRACEBACK=all
-ENV ECHO_IN_URL="0.0.0.0:7002"
-EXPOSE 7002 56268
+ENV HERALD_IN_URL="0.0.0.0:7003"
+EXPOSE 7003 56268
 
 COPY --from=builder /build/app/herald/herald /app
 # start with debugging

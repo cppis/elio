@@ -10,15 +10,15 @@ build:
   artifacts:
     - image: localhost:5001/skaffold-herald
       docker:
-        dockerfile: app/herald/assets.k8s/Dockerfile
+        dockerfile: ./app/herald/assets.k8s/Dockerfile
 deploy:
   helm:
     releases:
     - name: skaffold-herald
-      chartPath: app/herald/assets.k8s/helm
+      chartPath: ./app/herald/assets.k8s/helm
       skipBuildDependencies: true
       valuesFiles:
-        - app/herald/assets.k8s/helm/values.yaml
+        - ./app/herald/assets.k8s/helm/values.yaml
       setValues:
         herald:
           image: localhost:5001/skaffold-herald
@@ -27,9 +27,9 @@ deploy:
 portForward:
   - resourceType: deployment
     resourceName: skaffold-herald
-    port: 30002
-    localPort: 7002
+    port: 30003
+    localPort: 7003
   - resourceType: deployment
     resourceName: skaffold-herald
-    port: 30003
+    port: 30004
     localPort: 56268

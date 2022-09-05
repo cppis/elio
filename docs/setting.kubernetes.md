@@ -1,4 +1,4 @@
-# Setting Kubernetes on WSL
+# Setting `Kubernetes` on WSL
 
 This post covers how to set `Kubernetes` + [`Skaffold`](https://skaffold.dev/) on **Windows WSL2**.  
 
@@ -87,19 +87,10 @@ The following figure shows `Skaffolder` workflow:
   </div>
 </figure>
 
-<br/>
-
-### [Go in `Visual Studio Code`](https://code.visualstudio.com/docs/languages/go)  
-You can install the [Go extension](https://marketplace.visualstudio.com/items?itemName=golang.go) from the VS Code Marketplace.  
-
-> Watch ["Getting started with VS Code Go"](https://www.youtube.com/watch?v=1MXIGYrMk80) for an explanation of  
-> how to build your first Go application using VS Code Go.  
-
 <br/><br/><br/>
 
 ## References  
 * [`kubectl`](https://kubernetes.io/docs/tasks/tools/)  
-* [Helm](https://helm.sh/)  
-* [Kind](https://kind.sigs.k8s.io/)  
+* [`Helm`](https://helm.sh/)  
+* [`Kind`](https://kind.sigs.k8s.io/)  
 * [`Skaffold`](https://skaffold.dev/docs/install/)  
-* [Go in `Visual Studio Code`](https://code.visualstudio.com/docs/languages/go)  

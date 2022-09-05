@@ -14,10 +14,12 @@ build:
 portForward:
 - resourceType: deployment
   resourceName: elio-echo
-  port: 7001
+  port: 30001
+  localPort: 7001
 - resourceType: deployment
   resourceName: elio-echo
-  port: 56268
+  port: 30002
+  localPort: 56268
 profiles:
 - name: dev
   deploy:
