@@ -2,7 +2,7 @@
 
 `Herald` means a messanger.  
 It is a simple app to test pub/sub of backing `emqx` MQTT broker.  
-`Herald` written with [`elio`](https://github.com/cppis/elio) library.  
+`Herald` is written using [`elio`](https://github.com/cppis/elio) library.  
 
 ![herald.concept](https://github.com/cppis/elio/blob/dev/docs/images/herald.concept.png?raw=true)  
 
@@ -63,7 +63,7 @@ environment variable `HERALD_IN_URL`.
 
 <br/>
 
-### using `Docker`  
+### Using `Docker`  
 To run `Herald` container, run the following command:  
 ```bash
 docker run -d -e HERALD_IN_URL="0.0.0.0:7002" -p 7002:7002 --name herald cppis/herald:latest
@@ -85,13 +85,13 @@ You can easily run a `Herald` + `emqx`(MQTT Broker) chart on the kubernetes clus
 <br/>
 
 If the kubernetes cluster does not exist, Follow the next step `Create a Kind cluster`.  
-If you have, Follow the next step `Using Helm` or Using `Skaffold`.  
+If you have, Follow the next step 'Using `Helm`' or 'Using `Skaffold`'.  
 
 <br/>
 
-### Create a Kind cluster  
+### Create a `Kind` cluster  
 
-To create a kind, run the following command:  
+To create a `kind`, run the following command:  
 ```bash
 kind create cluster --config app/herald/assets.k8s/kind.cluster.yaml --name elio
 ```
