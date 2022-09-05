@@ -11,17 +11,6 @@ It is a simple app to test pub/sub of backing `emqx` MQTT broker.
 <br/><br/><br/>
 
 ## Prerequisites  
-### [Setting `Skaffold` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.skaffold.md)  
-
-<br/>
-
-### [Setting `Kind Registry`](https://github.com/cppis/elio/blob/dev/docs/setting.kind.registry.md)  
-
-<br/>
-
-### [Setting Service Ports](https://github.com/cppis/elio/blob/dev/docs/setting.service.ports.md)  
-
-<br/>
 
 ### Setting up [`elio`](https://github.com/cppis/elio)  
 
@@ -33,6 +22,25 @@ export ELIO_ROOT=$(pwd)
 ```
 
 > Now, **$ELIO_ROOT** is the project root path.  
+
+<br/>
+
+### [Setting `Docker` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.docker.md)  
+
+Covers `Docker` settings on WSL.  
+
+<br/>
+
+### [Setting `Kubernetes`](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
+
+Covers `Kubernetes`+`Skaffold` settings on WSL for continuous developing a Kubernetes-native app.  
+
+
+<br/>
+
+### [Setting Service Ports](https://github.com/cppis/elio/blob/dev/docs/setting.service.ports.md)  
+
+Covers the port settings for the Kubernetes *Service*.  
 
 <br/><br/><br/>
 
@@ -93,6 +101,8 @@ kind create cluster --config app/herald/assets.k8s/kind.cluster.yaml --name elio
 > kubectl config current-context
 >   kind-elio
 > ```
+
+<br/>
 
 ### Using `Helm`  
 

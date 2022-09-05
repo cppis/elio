@@ -1,34 +1,10 @@
-# Setting `Skaffold` on WSL
+# Setting Kubernetes on WSL
 
-This post shows how to set [`Skaffold`](https://skaffold.dev/) up on **Windows WSL2**.  
+This post covers how to set `Kubernetes` + [`Skaffold`](https://skaffold.dev/) on **Windows WSL2**.  
 
 <br/><br/>
 
-## Prerequisites  
-### [WSL2](https://docs.microsoft.com/en-us/windows/wsl/)  
-The Windows Subsystem for Linux(WSL) lets developers run a GNU/Linux environment -- including most command-line tools, utilities, and applications -- directly on Windows, unmodified, without the overhead of a traditional virtual machine or dualboot setup.  
-
-* [Install Linux on Windows with WSL](https://docs.microsoft.com/en-us/windows/wsl/install)
-* [Advanced settings configuration in WSL](https://docs.microsoft.com/en-us/windows/wsl/wsl-config)
-
-> Note: To update to WSL 2, you must be running Windows 10 or higher.  
-> * For x64 systems: **Version 1903** or higher, with **Build 18362** or higher.
-> * For ARM64 systems: **Version 2004** or higher, with **Build 19041** or higher.
-> * Builds lower than **18362** do not support WSL 2. Use the [Windows Update Assistant](https://www.microsoft.com/ko-kr/software-download/windows10ISO) to update your version of Windows.
-
-<br/>
-
-### [`Go` 1.19+](https://golang.org/doc/install)  
-Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.  
-[Download](https://golang.org/doc/install#download) and [Install](https://golang.org/doc/install#install) [`Go`](https://golang.org/) v1.19 or higher  
-
-<br/>
-
-### [Docker Desktop](https://www.docker.com/products/docker-desktop)  
-*Docker Desktop* is an application for MacOS and Windows machines for the building and sharing of containerized applications and microservices.  
-
-<br/>
-
+## Installation  
 ### [`kubectl`](https://kubernetes.io/docs/tasks/tools/)  
 The Kubernetes command-line tool, `kubectl`, allows you to run commands  
 against Kubernetes clusters. 
@@ -37,8 +13,8 @@ against Kubernetes clusters.
 
 <br/>
 
-### [Helm](https://helm.sh/)  
-Helm is a package manager for Kubernetes  
+### [`Helm`](https://helm.sh/)  
+`Helm` is a package manager for Kubernetes  
 Install from script:  
 ```bash
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -55,14 +31,42 @@ helm repo add emqx https://repos.emqx.io/charts
 
 <br/>
 
-### [Kind](https://kind.sigs.k8s.io/)  
-[Kind](https://kind.sigs.k8s.io/) is a tool for running local Kubernetes clusters using Docker container `nodes`.  
+### [`Kind`](https://kind.sigs.k8s.io/)  
+[`Kind`](https://kind.sigs.k8s.io/) is a tool for running local Kubernetes clusters using Docker container `nodes`.  
 * [Kind Installation](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)  
   ```bash
   curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.14.0/kind-linux-amd64
   chmod +x ./kind
   sudo mv ./kind /usr/local/bin/kind
   ```
+
+* [Setting `Kind Registry`](https://kind.sigs.k8s.io/docs/user/local-registry/#create-a-cluster-and-registry)  
+  If you don't have a Kubernetes local image registry, create one.  
+  First, check if you already have a local docker registry with the following command:  
+    ```bash
+    # Make sure kind-registry is running.  
+    docker inspect -f '{{.State.Running}}' kind-registry
+  ```
+
+  If the result of the above command is not `True` , create a local docker registry with the following command:  
+    ```bash
+    docker run -d --restart=always -p 127.0.0.1:5001:5000 --name kind-registry registry:2
+    ```
+
+  After the installation, you can check the docker registry with the following command:  
+
+    ```bash
+    curl http://127.0.0.1:5001/v2/_catalog
+      {"repositories":[]}
+    ```
+
+    > For more information, refer to [Kind - Local Registry](https://kind.sigs.k8s.io/docs/user/local-registry/).  
+
+    > If the Kind cluster does not have access to the local Docker registry,
+    > Associate the Kind cluster's network with the local Docker registry's network by running the following command:  
+    > ```bash
+    > docker network connect "kind" "kind-registry"
+    > ```
 
 <br/>
 
@@ -94,9 +98,6 @@ You can install the [Go extension](https://marketplace.visualstudio.com/items?it
 <br/><br/><br/>
 
 ## References  
-* [WSL2](https://docs.microsoft.com/en-us/windows/wsl/)  
-* [Install Go](https://golang.org/doc/install)  
-* [Docker Desktop](https://www.docker.com/products/docker-desktop)  
 * [`kubectl`](https://kubernetes.io/docs/tasks/tools/)  
 * [Helm](https://helm.sh/)  
 * [Kind](https://kind.sigs.k8s.io/)  

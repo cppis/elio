@@ -5,17 +5,6 @@
 <br/><br/><br/>
 
 ## Prerequisites  
-### [Setting `Skaffold` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.skaffold.md)  
-
-<br/>
-
-### [Setting `Kind Registry`](https://github.com/cppis/elio/blob/dev/docs/setting.kind.registry.md)  
-
-<br/>
-
-### [Setting Service Ports](https://github.com/cppis/elio/blob/dev/docs/setting.service.ports.md)  
-
-<br/>
 
 ### Setting up [`elio`](https://github.com/cppis/elio)  
 
@@ -27,6 +16,18 @@ export ELIO_ROOT=$(pwd)
 ```
 
 > Now, **$ELIO_ROOT** is the project root path.  
+
+<br/>
+
+### [Setting `Docker` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.docker.md)  
+
+Covers `Docker` settings on WSL.  
+
+<br/>
+
+### [Setting `Kubernetes`](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
+
+Covers `Kubernetes`+`Skaffold` settings on WSL for continuous developing a Kubernetes-native app.  
 
 <br/><br/><br/>
 
@@ -43,6 +44,10 @@ environment variable `ECHO_IN_URL`.
 <br/><br/><br/>
 
 ## Running app on Kubernetes  
+
+If the kubernetes cluster does not exist, Follow the next step `Create a Kind cluster`.  
+If you have, Follow the next step Using `Skaffold`.  
+
 ### Create a Kind cluster  
 
 To create a kind, run the following command:  
@@ -55,6 +60,10 @@ kind create cluster --config app/echo/assets.k8s/kind.cluster.yaml --name elio
 > kubectl config current-context
 >   kind-elio
 > ```
+
+<br/>
+
+### Using `Skaffold`  
 
 To run `echo` using `Skaffold`,  
 run the following command:  
