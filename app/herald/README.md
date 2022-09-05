@@ -31,7 +31,7 @@ Covers `Docker` settings on WSL.
 
 <br/>
 
-### [Setting `Kubernetes`](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
+### [Setting `Kubernetes` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
 
 Covers `Kubernetes`+`Skaffold` settings on WSL for continuous developing a Kubernetes-native app.  
 

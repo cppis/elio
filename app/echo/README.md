@@ -25,7 +25,7 @@ Covers `Docker` settings on WSL.
 
 <br/>
 
-### [Setting `Kubernetes`](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
+### [Setting `Kubernetes` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
 
 Covers `Kubernetes`+`Skaffold` settings on WSL for continuous developing a Kubernetes-native app.  
 
@@ -46,7 +46,7 @@ environment variable `ECHO_IN_URL`.
 ## Running app on Kubernetes  
 
 If the kubernetes cluster does not exist, Follow the next step `Create a Kind cluster`.  
-If you have, Follow the next step Using `Skaffold`.  
+If you have, Follow the next step 'Using `Skaffold`'.  
 
 ### Create a Kind cluster  
 
