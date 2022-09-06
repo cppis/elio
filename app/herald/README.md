@@ -213,12 +213,13 @@ kubectl port-forward $(kubectl get pods --selector=app=herald --output=jsonpath=
 <br/><br/><br/>
 
 ## Ending app  
-### 🚀 [Kubernetes resource cleanup](https://skaffold.dev/docs/pipeline-stages/cleanup/#kubernetes-resource-cleanup)  
+
+### 🏁 [Kubernetes resource cleanup](https://skaffold.dev/docs/pipeline-stages/cleanup/#kubernetes-resource-cleanup)  
 After running `skaffold run` or `skaffold deploy` and deploying your app to a cluster, running `skaffold delete` will remove all the resources you deployed. Cleanup is enabled by default, it can be turned off by `--cleanup=false`  
 
 <br/>
 
-### 🚀 [Ctrl + C](https://skaffold.dev/docs/pipeline-stages/cleanup/#ctrl--c)  
+### 🏁 [Ctrl + C](https://skaffold.dev/docs/pipeline-stages/cleanup/#ctrl--c)  
 When running `skaffold dev` or `skaffold debug`, pressing `Ctrl+C` (SIGINT signal) will kick off the cleanup process which will mimic the behavior of `skaffold delete`. If for some reason the Skaffold process was unable to catch the SIGINT signal, `skaffold delete` can always be run later to clean up the deployed Kubernetes resources.
 
 To enable image pruning, you can run Skaffold with both `--no-prune=false` and `--cache-artifacts=false`:
@@ -229,7 +230,7 @@ skaffold dev --no-prune=false --cache-artifacts=false
 
 <br/>
 
-### 🚀 Delete a Kind cluster  
+### 🏁 Delete a Kind cluster  
 To delete a kind, run the following command:  
 ```bash
 kind delete cluster --name elio
