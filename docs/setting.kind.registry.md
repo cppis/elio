@@ -23,7 +23,11 @@ After the installation, you can check the docker registry with the following com
 
 ```bash
 curl http://127.0.0.1:5001/v2/_catalog
-  {"repositories":[]}
+```
+
+The result is as follows:  
+```
+{"repositories":[]}
 ```
 
 > For more information, refer to [Kind - Local Registry](https://kind.sigs.k8s.io/docs/user/local-registry/).  

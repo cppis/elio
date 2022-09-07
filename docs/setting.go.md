@@ -29,7 +29,7 @@ Go is an open source programming language that makes it easy to build simple, re
   ```
 
 * Add /usr/local/go/bin to the PATH environment variable.  
-You can do this by adding the following line to your $HOME/.profile or /etc/profile (for a system-wide installation):
+You can do this by adding the following line to your *$HOME/.profile* or */etc/profile* (for a system-wide installation):
 
   ```bash
   export GOROOT=/usr/local/go

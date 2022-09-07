@@ -44,9 +44,8 @@ helm repo add emqx https://repos.emqx.io/charts
   If you don't have a Kubernetes local image registry, create one.  
   First, check if you already have a local docker registry with the following command:  
     ```bash
-    # Make sure kind-registry is running.  
     docker inspect -f '{{.State.Running}}' kind-registry
-  ```
+    ```
 
   If the result of the above command is not `True` , create a local docker registry with the following command:  
     ```bash
@@ -57,7 +56,11 @@ helm repo add emqx https://repos.emqx.io/charts
 
     ```bash
     curl http://127.0.0.1:5001/v2/_catalog
-      {"repositories":[]}
+    ```
+
+  The result is as follows:  
+    ```bash
+    {"repositories":[]}
     ```
 
     > For more information, refer to [Kind - Local Registry](https://kind.sigs.k8s.io/docs/user/local-registry/).  
