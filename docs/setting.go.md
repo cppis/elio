@@ -22,6 +22,26 @@ The Windows Subsystem for Linux(WSL) lets developers run a GNU/Linux environment
 Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.  
 [Download](https://golang.org/doc/install#download) and [Install](https://golang.org/doc/install#install) [`Go`](https://golang.org/) v1.19 or higher  
 
+* Remove any previous Go installation by deleting the `/usr/local/go` folder (if it exists), then extract the archive you just downloaded into /usr/local, creating a fresh Go tree in `/usr/local/go`:  
+ 
+  ```bash
+  rm -rf /usr/local/go && tar -C /usr/local -xzf go1.19.1.linux-amd64.tar.gz
+  ```
+
+* Add /usr/local/go/bin to the PATH environment variable.  
+You can do this by adding the following line to your $HOME/.profile or /etc/profile (for a system-wide installation):
+
+  ```bash
+  export GOROOT=/usr/local/go
+  export GOPATH=$HOME/go
+  export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+  ```
+
+* Install [`delve`](https://github.com/go-delve/delve/tree/master/Documentation/installation):  
+  ```bash
+  go install github.com/go-delve/delve/cmd/dlv@latest
+  ```
+
 <br/>
 
 ### [Go in `Visual Studio Code`](https://code.visualstudio.com/docs/languages/go)  
