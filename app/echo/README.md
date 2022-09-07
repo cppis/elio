@@ -6,13 +6,13 @@
 
 ## Prerequisites  
 
-### ⚓ [Setting `Go` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.go.md)  
+### ⚙️ [Setting `Go` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.go.md)  
 
 Covers `Go` settings on WSL.  
 
 <br/>
 
-### ⚓ Setting up [`elio`](https://github.com/cppis/elio)  
+### ⚙️ Setting up [`elio`](https://github.com/cppis/elio)  
 
 Before start, set up `elio` project:  
 ```
@@ -25,13 +25,13 @@ export ELIO_ROOT=$(pwd)
 
 <br/>
 
-### ⚓ [Setting `Docker` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.docker.md)  
+### ⚙️ [Setting `Docker` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.docker.md)  
 
 Covers `Docker` settings on WSL.  
 
 <br/>
 
-### ⚓ [Setting `Kubernetes` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
+### ⚙️ [Setting `Kubernetes` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
 
 Covers `Kubernetes`+`Skaffold` settings on WSL for continuous developing a Kubernetes-native app.  
 
@@ -117,8 +117,8 @@ skaffold dev --no-prune=false --cache-artifacts=false
 
 <br/>
 
-### 🏁 Delete a Kind cluster  
-To delete a kind, run the following command:  
+### 🏁 Delete a `Kind` cluster  
+To delete a `Kind` cluster, run the following command:  
 ```bash
 kind delete cluster --name elio
 ```

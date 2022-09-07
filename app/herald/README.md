@@ -12,13 +12,13 @@ It is a simple app to test pub/sub of backing `emqx` MQTT broker.
 
 ## Prerequisites  
 
-### ⚓ [Setting `Go` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.go.md)  
+### ⚙️ [Setting `Go` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.go.md)  
 
 Covers `Go` settings on WSL.  
 
 <br/>
 
-### ⚓ Setting up [`elio`](https://github.com/cppis/elio)  
+### ⚙️ Setting up [`elio`](https://github.com/cppis/elio)  
 
 Before start, set up `elio` project.  
 ```
@@ -31,20 +31,20 @@ export ELIO_ROOT=$(pwd)
 
 <br/>
 
-### ⚓ [Setting `Docker` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.docker.md)  
+### ⚙️ [Setting `Docker` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.docker.md)  
 
 Covers `Docker` settings on WSL.  
 
 <br/>
 
-### ⚓ [Setting `Kubernetes` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
+### ⚙️ [Setting `Kubernetes` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
 
 Covers `Kubernetes`+`Skaffold` settings on WSL for continuous developing a Kubernetes-native app.  
 
 
 <br/>
 
-### ⚓ [Setting Service Ports](https://github.com/cppis/elio/blob/dev/docs/setting.service.ports.md)  
+### ⚙️ [Setting *Service* Ports](https://github.com/cppis/elio/blob/dev/docs/setting.service.ports.md)  
 
 Covers the port settings for the Kubernetes *Service*.  
 
@@ -196,7 +196,7 @@ publish message to topic
 
 ## Debugging Tips  
 
-### 🚀 Running _telnet_ in Kubernetes:
+### 🧰 Running _telnet_ in Kubernetes:
 
 ```bash
 kubectl run -it --rm --restart=Never busybox --image=gcr.io/google-containers/busybox -- sh
@@ -204,7 +204,7 @@ kubectl run -it --rm --restart=Never busybox --image=gcr.io/google-containers/bu
 
 <br/>
 
-### 🚀 Port forwarding a pod in Kubernetes:
+### 🧰 Port forwarding a pod in Kubernetes:
  
 ```bash
 kubectl port-forward $(kubectl get pods --selector=app=herald --output=jsonpath={.items..metadata.name}) 7003:7003
@@ -230,8 +230,8 @@ skaffold dev --no-prune=false --cache-artifacts=false
 
 <br/>
 
-### 🏁 Delete a Kind cluster  
-To delete a kind, run the following command:  
+### 🏁 Delete a `Kind` cluster  
+To delete a `Kind` cluster, run the following command:  
 ```bash
 kind delete cluster --name elio
 ```
