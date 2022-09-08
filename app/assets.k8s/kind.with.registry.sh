@@ -1,16 +1,3 @@
-```bash
-skaffold -f app/herald/assets.k8s/skaffold.yaml dev --default-repo localhost:5001 --insecure-registry localhost:5001 -v DEBUG
-```
-
-Failed to pull image "localhost:5001/skaffold-herald": rpc error: code = Unknown desc = failed to pull and unpack image "localhost:5001/skaffold-herald:latest": 
-failed to resolve reference "localhost:5001/skaffold-herald:latest": failed to do request: Head "http://localhost:5001/v2/skaffold-herald/manifests/latest": dial tcp [::1]:5001: connect: connection refused
-
-
-# References  
-* https://github.com/GoogleContainerTools/skaffold/issues/6973
-
-
-
 #!/bin/sh
 set -o errexit
 
@@ -24,7 +11,7 @@ if [ "$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2>/dev/null || true
 fi
 
 # create a cluster with the local registry enabled in containerd
-cat <<EOF | kind create cluster --config=-
+cat <<EOF | kind create cluster --name elio --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:

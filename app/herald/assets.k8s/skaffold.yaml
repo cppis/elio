@@ -6,7 +6,7 @@ build:
   local:
     push: true
   tagPolicy:
-    gitCommit: {}
+    sha256: {}
   artifacts:
     - image: localhost:5001/skaffold-herald
       docker:

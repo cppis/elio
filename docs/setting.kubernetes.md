@@ -1,6 +1,6 @@
 # Setting `Kubernetes` on WSL
 
-This post covers how to set `Kubernetes` + [`Skaffold`](https://skaffold.dev/) on **Windows WSL2**.  
+This post covers how to set [`Kind`](https://kind.sigs.k8s.io/) + [`Skaffold`](https://skaffold.dev/) on **Windows WSL2**.  
 
 <br/><br/>
 
@@ -33,26 +33,30 @@ helm repo add emqx https://repos.emqx.io/charts
 
 ### [`Kind`](https://kind.sigs.k8s.io/)  
 [`Kind`](https://kind.sigs.k8s.io/) is a tool for running local Kubernetes clusters using Docker container `nodes`.  
-* [Kind Installation](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)  
+* [Installation](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)  
   ```bash
   curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.14.0/kind-linux-amd64
   chmod +x ./kind
   sudo mv ./kind /usr/local/bin/kind
   ```
 
-* [Setting `Kind Registry`](https://kind.sigs.k8s.io/docs/user/local-registry/#create-a-cluster-and-registry)  
-  If you don't have a Kubernetes local image registry, create one.  
-  First, check if you already have a local docker registry with the following command:  
+* [Setting *Registry* and *Cluster*](https://kind.sigs.k8s.io/docs/user/local-registry/#create-a-cluster-and-registry)  
+  If you don't have a Kubernetes local image registry, run the following command:  
     ```bash
-    docker inspect -f '{{.State.Running}}' kind-registry
+    ./app/assets.k8s/kind.with.registry.sh
     ```
 
-  If the result of the above command is not `True` , create a local docker registry with the following command:  
-    ```bash
-    docker run -d --restart=always -p 127.0.0.1:5001:5000 --name kind-registry registry:2
-    ```
+    When you run the script [./app/assets.k8s/kind.with.registry.sh](../app/assets.k8s/kind.with.registry.sh), it runs the following command:
 
-  After the installation, you can check the docker registry with the following command:  
+    * Inspect previous running registry.  
+    * If registry does not exist, create a new one.
+    * Create a kind cluster named `elio` with *Node* settings.  
+    * Connect the registry to the cluster network, if not already connected.  
+    * Create a *ConfigMap* for hosting.  
+
+  <br/>
+
+  After running script, you can check the docker registry with the following command:  
 
     ```bash
     curl http://127.0.0.1:5001/v2/_catalog
@@ -64,12 +68,6 @@ helm repo add emqx https://repos.emqx.io/charts
     ```
 
     > For more information, refer to [Kind - Local Registry](https://kind.sigs.k8s.io/docs/user/local-registry/).  
-
-    > If the Kind cluster does not have access to the local Docker registry,
-    > Associate the Kind cluster's network with the local Docker registry's network by running the following command:  
-    > ```bash
-    > docker network connect "kind" "kind-registry"
-    > ```
 
 <br/>
 

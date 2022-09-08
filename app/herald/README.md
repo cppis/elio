@@ -39,7 +39,7 @@ Covers `Docker` settings on WSL.
 
 ### ⚙️ [Setting `Kubernetes` on WSL](https://github.com/cppis/elio/blob/dev/docs/setting.kubernetes.md)  
 
-Covers `Kubernetes`+`Skaffold` settings on WSL for continuous developing a Kubernetes-native app.  
+Covers `Kind`+`Skaffold` settings on WSL for continuous developing a Kubernetes-native app.  
 
 
 <br/>
@@ -194,24 +194,6 @@ publish message to topic
 
 <br/><br/><br/>
 
-## Debugging Tips  
-
-### 🧰 Running _telnet_ in Kubernetes:
-
-```bash
-kubectl run -it --rm --restart=Never busybox --image=gcr.io/google-containers/busybox -- sh
-```
-
-<br/>
-
-### 🧰 Port forwarding a pod in Kubernetes:
- 
-```bash
-kubectl port-forward $(kubectl get pods --selector=app=herald --output=jsonpath={.items..metadata.name}) 7003:7003
-```
-
-<br/><br/><br/>
-
 ## Ending app  
 
 ### 🏁 [Kubernetes resource cleanup](https://skaffold.dev/docs/pipeline-stages/cleanup/#kubernetes-resource-cleanup)  
@@ -235,3 +217,7 @@ To delete a `Kind` cluster, run the following command:
 ```bash
 kind delete cluster --name elio
 ```
+
+<br/><br/><br/>
+
+## [Troubleshooting](docs/troubleshooting.md)  
