@@ -220,4 +220,5 @@ kind delete cluster --name elio
 
 <br/><br/><br/>
 
-## [Troubleshooting](docs/troubleshooting.md)  
+## [Troubleshooting](https://github.com/cppis/elio/blob/dev/docs/troubleshooting.md)  
+Shows some tips to solve the problem.

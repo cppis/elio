@@ -1,6 +1,8 @@
 # Troubleshooting  
 
-<br/><br/><br/>
+Shows some tips to solve the problem.  
+
+<br/><br/>
 
 ## Tips  
 
