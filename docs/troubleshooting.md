@@ -51,6 +51,11 @@ Failed to pull image "localhost:5001/skaffold-herald":
   Head "http://localhost:5001/v2/skaffold-herald/manifests/latest": dial tcp [::1]:5001: connect: connection refused    
 ```
 
+The issue was caused by failing to fetch images while running the `Scaffold`, the problem was with the 'Skaffold' *tagPolicy* setting.  
+When you use the `latest` tag, you should use the `sha256` *tagPolicy*.  
+
+<br/>
+
 ### References  
 * [Pull-through Docker registry on Kind clusters](https://maelvls.dev/docker-proxy-registry-kind/)  
 * [Skaffold: Tag](https://skaffold.dev/docs/pipeline-stages/taggers/)  
