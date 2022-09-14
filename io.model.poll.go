@@ -1,3 +1,4 @@
+//go:build linux
 // +build linux
 
 package elio
@@ -99,13 +100,16 @@ func (m *ioPoll) Read(n *Session, in []byte) (receipt int, err error) {
 	for {
 		var r int
 		r, err = unix.Read(n.fd, in)
-		if 0 < r {
+		if (0 < r) && (nil == err) {
 			receipt += r
 
 			AppTrace().Str(LogObject, m.String()).Str(LogSession, n.String()).
 				Msgf("succeed to read with fd:%v in:%d/%d", n.fd, r, receipt)
 
-			_ = m.GetIo().Service.OnRead(n, n.buffer[:r])
+			p := m.GetIo().Service.OnRead(n, n.buffer[:r])
+			if 0 < p {
+				err = fmt.Errorf("io.poll failed to on.read with %v", p)
+			}
 		}
 
 		if 0 == r || nil != err {
