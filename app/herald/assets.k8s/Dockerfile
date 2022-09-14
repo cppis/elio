@@ -9,7 +9,6 @@ ENV CGO_ENABLED=0
 RUN apt-get update && apt-get upgrade -y
 
 COPY ./ ./
-RUN go mod vendor
 
 WORKDIR /build/app/herald
 # `skaffold debug` sets SKAFFOLD_GO_GCFLAGS to disable compiler optimizations
