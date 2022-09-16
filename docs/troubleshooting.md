@@ -85,7 +85,7 @@ I0916 01:16:36.106273     303 join.go:530] [preflight] Discovering cluster-info
 *Joining worker nodes* error may occur when creating multiple Kind clusters.  
 This may be caused by running out of [inotify](https://linux.die.net/man/7/inotify) resources. Resource limits are defined by `fs.inotify.max_user_watches` and `fs.inotify.max_user_instances` system variables.  
 
-In this case, you can also fix it by editing the ulimit settings:  
+This can be solved by fixing the `ulimit` settings:
 
 ```bash
 echo fs.inotify.max_user_watches=655360 | sudo tee -a /etc/sysctl.conf
