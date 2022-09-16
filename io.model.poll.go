@@ -107,7 +107,7 @@ func (m *ioPoll) Read(n *Session, in []byte) (receipt int, err error) {
 				Msgf("succeed to read with fd:%v in:%d/%d", n.fd, r, receipt)
 
 			p := m.GetIo().Service.OnRead(n, n.buffer[:r])
-			if 0 < p {
+			if 0 > p {
 				err = fmt.Errorf("io.poll failed to on.read with %v", p)
 			}
 		}

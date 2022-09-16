@@ -89,14 +89,18 @@ skaffold -f app/echo/assets.k8s/skaffold.yaml debug -p debug
 
 ## Testing app  
 You can test echo easily by using telnet.  
-And, you can end server by send `q` character.  
 
-```
+```bash
 telnet localhost 7001
-  ...
-  q<enter>
 ```
+<br/>
 
+Echo echoes plain text, and When receives the next one character,  
+executes the command:  
+
+* `q`: quit server
+* `?`: quit current session
+ 
 <br/><br/><br/>
 
 ## Ending app  

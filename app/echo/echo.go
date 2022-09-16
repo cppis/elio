@@ -75,6 +75,8 @@ func (s *Echo) OnRead(sn *elio.Session, in []byte) (processed int) {
 
 	if 'q' == in[0] {
 		elio.Elio().End()
+	} else if '?' == in[0] {
+		processed = -1
 	}
 
 	return processed
