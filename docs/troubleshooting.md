@@ -61,4 +61,34 @@ When you use the `latest` tag, you should use the `sha256` *tagPolicy*.
 * [Skaffold: Tag](https://skaffold.dev/docs/pipeline-stages/taggers/)  
   the `sha256` tagger uses `latest`.  
 * [KiND: How I Wasted a Day Loading Local Docker Images](https://iximiuz.com/en/posts/kubernetes-kind-load-docker-image/)  
+
 <br/><br/><br/>
+
+## Create [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/) cluster error  
+```bash
+$ ./app/assets.k8s/kind.with.registry.sh 
+Creating cluster "elio" ...
+ ✓ Ensuring node image (kindest/node:v1.24.0) 🖼 
+ ✓ Preparing nodes 📦 📦  
+ ✓ Writing configuration 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+ ✗ Joining worker nodes 🚜 
+ERROR: failed to create cluster: failed to join node with kubeadm: command "docker exec --privileged elio-worker kubeadm join --config /kind/kubeadm.conf --skip-phases=preflight --v=6" failed with error: exit status 1
+Command Output: I0916 01:16:36.105116     303 join.go:413] [preflight] found NodeName empty; using OS hostname as NodeName
+I0916 01:16:36.105146     303 joinconfiguration.go:76] loading configuration from "/kind/kubeadm.conf"
+I0916 01:16:36.106267     303 controlplaneprepare.go:220] [download-certs] Skipping certs download
+I0916 01:16:36.106273     303 join.go:530] [preflight] Discovering cluster-info
+```
+
+*Joining worker nodes* error may occur when creating multiple Kind clusters.  
+This may be caused by running out of [inotify](https://linux.die.net/man/7/inotify) resources. Resource limits are defined by `fs.inotify.max_user_watches` and `fs.inotify.max_user_instances` system variables.  
+
+In this case, you can also fix it by editing the ulimit settings:  
+
+```bash
+echo fs.inotify.max_user_watches=655360 | sudo tee -a /etc/sysctl.conf
+echo fs.inotify.max_user_instances=1280 | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+```
