@@ -65,6 +65,9 @@ When you use the `latest` tag, you should use the `sha256` *tagPolicy*.
 <br/><br/><br/>
 
 ## Create [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/) cluster error  
+
+*Joining worker nodes* error may occur when creating multiple Kind clusters.  
+
 ```bash
 $ ./app/assets.k8s/kind.with.registry.sh 
 Creating cluster "elio" ...
@@ -82,10 +85,9 @@ I0916 01:16:36.106267     303 controlplaneprepare.go:220] [download-certs] Skipp
 I0916 01:16:36.106273     303 join.go:530] [preflight] Discovering cluster-info
 ```
 
-*Joining worker nodes* error may occur when creating multiple Kind clusters.  
 This may be caused by running out of [inotify](https://linux.die.net/man/7/inotify) resources. Resource limits are defined by `fs.inotify.max_user_watches` and `fs.inotify.max_user_instances` system variables.  
 
-This can be solved by fixing the `ulimit` settings:
+You can solve by fixing the `ulimit` settings:
 
 ```bash
 echo fs.inotify.max_user_watches=655360 | sudo tee -a /etc/sysctl.conf
