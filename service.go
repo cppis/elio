@@ -5,6 +5,10 @@ import (
 	"time"
 )
 
+const (
+	OnReadInvalidLen = -1
+)
+
 // Service service
 type Service interface {
 	Name() string

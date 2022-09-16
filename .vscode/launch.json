@@ -53,7 +53,7 @@
             "host": "127.0.0.1",
             "program": "${workspaceRoot}/app/herald",
             "env": {
-                "ELIO_LOG_JSON": false,
+                "ELIO_LOG_JSON": "false",
                 "ELIO_LOG_LEVEL": "trace",
                 "HERALD_IN_URL": "0.0.0.0:7003",
                 "HERALD_MQTT_URL": "0.0.0.0:1883"

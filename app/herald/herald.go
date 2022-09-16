@@ -116,10 +116,11 @@ func (s *Herald) OnRead(n *elio.Session, in []byte) (processed int) {
 				//	Msgf("fd:%d buffer.len:%v process.len:%v process.count:%d parse.ok:ok", s.GetFd(), l, processed, counts)
 
 			} else {
-				e := fmt.Sprintf("fd:%d invalid packet size", n.GetFd())
+				e := fmt.Sprintf("fd:%d invalid packet", n.GetFd())
 				elio.AppError().Str(elio.LogObject, s.String()).Str(elio.LogSession, n.String()).
 					Str(elio.LogPayload, hex.Dump(in)).Msgf(e)
 				//err := errors.New(e)
+				processed = elio.OnReadInvalidLen
 			}
 
 			ok = false

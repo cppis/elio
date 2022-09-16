@@ -13,7 +13,7 @@ build:
         dockerfile: ./app/herald/assets.k8s/Dockerfile
 deploy:
   helm:
-    releases:
+    releases: 
     - name: skaffold-herald
       chartPath: ./app/herald/assets.k8s/helm
       skipBuildDependencies: true
