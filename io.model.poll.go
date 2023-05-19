@@ -411,27 +411,46 @@ func (m *ioPoll) loopIo() {
 						if result, ok := m.GetIo().sessionCmap.Get(fmt.Sprintf("0x%08x", fd)); true == ok {
 							n = result.(*Session)
 
+							if unix.EPOLLOUT == events[i].Events&unix.EPOLLOUT {
+								AppTrace().Str(LogObject, m.String()).
+									Msgf("poll:%s awake fd:%d with events.epollout:%X", m.pollIo.String(), events[i].Fd, events[i].Events)
+
+								m.handleWrite(n)
+							}
+							if unix.EPOLLIN == events[i].Events&unix.EPOLLIN {
+								AppTrace().Str(LogObject, m.String()).
+									Msgf("poll:%s awake fd:%d with events.epollin:%X", m.pollIo.String(), events[i].Fd, events[i].Events)
+
+								m.handleRead(n)
+							}
+							if unix.EPOLLERR == events[i].Events&unix.EPOLLERR {
+								AppTrace().Str(LogObject, m.String()).
+									Msgf("poll:%s awake fd:%d with events.epollerr:%X", m.pollIo.String(), events[i].Fd, events[i].Events)
+
+								m.handleError(n)
+							}
+							if unix.EPOLLHUP == events[i].Events&unix.EPOLLHUP {
+								// If only HUP occurred without IN and OUT
+								if (unix.EPOLLOUT != events[i].Events&unix.EPOLLOUT) &&
+									(unix.EPOLLIN != events[i].Events&unix.EPOLLIN) {
+									AppTrace().Str(LogObject, m.String()).
+										Msgf("poll:%s awake fd:%d with events.epollhup:%X", m.pollIo.String(), events[i].Fd, events[i].Events)
+
+									m.handleError(n)
+								}
+							}
+
 						} else {
-							AppError().Str(LogObject, m.String()).
-								Msgf("failed to get session by fd:%d", fd)
-							continue
-						}
+							//AppDebug().Str(LogObject, m.String()).Msgf("new session by fd:%d", fd)
 
-						if unix.EPOLLOUT == events[i].Events&unix.EPOLLOUT {
-							AppTrace().Str(LogObject, m.String()).
-								Msgf("poll:%s awake fd:%d with events.epollout:%X", m.pollIo.String(), events[i].Fd, events[i].Events)
+							n = NewSession(fd, nil, m.GetIo())
 
-							m.handleWrite(n)
-						}
-						if unix.EPOLLIN == events[i].Events&unix.EPOLLIN {
-							AppTrace().Str(LogObject, m.String()).
-								Msgf("poll:%s awake fd:%d with events.epollin:%X", m.pollIo.String(), events[i].Fd, events[i].Events)
+							m.GetIo().sessionCmap.Set(fmt.Sprintf("0x%08x", n.fd), n)
+
+							m.GetIo().Service.OnOpen(n)
 
 							m.handleRead(n)
 						}
-						//if unix.EPOLLERR == events[i].Events&unix.EPOLLERR {
-						//	m.handleError(n)
-						//}
 					}
 				}
 			}
@@ -544,19 +563,12 @@ func (m *ioPoll) handleWrite(n *Session) {
 	}
 }
 
-// func (m *ioPoll) handleError(n *Session) {
-// 	//n, e := getsockoptIntFunc(fd, unix.SOL_SOCKET, unix.SO_ERROR)
-// 	//if e != nil {
-// 	//	err = os.NewSyscallError("getsockopt", e)
-// 	//}
+func (m *ioPoll) handleError(n *Session) {
+	err := fmt.Errorf("got error with fd:%d", n.fd)
+	AppError().Str(LogObject, m.String()).Str(LogSession, n.String()).Err(err).Msg("got error")
 
-// 	t := fmt.Sprintf("run.error fd:%d with EPOLLERR", n.fd)
-// 	AppDebug().Str(LogObject, m.String()).
-// 		Str(LogSession, n.String()).Msg(t)
-// 	err := errors.New(t)
-
-// 	m.releaseSession(n, err)
-// }
+	m.releaseSession(n, err)
+}
 
 // func (m *ioPoll) handleHup(n *Session) {
 // 	//eno, enoOk := err.(syscall.Errno)
@@ -667,15 +679,13 @@ func (m *ioPoll) accept(fd int) (err error) {
 		}
 		//*/
 
-		n := NewSession(nfd, nil, m.GetIo())
+		if err = m.pollIo.ControlAdd(nfd, unix.EPOLLET|unix.EPOLLONESHOT|unix.EPOLLIN|unix.EPOLLOUT); nil != err {
+			AppError().Str(LogObject, m.String()).
+				Err(err).Msgf("failed to accepting poll.add.r with fd:%d sa:%v", nfd, sa)
 
-		m.GetIo().Service.OnOpen(n)
-
-		m.GetIo().sessionCmap.Set(fmt.Sprintf("0x%08x", n.fd), n)
-		n.sa = sa
-		if err = m.pollIo.ControlAdd(n.fd, unix.EPOLLET|unix.EPOLLONESHOT|unix.EPOLLIN); nil != err {
-			AppError().Str(LogObject, m.String()).Str(LogSession, n.String()).
-				Err(err).Msgf("failed to accepting poll.add.r with fd:%d", n.fd)
+			if err = unix.Close(nfd); nil != err {
+				AppError().Str(LogObject, m.String()).Msgf("succeed to close with fd:%d", nfd)
+			}
 
 		} else {
 			//AppDebug().Str(LogObject, m.String()).Str(LogSession, n.String()).
