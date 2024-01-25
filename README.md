@@ -10,7 +10,7 @@ This library allows you to quickly write epoll-based servers.
 
 <br/><br/><br/>
 
-## Apps written using `elio` library  
+## Apps written with `elio` library  
 ### 🚀 [Running `Echo`](app/echo/README.md)  
 `Echo` is a simple echo server.  
 

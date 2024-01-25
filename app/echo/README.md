@@ -1,6 +1,6 @@
 # Echo
 
-`Echo` is a simple echo server written using `elio` library.  
+`Echo` is a simple echo server written with `elio` library.  
 
 <br/><br/><br/>
 

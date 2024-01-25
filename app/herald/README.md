@@ -2,7 +2,7 @@
 
 `Herald` means a messanger.  
 It is a simple app to test pub/sub of backing `emqx` MQTT broker.  
-`Herald` is written using [`elio`](https://github.com/cppis/elio) library.  
+`Herald` is written with [`elio`](https://github.com/cppis/elio) library.  
 
 ![herald.concept](https://github.com/cppis/elio/blob/dev/docs/images/herald.concept.png?raw=true)  
 
