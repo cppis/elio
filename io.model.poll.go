@@ -602,6 +602,18 @@ func (m *ioPoll) releaseSession(n *Session, err error) {
 
 	m.GetIo().sessionCmap.Remove(fmt.Sprintf("0x%08x", n.fd))
 
+	// Clear any pending outQueue buffers and their corresponding refcounts
+	outs := n.outQueue.Fetch()
+	if 0 < len(outs) {
+		// Release all pending buffers
+		for _, o := range outs {
+			PutByteBuffer(o.(*ByteBuffer))
+		}
+		// SubRef for all pending writes (each PostWrite did IncRef)
+		n.SubRef(int32(len(outs)))
+	}
+
+	// Final DecRef for the session itself (from NewSession)
 	n.DecRef()
 }
 
@@ -762,12 +774,17 @@ func (m *ioPoll) write(n *Session) (written int, err error) {
 		l := len(out)
 		written, err = m.Write(n, out)
 		if written < l {
+			// Partial write: need to keep remaining data for next write
+			// The prepended buffer needs its own IncRef since it will be processed again
+			n.IncRef()
 			b := GetByteBuffer()
 			b.Write(out[written:])
 			n.outQueue.Prepend(b)
-			n.SubRef(ref - 1)
+			// SubRef for all fetched buffers (they are all consumed from the queue)
+			n.SubRef(ref)
 
 		} else {
+			// Full write: all buffers sent successfully
 			n.SubRef(ref)
 		}
 
